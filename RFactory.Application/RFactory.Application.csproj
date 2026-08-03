@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\RFactory.Infrastructure\RFactory.Infrastructure.csproj" />
+    <ProjectReference Include="..\RFactory.Shared\RFactory.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="14.0.0">
+      <NoWarn>NU1903;GHSA-rvv3-g6hj-g44x</NoWarn>
+    </PackageReference>
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Modules\MasterData\Services\" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

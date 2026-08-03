@@ -1,0 +1,28 @@
+## .NET build output
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Rider / VS
+.idea/
+.vs/
+
+## Local secrets — chứa connection string + JWT secret
+appsettings.Development.json
+appsettings.*.Local.json
+appsettings.json
+*.env
+
+## Logs
+*.log
+logs/
+

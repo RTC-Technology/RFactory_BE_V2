@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="RFactory.API/RFactory.API.csproj" />
+  <Project Path="RFactory.Application/RFactory.Application.csproj" />
+  <Project Path="RFactory.BackgroundService/RFactory.BackgroundService.csproj" />
+  <Project Path="RFactory.Infrastructure/RFactory.Infrastructure.csproj" />
+  <Project Path="RFactory.Shared/RFactory.Shared.csproj" />
+</Solution>

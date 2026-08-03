@@ -1,0 +1,150 @@
+﻿{
+   "CodeGenerationMode": 4,
+   "ContextClassName": "RFactoryContext",
+   "ContextNamespace": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "IrregularWords": null,
+   "MinimumProductVersion": "2.6.1604",
+   "ModelNamespace": null,
+   "OutputContextPath": "Data",
+   "OutputPath": "Entities",
+   "PluralRules": null,
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "RFactory.Infrastructure",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 2,
+   "SelectedToBeGenerated": 0,
+   "SingularRules": null,
+   "T4TemplatePath": null,
+   "Tables": [
+      {
+         "Name": "area",
+         "ObjectType": 0
+      },
+      {
+         "Name": "bom",
+         "ObjectType": 0
+      },
+      {
+         "Name": "bom_detail",
+         "ObjectType": 0
+      },
+      {
+         "Name": "factory",
+         "ObjectType": 0
+      },
+      {
+         "Name": "function_group",
+         "ObjectType": 0
+      },
+      {
+         "Name": "functions",
+         "ObjectType": 0
+      },
+      {
+         "Name": "holiday",
+         "ObjectType": 0
+      },
+      {
+         "Name": "line",
+         "ObjectType": 0
+      },
+      {
+         "Name": "machine",
+         "ObjectType": 0
+      },
+      {
+         "Name": "machine_type",
+         "ObjectType": 0
+      },
+      {
+         "Name": "menu",
+         "ObjectType": 0
+      },
+      {
+         "Name": "organization",
+         "ObjectType": 0
+      },
+      {
+         "Name": "product",
+         "ObjectType": 0
+      },
+      {
+         "Name": "product_type",
+         "ObjectType": 0
+      },
+      {
+         "Name": "product_unit",
+         "ObjectType": 0
+      },
+      {
+         "Name": "shift",
+         "ObjectType": 0
+      },
+      {
+         "Name": "shift_break",
+         "ObjectType": 0
+      },
+      {
+         "Name": "table_base",
+         "ObjectType": 0
+      },
+      {
+         "Name": "unit",
+         "ObjectType": 0
+      },
+      {
+         "Name": "unit_category",
+         "ObjectType": 0
+      },
+      {
+         "Name": "unit_conversion",
+         "ObjectType": 0
+      },
+      {
+         "Name": "user_group",
+         "ObjectType": 0
+      },
+      {
+         "Name": "user_group_link",
+         "ObjectType": 0
+      },
+      {
+         "Name": "user_group_right_distribution",
+         "ObjectType": 0
+      },
+      {
+         "Name": "users",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": null,
+   "UncountableWords": null,
+   "UseAsyncStoredProcedureCalls": true,
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDatabaseNamesForRoutines": true,
+   "UseDateOnlyTimeOnly": true,
+   "UseDbContextSplitting": false,
+   "UseDecimalDataAnnotationForSprocResult": true,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": true,
+   "UseInternalAccessModifiersForSprocsAndFunctions": false,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UsePrefixNavigationNaming": false,
+   "UseSchemaFolders": false,
+   "UseSchemaNamespaces": false,
+   "UseSpatial": false,
+   "UseT4": false,
+   "UseT4Split": false,
+   "UseTypedTvpParameters": true
+}

@@ -1,0 +1,6 @@
+@RFactory.API_HostAddress = http://localhost:5094
+
+GET {{RFactory.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
