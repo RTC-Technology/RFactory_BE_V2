@@ -23,7 +23,7 @@ public partial class UserGroupRightDistribution
 
     public string UpdatedBy { get; set; }
 
-    public bool? IsDeleted { get; set; }
+    public bool IsDeleted { get; set; }
 
     public long? FunctionId { get; set; }
 

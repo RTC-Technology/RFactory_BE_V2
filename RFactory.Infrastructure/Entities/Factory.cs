@@ -27,5 +27,5 @@ public partial class Factory
 
     public string UpdatedBy { get; set; }
 
-    public bool? IsDeleted { get; set; }
+    public bool IsDeleted { get; set; }
 }

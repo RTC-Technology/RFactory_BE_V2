@@ -23,5 +23,13 @@ public partial class ProductUnit
 
     public string UpdatedBy { get; set; }
 
-    public bool? IsDeleted { get; set; }
+    public bool IsDeleted { get; set; }
+
+    public long? ProductId { get; set; }
+
+    public long? UnitId { get; set; }
+
+    public decimal? ConversionFactor { get; set; }
+
+    public sbyte IsBaseUnit { get; set; }
 }

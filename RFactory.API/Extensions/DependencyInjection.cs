@@ -20,6 +20,7 @@ public static class DependencyInjection
         services.AddScoped<IUser, CurrentUser>();
 
         services.AddSingleton(TimeProvider.System);
+        services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
 
         services.AddCors(opt =>
             opt.AddPolicy(AppConstants.CorsPolicy, policy =>

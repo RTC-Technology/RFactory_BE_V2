@@ -23,7 +23,7 @@ public partial class MachineType
 
     public string UpdatedBy { get; set; }
 
-    public bool? IsDeleted { get; set; }
+    public bool IsDeleted { get; set; }
 
     public string MachineTypeCode { get; set; }
 

@@ -15,5 +15,17 @@ public class MasterDataProfile : Profile
         CreateMap<Factory, FactoryDto>();
         CreateMap<CreateFactoryRequest, Factory>();
         CreateMap<UpdateFactoryRequest, Factory>();
+
+        CreateMap<Area, AreaDto>();
+        CreateMap<CreateAreaRequest, Area>();
+        CreateMap<UpdateAreaRequest, Area>();
+
+        CreateMap<Line, LineDto>();
+        CreateMap<CreateLineRequest, Line>();
+        CreateMap<UpdateLineRequest, Line>();
+
+        CreateMap<Organization, OrganizationDto>();
+        CreateMap<CreateOrganizationRequest, Organization>();
+        CreateMap<UpdateOrganizationRequest, Organization>();
     }
 }

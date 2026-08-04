@@ -23,7 +23,7 @@ public partial class Product
 
     public string UpdatedBy { get; set; }
 
-    public bool? IsDeleted { get; set; }
+    public bool IsDeleted { get; set; }
 
     public string ProductCode { get; set; }
 
@@ -32,4 +32,10 @@ public partial class Product
     public long? ProductTypeId { get; set; }
 
     public long? DefaultUnitId { get; set; }
+
+    public string DrawingNo { get; set; }
+
+    public string DrawingPath { get; set; }
+
+    public int? Status { get; set; }
 }

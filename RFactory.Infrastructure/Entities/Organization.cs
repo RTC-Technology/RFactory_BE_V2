@@ -23,7 +23,7 @@ public partial class Organization
 
     public string UpdatedBy { get; set; }
 
-    public bool? IsDeleted { get; set; }
+    public bool IsDeleted { get; set; }
 
     public string OrganizationCode { get; set; }
 

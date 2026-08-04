@@ -23,7 +23,7 @@ public partial class User
 
     public string UpdatedBy { get; set; }
 
-    public bool? IsDeleted { get; set; }
+    public bool IsDeleted { get; set; }
 
     public string Code { get; set; }
 
@@ -36,4 +36,8 @@ public partial class User
     public ulong? IsAdmin { get; set; }
 
     public string Email { get; set; }
+
+    public string RefreshToken { get; set; }
+
+    public DateTime? RefreshTokenExpiryTime { get; set; }
 }

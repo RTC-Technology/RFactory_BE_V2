@@ -23,5 +23,26 @@ public partial class BomDetail
 
     public string UpdatedBy { get; set; }
 
-    public bool? IsDeleted { get; set; }
+    public bool IsDeleted { get; set; }
+
+    public long? BomId { get; set; }
+
+    /// <summary>
+    /// ID nguyên vật liệu hoặc bán thành phẩm
+    /// </summary>
+    public long? ProductId { get; set; }
+
+    public decimal? Quantity { get; set; }
+
+    public long? UnitId { get; set; }
+
+    /// <summary>
+    /// % hao hụt
+    /// </summary>
+    public decimal? ScrapRate { get; set; }
+
+    /// <summary>
+    /// Số lượng hao hụt cố định
+    /// </summary>
+    public int? FixedScrapQty { get; set; }
 }

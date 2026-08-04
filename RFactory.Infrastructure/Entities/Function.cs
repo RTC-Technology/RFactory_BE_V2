@@ -23,7 +23,7 @@ public partial class Function
 
     public string UpdatedBy { get; set; }
 
-    public bool? IsDeleted { get; set; }
+    public bool IsDeleted { get; set; }
 
     public string FunctionCode { get; set; }
 

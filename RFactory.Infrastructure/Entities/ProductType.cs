@@ -23,7 +23,7 @@ public partial class ProductType
 
     public string UpdatedBy { get; set; }
 
-    public bool? IsDeleted { get; set; }
+    public bool IsDeleted { get; set; }
 
     public string ProductTypeCode { get; set; }
 

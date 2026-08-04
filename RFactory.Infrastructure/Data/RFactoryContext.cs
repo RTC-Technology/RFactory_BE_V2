@@ -89,9 +89,6 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
-            entity.Property(e => e.IsDeleted)
-                .IsRequired()
-                .HasDefaultValueSql("'1'");
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });
@@ -109,15 +106,16 @@ public partial class RFactoryContext : DbContext
             entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
 
             entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.BomCode).HasMaxLength(50);
+            entity.Property(e => e.BomName).HasMaxLength(255);
             entity.Property(e => e.CreatedBy).HasMaxLength(50);
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
-            entity.Property(e => e.IsDeleted)
-                .IsRequired()
-                .HasDefaultValueSql("'1'");
+            entity.Property(e => e.IsActive).HasDefaultValueSql("'0'");
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            entity.Property(e => e.Version).HasMaxLength(255);
         });
 
         modelBuilder.Entity<BomDetail>(entity =>
@@ -137,9 +135,12 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
-            entity.Property(e => e.IsDeleted)
-                .IsRequired()
-                .HasDefaultValueSql("'1'");
+            entity.Property(e => e.FixedScrapQty).HasComment("Số lượng hao hụt cố định");
+            entity.Property(e => e.ProductId).HasComment("ID nguyên vật liệu hoặc bán thành phẩm");
+            entity.Property(e => e.Quantity).HasPrecision(18, 6);
+            entity.Property(e => e.ScrapRate)
+                .HasPrecision(8, 4)
+                .HasComment("% hao hụt");
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });
@@ -163,9 +164,6 @@ public partial class RFactoryContext : DbContext
                 .HasColumnType("datetime");
             entity.Property(e => e.FactoryCode).HasMaxLength(50);
             entity.Property(e => e.FactoryName).HasMaxLength(255);
-            entity.Property(e => e.IsDeleted)
-                .IsRequired()
-                .HasDefaultValueSql("'1'");
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });
@@ -191,9 +189,6 @@ public partial class RFactoryContext : DbContext
                 .HasColumnType("datetime");
             entity.Property(e => e.FunctionCode).HasMaxLength(50);
             entity.Property(e => e.FunctionName).HasMaxLength(255);
-            entity.Property(e => e.IsDeleted)
-                .IsRequired()
-                .HasDefaultValueSql("'1'");
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });
@@ -219,9 +214,6 @@ public partial class RFactoryContext : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
             entity.Property(e => e.Description).HasMaxLength(255);
-            entity.Property(e => e.IsDeleted)
-                .IsRequired()
-                .HasDefaultValueSql("'1'");
             entity.Property(e => e.Name).HasMaxLength(255);
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
@@ -251,9 +243,6 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.IsActive)
                 .IsRequired()
                 .HasDefaultValueSql("'1'");
-            entity.Property(e => e.IsDeleted)
-                .IsRequired()
-                .HasDefaultValueSql("'1'");
             entity.Property(e => e.StartDate).HasColumnType("datetime");
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
@@ -276,9 +265,6 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
-            entity.Property(e => e.IsDeleted)
-                .IsRequired()
-                .HasDefaultValueSql("'1'");
             entity.Property(e => e.LayoutImage).HasMaxLength(550);
             entity.Property(e => e.LineCode).HasMaxLength(50);
             entity.Property(e => e.LineName).HasMaxLength(255);
@@ -303,9 +289,6 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
-            entity.Property(e => e.IsDeleted)
-                .IsRequired()
-                .HasDefaultValueSql("'1'");
             entity.Property(e => e.MachineCode).HasMaxLength(50);
             entity.Property(e => e.MachineName).HasMaxLength(255);
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
@@ -329,9 +312,6 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
-            entity.Property(e => e.IsDeleted)
-                .IsRequired()
-                .HasDefaultValueSql("'1'");
             entity.Property(e => e.MachineTypeCode).HasMaxLength(50);
             entity.Property(e => e.MachineTypeName).HasMaxLength(255);
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
@@ -358,9 +338,6 @@ public partial class RFactoryContext : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
             entity.Property(e => e.Icon).HasMaxLength(255);
-            entity.Property(e => e.IsDeleted)
-                .IsRequired()
-                .HasDefaultValueSql("'1'");
             entity.Property(e => e.Name).HasMaxLength(255);
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
@@ -386,9 +363,6 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
-            entity.Property(e => e.IsDeleted)
-                .IsRequired()
-                .HasDefaultValueSql("'1'");
             entity.Property(e => e.OrganizationCode).HasMaxLength(50);
             entity.Property(e => e.OrganizationName).HasMaxLength(255);
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
@@ -412,9 +386,8 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
-            entity.Property(e => e.IsDeleted)
-                .IsRequired()
-                .HasDefaultValueSql("'1'");
+            entity.Property(e => e.DrawingNo).HasMaxLength(255);
+            entity.Property(e => e.DrawingPath).HasMaxLength(255);
             entity.Property(e => e.ProductCode).HasMaxLength(50);
             entity.Property(e => e.ProductName).HasMaxLength(255);
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
@@ -442,9 +415,6 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.IsActive)
                 .IsRequired()
                 .HasDefaultValueSql("'1'");
-            entity.Property(e => e.IsDeleted)
-                .IsRequired()
-                .HasDefaultValueSql("'1'");
             entity.Property(e => e.ProductTypeCode).HasMaxLength(50);
             entity.Property(e => e.ProductTypeName).HasMaxLength(255);
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
@@ -464,13 +434,11 @@ public partial class RFactoryContext : DbContext
             entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
 
             entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.ConversionFactor).HasPrecision(24, 10);
             entity.Property(e => e.CreatedBy).HasMaxLength(50);
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
-            entity.Property(e => e.IsDeleted)
-                .IsRequired()
-                .HasDefaultValueSql("'1'");
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });
@@ -497,9 +465,6 @@ public partial class RFactoryContext : DbContext
                 .HasColumnType("bit(1)");
             entity.Property(e => e.EndTime).HasColumnType("time");
             entity.Property(e => e.IsActive)
-                .IsRequired()
-                .HasDefaultValueSql("'1'");
-            entity.Property(e => e.IsDeleted)
                 .IsRequired()
                 .HasDefaultValueSql("'1'");
             entity.Property(e => e.ShiftCode).HasMaxLength(50);
@@ -529,9 +494,6 @@ public partial class RFactoryContext : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
             entity.Property(e => e.EndTime).HasColumnType("time");
-            entity.Property(e => e.IsDeleted)
-                .IsRequired()
-                .HasDefaultValueSql("'1'");
             entity.Property(e => e.StartTime).HasColumnType("time");
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
@@ -582,9 +544,6 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.IsBaseUnit)
                 .HasDefaultValueSql("b'0'")
                 .HasColumnType("bit(1)");
-            entity.Property(e => e.IsDeleted)
-                .IsRequired()
-                .HasDefaultValueSql("'1'");
             entity.Property(e => e.Symbol).HasMaxLength(255);
             entity.Property(e => e.UnitCode).HasMaxLength(50);
             entity.Property(e => e.UnitName).HasMaxLength(255);
@@ -613,9 +572,6 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.IsActive)
                 .IsRequired()
                 .HasDefaultValueSql("'1'");
-            entity.Property(e => e.IsDeleted)
-                .IsRequired()
-                .HasDefaultValueSql("'1'");
             entity.Property(e => e.UnitCategoryCode).HasMaxLength(50);
             entity.Property(e => e.UnitCategoryName).HasMaxLength(255);
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
@@ -639,9 +595,12 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
-            entity.Property(e => e.IsDeleted)
-                .IsRequired()
-                .HasDefaultValueSql("'1'");
+            entity.Property(e => e.DivideValue).HasPrecision(24, 10);
+            entity.Property(e => e.FormulaType)
+                .HasDefaultValueSql("'1'")
+                .HasComment("1: MULTIPLY 2: DIVIDE");
+            entity.Property(e => e.IsActive).HasDefaultValueSql("'1'");
+            entity.Property(e => e.MultiplyValue).HasPrecision(24, 10);
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });
@@ -669,11 +628,10 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.IsAdmin)
                 .HasDefaultValueSql("b'0'")
                 .HasColumnType("bit(1)");
-            entity.Property(e => e.IsDeleted)
-                .IsRequired()
-                .HasDefaultValueSql("'1'");
             entity.Property(e => e.LoginName).HasMaxLength(255);
             entity.Property(e => e.PasswordHash).HasColumnType("text");
+            entity.Property(e => e.RefreshToken).HasMaxLength(255);
+            entity.Property(e => e.RefreshTokenExpiryTime).HasColumnType("datetime");
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });
@@ -696,9 +654,6 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
-            entity.Property(e => e.IsDeleted)
-                .IsRequired()
-                .HasDefaultValueSql("'1'");
             entity.Property(e => e.Name).HasMaxLength(255);
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
@@ -721,9 +676,6 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
-            entity.Property(e => e.IsDeleted)
-                .IsRequired()
-                .HasDefaultValueSql("'1'");
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });
@@ -745,9 +697,6 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
-            entity.Property(e => e.IsDeleted)
-                .IsRequired()
-                .HasDefaultValueSql("'1'");
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });

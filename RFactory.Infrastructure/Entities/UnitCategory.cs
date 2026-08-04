@@ -23,7 +23,7 @@ public partial class UnitCategory
 
     public string UpdatedBy { get; set; }
 
-    public bool? IsDeleted { get; set; }
+    public bool IsDeleted { get; set; }
 
     public string UnitCategoryCode { get; set; }
 

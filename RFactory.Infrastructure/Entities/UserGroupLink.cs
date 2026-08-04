@@ -23,7 +23,7 @@ public partial class UserGroupLink
 
     public string UpdatedBy { get; set; }
 
-    public bool? IsDeleted { get; set; }
+    public bool IsDeleted { get; set; }
 
     public long? UserId { get; set; }
 

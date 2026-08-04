@@ -23,5 +23,17 @@ public partial class Bom
 
     public string UpdatedBy { get; set; }
 
-    public bool? IsDeleted { get; set; }
+    public bool IsDeleted { get; set; }
+
+    public long? ProductId { get; set; }
+
+    public string BomCode { get; set; }
+
+    public string BomName { get; set; }
+
+    public string Version { get; set; }
+
+    public int? Status { get; set; }
+
+    public bool? IsActive { get; set; }
 }

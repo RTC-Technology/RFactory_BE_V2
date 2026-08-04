@@ -23,7 +23,7 @@ public partial class Holiday
 
     public string UpdatedBy { get; set; }
 
-    public bool? IsDeleted { get; set; }
+    public bool IsDeleted { get; set; }
 
     public string HolidayCode { get; set; }
 

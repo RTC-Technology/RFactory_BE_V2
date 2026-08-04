@@ -23,7 +23,7 @@ public partial class ShiftBreak
 
     public string UpdatedBy { get; set; }
 
-    public bool? IsDeleted { get; set; }
+    public bool IsDeleted { get; set; }
 
     public string BreakName { get; set; }
 

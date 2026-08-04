@@ -23,7 +23,7 @@ public partial class UserGroup
 
     public string UpdatedBy { get; set; }
 
-    public bool? IsDeleted { get; set; }
+    public bool IsDeleted { get; set; }
 
     public string Code { get; set; }
 

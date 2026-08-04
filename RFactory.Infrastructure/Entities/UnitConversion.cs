@@ -23,5 +23,20 @@ public partial class UnitConversion
 
     public string UpdatedBy { get; set; }
 
-    public bool? IsDeleted { get; set; }
+    public bool IsDeleted { get; set; }
+
+    public long? FromUnitId { get; set; }
+
+    public long? ToUnitId { get; set; }
+
+    public decimal? MultiplyValue { get; set; }
+
+    public decimal? DivideValue { get; set; }
+
+    /// <summary>
+    /// 1: MULTIPLY 2: DIVIDE
+    /// </summary>
+    public int FormulaType { get; set; }
+
+    public bool? IsActive { get; set; }
 }
