@@ -26,3 +26,18 @@ public class AuthResponse
     public string RefreshToken { get; set; } = string.Empty;
     public DateTime ExpiresAt { get; set; }
 }
+
+/// <summary>
+/// Profile of the currently authenticated user, returned by GET /api/auth/me.
+/// Permissions is a list of FunctionCode values; currently empty for non-admin
+/// users since UserGroup-based right distribution is not wired up yet.
+/// </summary>
+public class UserProfileDto
+{
+    public ulong Id { get; set; }
+    public string LoginName { get; set; } = string.Empty;
+    public string FullName { get; set; } = string.Empty;
+    public string? Email { get; set; }
+    public bool IsAdmin { get; set; }
+    public List<string> Permissions { get; set; } = new();
+}

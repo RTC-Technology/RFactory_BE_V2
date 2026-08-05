@@ -70,6 +70,30 @@ public class AuthService : IAuthService
         return Result.Success();
     }
 
+    public async Task<Result<UserProfileDto>> GetProfileAsync(ulong userId, CancellationToken ct = default)
+    {
+        var user = await _userRepository.GetById(userId, ct);
+        if (user is null)
+        {
+            return Result<UserProfileDto>.Failure("User not found.");
+        }
+
+        var isAdmin = user.IsAdmin.HasValue && user.IsAdmin.Value != 0;
+        var profile = new UserProfileDto
+        {
+            Id = user.Id,
+            LoginName = user.LoginName ?? string.Empty,
+            FullName = user.FullName ?? string.Empty,
+            Email = user.Email,
+            IsAdmin = isAdmin,
+            // Permissions require UserGroup -> UserGroupRightDistribution -> Function,
+            // which is not wired up yet. Admins implicitly have full access.
+            Permissions = new List<string>(),
+        };
+
+        return Result<UserProfileDto>.Success(profile);
+    }
+
     private async Task<AuthResponse> IssueTokenPairAsync(User user, CancellationToken ct)
     {
         var accessToken = _tokenService.GenerateAccessToken(user);

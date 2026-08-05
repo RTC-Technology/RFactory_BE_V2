@@ -34,4 +34,6 @@ public partial class Menu
     public int? Order { get; set; }
 
     public long? ParentId { get; set; }
+
+    public long? FunctionId { get; set; }
 }

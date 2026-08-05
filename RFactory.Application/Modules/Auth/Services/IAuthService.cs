@@ -11,4 +11,5 @@ public interface IAuthService
     Task<Result<AuthResponse>> LoginAsync(LoginRequest request, CancellationToken ct = default);
     Task<Result<AuthResponse>> RefreshTokenAsync(RefreshTokenRequest request, CancellationToken ct = default);
     Task<Result> LogoutAsync(ulong userId, CancellationToken ct = default);
+    Task<Result<UserProfileDto>> GetProfileAsync(ulong userId, CancellationToken ct = default);
 }

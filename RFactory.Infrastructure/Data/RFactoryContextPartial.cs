@@ -21,6 +21,7 @@ public partial class RFactoryContext
             entity.Property(e => e.RefreshTokenExpiryTime).HasColumnType("datetime");
         });
 
+
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
         {
             var isDeletedProperty = entityType.ClrType.GetProperty("IsDeleted");
@@ -34,6 +35,7 @@ public partial class RFactoryContext
         }
     }
 
+   
     private static LambdaExpression BuildIsDeletedFilter(Type clrType, PropertyInfo isDeletedProperty)
     {
         var parameter = Expression.Parameter(clrType, "e");

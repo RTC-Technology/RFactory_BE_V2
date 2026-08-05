@@ -18,4 +18,5 @@ public class CurrentUser : IUser
 
     public string? Id => _accessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
     public string? UserName => _accessor.HttpContext?.User.FindFirstValue(ClaimTypes.Name);
+    public bool IsAdmin => _accessor.HttpContext?.User.FindFirstValue("is_admin") == "true";
 }

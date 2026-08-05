@@ -23,10 +23,12 @@ public class TokenService : ITokenService
 
     public string GenerateAccessToken(User user)
     {
+        var isAdmin = user.IsAdmin.HasValue && user.IsAdmin.Value != 0;
         var claims = new List<Claim>
         {
             new(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new(ClaimTypes.Name, user.LoginName ?? string.Empty)
+            new(ClaimTypes.Name, user.LoginName ?? string.Empty),
+            new("is_admin", isAdmin ? "true" : "false")
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.SecretKey));
