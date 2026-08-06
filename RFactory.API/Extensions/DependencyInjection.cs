@@ -22,9 +22,23 @@ public static class DependencyInjection
         services.AddSingleton(TimeProvider.System);
         services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
 
+        // The refresh-token cookie only travels on credentialed requests, and the spec
+        // forbids pairing AllowCredentials with a wildcard origin — browsers reject
+        // `Access-Control-Allow-Origin: *` outright once credentials are involved. So the
+        // origins have to be named. Production must set Cors:AllowedOrigins; the fallback
+        // covers a local `ng serve` and nothing else.
+        var allowedOrigins = configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
+        if (allowedOrigins is null || allowedOrigins.Length == 0)
+        {
+            allowedOrigins = new[] { "http://localhost:4200", "https://localhost:4200" };
+        }
+
         services.AddCors(opt =>
-            opt.AddPolicy(AppConstants.CorsPolicy, policy =>
-                policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+            opt.AddPolicy(AppConstants.CorsPolicy, policy => policy
+                .WithOrigins(allowedOrigins)
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials()));
 
         var jwtOptions = configuration.GetSection("Jwt").Get<JwtOptions>()
             ?? throw new InvalidOperationException("JWT configuration section 'Jwt' is missing.");

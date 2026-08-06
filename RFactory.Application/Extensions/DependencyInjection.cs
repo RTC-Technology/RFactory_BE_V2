@@ -3,6 +3,7 @@ using RFactory.Application.Modules.Administration.Services;
 using RFactory.Application.Modules.Auth.Services;
 using RFactory.Application.Modules.Equipment.Services;
 using RFactory.Application.Modules.MasterData.Services;
+using RFactory.Application.Modules.Product.Services;
 
 namespace RFactory.Application.Extensions;
 
@@ -33,6 +34,15 @@ public static class DependencyInjection
         services.AddScoped<IOrganizationService, OrganizationService>();
         services.AddScoped<IShiftService, ShiftService>();
         services.AddScoped<IShiftBreakService, ShiftBreakService>();
+        services.AddScoped<IUnitCategoryService, UnitCategoryService>();
+        services.AddScoped<IUnitService, UnitService>();
+        services.AddScoped<IUnitConversionService, UnitConversionService>();
+
+        // Product
+        services.AddScoped<IProductTypeService, ProductTypeService>();
+        services.AddScoped<IProductService, ProductService>();
+        services.AddScoped<IBomService, BomService>();
+        services.AddScoped<IBomDetailService, BomDetailService>();
 
         // Equipment
         services.AddScoped<IMachineTypeService, MachineTypeService>();

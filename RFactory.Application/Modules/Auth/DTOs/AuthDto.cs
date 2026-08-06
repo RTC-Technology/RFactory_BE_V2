@@ -10,7 +10,10 @@ public class LoginRequest
 }
 
 /// <summary>
-/// Payload carrying the refresh token used to obtain a new token pair.
+/// Carries the refresh token between the API layer and the service.
+///
+/// Not a request body any more: the controller reads the token out of the httpOnly
+/// cookie, so it never travels through JavaScript.
 /// </summary>
 public class RefreshTokenRequest
 {
@@ -18,7 +21,9 @@ public class RefreshTokenRequest
 }
 
 /// <summary>
-/// Token pair returned to the client after a successful login or refresh.
+/// Internal result of a login or refresh — both tokens. The refresh token stops here:
+/// the controller moves it into an httpOnly cookie and returns
+/// <see cref="AuthTokenResponse"/> to the client instead.
 /// </summary>
 public class AuthResponse
 {
@@ -28,9 +33,21 @@ public class AuthResponse
 }
 
 /// <summary>
+/// What the client actually receives. Deliberately has no refresh token — putting one in
+/// the body would hand it straight back to any script running on the page, which is the
+/// whole thing the cookie exists to prevent.
+/// </summary>
+public class AuthTokenResponse
+{
+    public string AccessToken { get; set; } = string.Empty;
+    public DateTime ExpiresAt { get; set; }
+}
+
+/// <summary>
 /// Profile of the currently authenticated user, returned by GET /api/auth/me.
-/// Permissions is a list of FunctionCode values; currently empty for non-admin
-/// users since UserGroup-based right distribution is not wired up yet.
+/// Permissions holds the FunctionCode values the user's groups grant. Admins are not
+/// folded in — IsAdmin is a bypass applied at the point of the check, so "granted" and
+/// "bypassed" stay distinguishable.
 /// </summary>
 public class UserProfileDto
 {

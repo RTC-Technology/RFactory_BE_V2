@@ -44,6 +44,55 @@ public static class PermissionCatalog
             new(PermissionCodes.Line.Edit,   "Sửa line"),
             new(PermissionCodes.Line.Delete, "Xóa line"),
         }),
+        new("unit-category", "Nhóm đơn vị tính", new PermissionSpec[]
+        {
+            new(PermissionCodes.UnitCategory.View,   "Xem danh sách nhóm đơn vị"),
+            new(PermissionCodes.UnitCategory.Add,    "Thêm nhóm đơn vị"),
+            new(PermissionCodes.UnitCategory.Edit,   "Sửa nhóm đơn vị"),
+            new(PermissionCodes.UnitCategory.Delete, "Xóa nhóm đơn vị"),
+        }),
+        new("unit-conversion", "Quy đổi đơn vị", new PermissionSpec[]
+        {
+            new(PermissionCodes.UnitConversion.View,   "Xem quy đổi đơn vị"),
+            new(PermissionCodes.UnitConversion.Add,    "Thêm quy đổi"),
+            new(PermissionCodes.UnitConversion.Edit,   "Sửa quy đổi"),
+            new(PermissionCodes.UnitConversion.Delete, "Xóa quy đổi"),
+        }),
+        new("unit", "Đơn vị tính", new PermissionSpec[]
+        {
+            new(PermissionCodes.Unit.View,   "Xem danh sách đơn vị tính"),
+            new(PermissionCodes.Unit.Add,    "Thêm đơn vị tính"),
+            new(PermissionCodes.Unit.Edit,   "Sửa đơn vị tính"),
+            new(PermissionCodes.Unit.Delete, "Xóa đơn vị tính"),
+        }),
+        new("product-type", "Loại sản phẩm", new PermissionSpec[]
+        {
+            new(PermissionCodes.ProductType.View,   "Xem danh sách loại sản phẩm"),
+            new(PermissionCodes.ProductType.Add,    "Thêm loại sản phẩm"),
+            new(PermissionCodes.ProductType.Edit,   "Sửa loại sản phẩm"),
+            new(PermissionCodes.ProductType.Delete, "Xóa loại sản phẩm"),
+        }),
+        new("product", "Sản phẩm", new PermissionSpec[]
+        {
+            new(PermissionCodes.Product.View,   "Xem danh sách sản phẩm"),
+            new(PermissionCodes.Product.Add,    "Thêm sản phẩm"),
+            new(PermissionCodes.Product.Edit,   "Sửa sản phẩm"),
+            new(PermissionCodes.Product.Delete, "Xóa sản phẩm"),
+        }),
+        new("bom", "Định mức nguyên vật liệu (BOM)", new PermissionSpec[]
+        {
+            new(PermissionCodes.Bom.View,   "Xem danh sách BOM"),
+            new(PermissionCodes.Bom.Add,    "Thêm BOM"),
+            new(PermissionCodes.Bom.Edit,   "Sửa BOM"),
+            new(PermissionCodes.Bom.Delete, "Xóa BOM"),
+        }),
+        new("bom-detail", "Chi tiết BOM", new PermissionSpec[]
+        {
+            new(PermissionCodes.BomDetail.View,   "Xem chi tiết BOM"),
+            new(PermissionCodes.BomDetail.Add,    "Thêm dòng BOM"),
+            new(PermissionCodes.BomDetail.Edit,   "Sửa dòng BOM"),
+            new(PermissionCodes.BomDetail.Delete, "Xóa dòng BOM"),
+        }),
         new("shift", "Ca làm việc", new PermissionSpec[]
         {
             new(PermissionCodes.Shift.View,   "Xem danh sách ca làm việc"),

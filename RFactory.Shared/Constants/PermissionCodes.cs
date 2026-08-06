@@ -46,6 +46,62 @@ public static class PermissionCodes
         public const string Delete = "line.delete";
     }
 
+    public static class UnitCategory
+    {
+        public const string View = "unit-category.view";
+        public const string Add = "unit-category.add";
+        public const string Edit = "unit-category.edit";
+        public const string Delete = "unit-category.delete";
+    }
+
+    public static class UnitConversion
+    {
+        public const string View = "unit-conversion.view";
+        public const string Add = "unit-conversion.add";
+        public const string Edit = "unit-conversion.edit";
+        public const string Delete = "unit-conversion.delete";
+    }
+
+    public static class Unit
+    {
+        public const string View = "unit.view";
+        public const string Add = "unit.add";
+        public const string Edit = "unit.edit";
+        public const string Delete = "unit.delete";
+    }
+
+    public static class ProductType
+    {
+        public const string View = "product-type.view";
+        public const string Add = "product-type.add";
+        public const string Edit = "product-type.edit";
+        public const string Delete = "product-type.delete";
+    }
+
+    public static class Product
+    {
+        public const string View = "product.view";
+        public const string Add = "product.add";
+        public const string Edit = "product.edit";
+        public const string Delete = "product.delete";
+    }
+
+    public static class Bom
+    {
+        public const string View = "bom.view";
+        public const string Add = "bom.add";
+        public const string Edit = "bom.edit";
+        public const string Delete = "bom.delete";
+    }
+
+    public static class BomDetail
+    {
+        public const string View = "bom-detail.view";
+        public const string Add = "bom-detail.add";
+        public const string Edit = "bom-detail.edit";
+        public const string Delete = "bom-detail.delete";
+    }
+
     public static class Shift
     {
         public const string View = "shift.view";
