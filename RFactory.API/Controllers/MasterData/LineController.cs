@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RFactory.API.Authorization;
 using RFactory.Application.Modules.MasterData.DTOs;
 using RFactory.Application.Modules.MasterData.Services;
 using RFactory.Shared.Api;
+using RFactory.Shared.Constants;
 
 namespace RFactory.API.Controllers.MasterData;
 
@@ -22,6 +24,7 @@ public class LineController : ControllerBase
     }
 
     [HttpGet]
+    [RequirePermission(PermissionCodes.Line.View)]
     public async Task<ActionResult<ApiResponse<List<LineDto>>>> GetAll(CancellationToken ct)
     {
         var lines = await _lineService.GetAllAsync(ct);
@@ -29,6 +32,7 @@ public class LineController : ControllerBase
     }
 
     [HttpGet("{id:long}")]
+    [RequirePermission(PermissionCodes.Line.View)]
     public async Task<ActionResult<ApiResponse<LineDto>>> GetById(ulong id, CancellationToken ct)
     {
         var line = await _lineService.GetByIdAsync(id, ct);
@@ -41,6 +45,7 @@ public class LineController : ControllerBase
     }
 
     [HttpPost]
+    [RequirePermission(PermissionCodes.Line.Add)]
     public async Task<ActionResult<ApiResponse<LineDto>>> Create(CreateLineRequest request, CancellationToken ct)
     {
         var result = await _lineService.CreateAsync(request, ct);
@@ -53,6 +58,7 @@ public class LineController : ControllerBase
     }
 
     [HttpPut("{id:long}")]
+    [RequirePermission(PermissionCodes.Line.Edit)]
     public async Task<ActionResult<ApiResponse<LineDto>>> Update(ulong id, UpdateLineRequest request, CancellationToken ct)
     {
         var result = await _lineService.UpdateAsync(id, request, ct);
@@ -65,6 +71,7 @@ public class LineController : ControllerBase
     }
 
     [HttpDelete("{id:long}")]
+    [RequirePermission(PermissionCodes.Line.Delete)]
     public async Task<ActionResult<ApiResponse<object?>>> Delete(ulong id, CancellationToken ct)
     {
         var result = await _lineService.DeleteAsync(id, ct);

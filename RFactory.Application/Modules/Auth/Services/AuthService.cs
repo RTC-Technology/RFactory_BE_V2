@@ -1,3 +1,4 @@
+using RFactory.Application.Modules.Administration.Services;
 using RFactory.Application.Modules.Auth.DTOs;
 using RFactory.Infrastructure.Entities;
 using RFactory.Infrastructure.Persistence;
@@ -15,17 +16,20 @@ public class AuthService : IAuthService
     private readonly IRepository<User> _userRepository;
     private readonly IPasswordHasher _passwordHasher;
     private readonly ITokenService _tokenService;
+    private readonly IUserPermissionService _permissions;
     private readonly TimeProvider _clock;
 
     public AuthService(
         IRepository<User> userRepository,
         IPasswordHasher passwordHasher,
         ITokenService tokenService,
+        IUserPermissionService permissions,
         TimeProvider clock)
     {
         _userRepository = userRepository;
         _passwordHasher = passwordHasher;
         _tokenService = tokenService;
+        _permissions = permissions;
         _clock = clock;
     }
 
@@ -79,6 +83,8 @@ public class AuthService : IAuthService
         }
 
         var isAdmin = user.IsAdmin.HasValue && user.IsAdmin.Value != 0;
+        var permissions = await _permissions.GetForUserAsync(userId, ct);
+
         var profile = new UserProfileDto
         {
             Id = user.Id,
@@ -86,9 +92,10 @@ public class AuthService : IAuthService
             FullName = user.FullName ?? string.Empty,
             Email = user.Email,
             IsAdmin = isAdmin,
-            // Permissions require UserGroup -> UserGroupRightDistribution -> Function,
-            // which is not wired up yet. Admins implicitly have full access.
-            Permissions = new List<string>(),
+            // The codes a user was actually granted, admin or not. IsAdmin is a bypass
+            // applied at the point of the check, so it is not folded in here — otherwise
+            // "granted" and "bypassed" would be indistinguishable to anyone reading it.
+            Permissions = permissions.Codes.ToList(),
         };
 
         return Result<UserProfileDto>.Success(profile);

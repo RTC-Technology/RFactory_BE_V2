@@ -15,9 +15,12 @@ public interface IMenuService
     Task<Result> DeleteAsync(ulong id, CancellationToken ct = default);
 
     /// <summary>
-    /// Returns a pre-built menu tree filtered by the user's access level.
-    /// Admins see all items; regular users see only items with no FunctionId
-    /// (public menus) until UserGroup-based permissions are wired up.
+    /// Returns a pre-built menu tree filtered by what the user may reach.
+    ///
+    /// Admins see everything. For everyone else an item with no FunctionId is public,
+    /// and an item that carries one is shown only when the user's groups grant that
+    /// function. Denying a parent hides its children with it, and a group left with no
+    /// children is dropped rather than rendered as a header that expands into nothing.
     /// </summary>
     Task<List<MenuDto>> GetMenusForUserAsync(ulong userId, bool isAdmin, CancellationToken ct = default);
 }

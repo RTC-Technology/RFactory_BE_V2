@@ -23,6 +23,10 @@ public class AdministrationProfile : Profile
             .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
             .ForMember(dest => dest.IsAdmin, opt => opt.MapFrom(src => src.IsAdmin ? 1UL : 0UL));
 
+        CreateMap<UserGroup, UserGroupDto>();
+        CreateMap<CreateUserGroupRequest, UserGroup>();
+        CreateMap<UpdateUserGroupRequest, UserGroup>();
+
         CreateMap<Menu, MenuDto>();
         CreateMap<CreateMenuRequest, Menu>();
         CreateMap<UpdateMenuRequest, Menu>();

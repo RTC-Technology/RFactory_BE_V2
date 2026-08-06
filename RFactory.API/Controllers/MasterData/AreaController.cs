@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RFactory.API.Authorization;
 using RFactory.Application.Modules.MasterData.DTOs;
 using RFactory.Application.Modules.MasterData.Services;
 using RFactory.Shared.Api;
+using RFactory.Shared.Constants;
 
 namespace RFactory.API.Controllers.MasterData;
 
@@ -22,6 +24,7 @@ public class AreaController : ControllerBase
     }
 
     [HttpGet]
+    [RequirePermission(PermissionCodes.Area.View)]
     public async Task<ActionResult<ApiResponse<List<AreaDto>>>> GetAll(CancellationToken ct)
     {
         var areas = await _areaService.GetAllAsync(ct);
@@ -29,6 +32,7 @@ public class AreaController : ControllerBase
     }
 
     [HttpGet("{id:long}")]
+    [RequirePermission(PermissionCodes.Area.View)]
     public async Task<ActionResult<ApiResponse<AreaDto>>> GetById(ulong id, CancellationToken ct)
     {
         var area = await _areaService.GetByIdAsync(id, ct);
@@ -41,6 +45,7 @@ public class AreaController : ControllerBase
     }
 
     [HttpPost]
+    [RequirePermission(PermissionCodes.Area.Add)]
     public async Task<ActionResult<ApiResponse<AreaDto>>> Create(CreateAreaRequest request, CancellationToken ct)
     {
         var result = await _areaService.CreateAsync(request, ct);
@@ -53,6 +58,7 @@ public class AreaController : ControllerBase
     }
 
     [HttpPut("{id:long}")]
+    [RequirePermission(PermissionCodes.Area.Edit)]
     public async Task<ActionResult<ApiResponse<AreaDto>>> Update(ulong id, UpdateAreaRequest request, CancellationToken ct)
     {
         var result = await _areaService.UpdateAsync(id, request, ct);
@@ -65,6 +71,7 @@ public class AreaController : ControllerBase
     }
 
     [HttpDelete("{id:long}")]
+    [RequirePermission(PermissionCodes.Area.Delete)]
     public async Task<ActionResult<ApiResponse<object?>>> Delete(ulong id, CancellationToken ct)
     {
         var result = await _areaService.DeleteAsync(id, ct);

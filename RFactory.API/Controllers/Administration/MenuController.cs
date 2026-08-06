@@ -1,13 +1,19 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RFactory.API.Authorization;
 using RFactory.Application.Modules.Administration.DTOs;
 using RFactory.Application.Modules.Administration.Services;
 using RFactory.Shared.Api;
+using RFactory.Shared.Constants;
 
 namespace RFactory.API.Controllers.Administration;
 
 /// <summary>
 /// CRUD endpoints for navigation menu items.
+///
+/// Reads are open to any signed-in user because other screens depend on them — the
+/// permission screen, for one, reads menus to warn before deleting a permission a menu
+/// still points at. Only mutations carry <see cref="RequirePermissionAttribute"/>.
 /// </summary>
 [ApiController]
 [Route("api/administration/menus")]
@@ -22,6 +28,7 @@ public class MenuController : ControllerBase
     }
 
     [HttpGet]
+    [RequirePermission(PermissionCodes.Menu.View)]
     public async Task<ActionResult<ApiResponse<List<MenuDto>>>> GetAll(CancellationToken ct)
     {
         var menus = await _menuService.GetAllAsync(ct);
@@ -29,6 +36,7 @@ public class MenuController : ControllerBase
     }
 
     [HttpGet("{id:long}")]
+    [RequirePermission(PermissionCodes.Menu.View)]
     public async Task<ActionResult<ApiResponse<MenuDto>>> GetById(ulong id, CancellationToken ct)
     {
         var menu = await _menuService.GetByIdAsync(id, ct);
@@ -41,6 +49,7 @@ public class MenuController : ControllerBase
     }
 
     [HttpPost]
+    [RequirePermission(PermissionCodes.Menu.Add)]
     public async Task<ActionResult<ApiResponse<MenuDto>>> Create(CreateMenuRequest request, CancellationToken ct)
     {
         var result = await _menuService.CreateAsync(request, ct);
@@ -53,6 +62,7 @@ public class MenuController : ControllerBase
     }
 
     [HttpPut("{id:long}")]
+    [RequirePermission(PermissionCodes.Menu.Edit)]
     public async Task<ActionResult<ApiResponse<MenuDto>>> Update(ulong id, UpdateMenuRequest request, CancellationToken ct)
     {
         var result = await _menuService.UpdateAsync(id, request, ct);
@@ -65,6 +75,7 @@ public class MenuController : ControllerBase
     }
 
     [HttpDelete("{id:long}")]
+    [RequirePermission(PermissionCodes.Menu.Delete)]
     public async Task<ActionResult<ApiResponse<object?>>> Delete(ulong id, CancellationToken ct)
     {
         var result = await _menuService.DeleteAsync(id, ct);

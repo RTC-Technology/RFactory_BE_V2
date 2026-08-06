@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RFactory.API.Authorization;
 using RFactory.Application.Modules.MasterData.DTOs;
 using RFactory.Application.Modules.MasterData.Services;
 using RFactory.Shared.Api;
+using RFactory.Shared.Constants;
 
 namespace RFactory.API.Controllers.MasterData;
 
@@ -22,6 +24,7 @@ public class OrganizationController : ControllerBase
     }
 
     [HttpGet]
+    [RequirePermission(PermissionCodes.Organization.View)]
     public async Task<ActionResult<ApiResponse<List<OrganizationDto>>>> GetAll(CancellationToken ct)
     {
         var organizations = await _organizationService.GetAllAsync(ct);
@@ -29,6 +32,7 @@ public class OrganizationController : ControllerBase
     }
 
     [HttpGet("{id:long}")]
+    [RequirePermission(PermissionCodes.Organization.View)]
     public async Task<ActionResult<ApiResponse<OrganizationDto>>> GetById(ulong id, CancellationToken ct)
     {
         var organization = await _organizationService.GetByIdAsync(id, ct);
@@ -41,6 +45,7 @@ public class OrganizationController : ControllerBase
     }
 
     [HttpPost]
+    [RequirePermission(PermissionCodes.Organization.Add)]
     public async Task<ActionResult<ApiResponse<OrganizationDto>>> Create(CreateOrganizationRequest request, CancellationToken ct)
     {
         var result = await _organizationService.CreateAsync(request, ct);
@@ -53,6 +58,7 @@ public class OrganizationController : ControllerBase
     }
 
     [HttpPut("{id:long}")]
+    [RequirePermission(PermissionCodes.Organization.Edit)]
     public async Task<ActionResult<ApiResponse<OrganizationDto>>> Update(ulong id, UpdateOrganizationRequest request, CancellationToken ct)
     {
         var result = await _organizationService.UpdateAsync(id, request, ct);
@@ -65,6 +71,7 @@ public class OrganizationController : ControllerBase
     }
 
     [HttpDelete("{id:long}")]
+    [RequirePermission(PermissionCodes.Organization.Delete)]
     public async Task<ActionResult<ApiResponse<object?>>> Delete(ulong id, CancellationToken ct)
     {
         var result = await _organizationService.DeleteAsync(id, ct);

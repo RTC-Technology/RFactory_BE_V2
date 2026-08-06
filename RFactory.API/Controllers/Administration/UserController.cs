@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RFactory.API.Authorization;
 using RFactory.Application.Modules.Administration.DTOs;
 using RFactory.Application.Modules.Administration.Services;
 using RFactory.Shared.Api;
+using RFactory.Shared.Constants;
 
 namespace RFactory.API.Controllers.Administration;
 
@@ -22,6 +24,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
+    [RequirePermission(PermissionCodes.User.View)]
     public async Task<ActionResult<ApiResponse<List<UserDto>>>> GetAll(CancellationToken ct)
     {
         var users = await _userService.GetAllAsync(ct);
@@ -29,6 +32,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("{id:long}")]
+    [RequirePermission(PermissionCodes.User.View)]
     public async Task<ActionResult<ApiResponse<UserDto>>> GetById(ulong id, CancellationToken ct)
     {
         var user = await _userService.GetByIdAsync(id, ct);
@@ -41,6 +45,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
+    [RequirePermission(PermissionCodes.User.Add)]
     public async Task<ActionResult<ApiResponse<UserDto>>> Create(CreateUserRequest request, CancellationToken ct)
     {
         var result = await _userService.CreateAsync(request, ct);
@@ -53,6 +58,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("{id:long}")]
+    [RequirePermission(PermissionCodes.User.Edit)]
     public async Task<ActionResult<ApiResponse<UserDto>>> Update(ulong id, UpdateUserRequest request, CancellationToken ct)
     {
         var result = await _userService.UpdateAsync(id, request, ct);
@@ -65,6 +71,7 @@ public class UserController : ControllerBase
     }
 
     [HttpDelete("{id:long}")]
+    [RequirePermission(PermissionCodes.User.Delete)]
     public async Task<ActionResult<ApiResponse<object?>>> Delete(ulong id, CancellationToken ct)
     {
         var result = await _userService.DeleteAsync(id, ct);

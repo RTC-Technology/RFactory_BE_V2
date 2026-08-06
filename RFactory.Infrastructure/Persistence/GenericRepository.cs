@@ -59,4 +59,25 @@ public class GenericRepository<T> : IRepository<T> where T : class
         await Context.SaveChangesAsync(ct);
         return true;
     }
+
+    public virtual async Task AddRange(IEnumerable<T> entities, CancellationToken ct = default)
+    {
+        var batch = entities as ICollection<T> ?? entities.ToList();
+        if (batch.Count == 0) return;
+
+        await Set.AddRangeAsync(batch, ct);
+        await Context.SaveChangesAsync(ct);
+    }
+
+    public virtual async Task DeleteRange(IEnumerable<T> entities, CancellationToken ct = default)
+    {
+        var batch = entities as ICollection<T> ?? entities.ToList();
+        if (batch.Count == 0) return;
+
+        // Reads are AsNoTracking, so callers hand back detached entities. RemoveRange
+        // attaches them by key, which is all the audit interceptor needs to flip them
+        // to IsDeleted.
+        Set.RemoveRange(batch);
+        await Context.SaveChangesAsync(ct);
+    }
 }

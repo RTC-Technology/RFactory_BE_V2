@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RFactory.API.Authorization;
 using RFactory.Application.Modules.MasterData.DTOs;
 using RFactory.Application.Modules.MasterData.Services;
 using RFactory.Shared.Api;
+using RFactory.Shared.Constants;
 
 namespace RFactory.API.Controllers.MasterData;
 
@@ -22,6 +24,7 @@ public class FactoryController : ControllerBase
     }
 
     [HttpGet]
+    [RequirePermission(PermissionCodes.Factory.View)]
     public async Task<ActionResult<ApiResponse<List<FactoryDto>>>> GetAll(CancellationToken ct)
     {
         var factories = await _factoryService.GetAllAsync(ct);
@@ -29,6 +32,7 @@ public class FactoryController : ControllerBase
     }
 
     [HttpGet("{id:long}")]
+    [RequirePermission(PermissionCodes.Factory.View)]
     public async Task<ActionResult<ApiResponse<FactoryDto>>> GetById(ulong id, CancellationToken ct)
     {
         var factory = await _factoryService.GetByIdAsync(id, ct);
@@ -41,6 +45,7 @@ public class FactoryController : ControllerBase
     }
 
     [HttpPost]
+    [RequirePermission(PermissionCodes.Factory.Add)]
     public async Task<ActionResult<ApiResponse<FactoryDto>>> Create(CreateFactoryRequest request, CancellationToken ct)
     {
         var result = await _factoryService.CreateAsync(request, ct);
@@ -53,6 +58,7 @@ public class FactoryController : ControllerBase
     }
 
     [HttpPut("{id:long}")]
+    [RequirePermission(PermissionCodes.Factory.Edit)]
     public async Task<ActionResult<ApiResponse<FactoryDto>>> Update(ulong id, UpdateFactoryRequest request, CancellationToken ct)
     {
         var result = await _factoryService.UpdateAsync(id, request, ct);
@@ -65,6 +71,7 @@ public class FactoryController : ControllerBase
     }
 
     [HttpDelete("{id:long}")]
+    [RequirePermission(PermissionCodes.Factory.Delete)]
     public async Task<ActionResult<ApiResponse<object?>>> Delete(ulong id, CancellationToken ct)
     {
         var result = await _factoryService.DeleteAsync(id, ct);

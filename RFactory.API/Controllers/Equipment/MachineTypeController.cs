@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RFactory.API.Authorization;
 using RFactory.Application.Modules.Equipment.DTOs;
 using RFactory.Application.Modules.Equipment.Services;
 using RFactory.Shared.Api;
+using RFactory.Shared.Constants;
 
 namespace RFactory.API.Controllers.Equipment;
 
@@ -22,6 +24,7 @@ public class MachineTypeController : ControllerBase
     }
 
     [HttpGet]
+    [RequirePermission(PermissionCodes.MachineType.View)]
     public async Task<ActionResult<ApiResponse<List<MachineTypeDto>>>> GetAll(CancellationToken ct)
     {
         var machineTypes = await _machineTypeService.GetAllAsync(ct);
@@ -29,6 +32,7 @@ public class MachineTypeController : ControllerBase
     }
 
     [HttpGet("{id:long}")]
+    [RequirePermission(PermissionCodes.MachineType.View)]
     public async Task<ActionResult<ApiResponse<MachineTypeDto>>> GetById(ulong id, CancellationToken ct)
     {
         var machineType = await _machineTypeService.GetByIdAsync(id, ct);
@@ -41,6 +45,7 @@ public class MachineTypeController : ControllerBase
     }
 
     [HttpPost]
+    [RequirePermission(PermissionCodes.MachineType.Add)]
     public async Task<ActionResult<ApiResponse<MachineTypeDto>>> Create(CreateMachineTypeRequest request, CancellationToken ct)
     {
         var result = await _machineTypeService.CreateAsync(request, ct);
@@ -53,6 +58,7 @@ public class MachineTypeController : ControllerBase
     }
 
     [HttpPut("{id:long}")]
+    [RequirePermission(PermissionCodes.MachineType.Edit)]
     public async Task<ActionResult<ApiResponse<MachineTypeDto>>> Update(ulong id, UpdateMachineTypeRequest request, CancellationToken ct)
     {
         var result = await _machineTypeService.UpdateAsync(id, request, ct);
@@ -65,6 +71,7 @@ public class MachineTypeController : ControllerBase
     }
 
     [HttpDelete("{id:long}")]
+    [RequirePermission(PermissionCodes.MachineType.Delete)]
     public async Task<ActionResult<ApiResponse<object?>>> Delete(ulong id, CancellationToken ct)
     {
         var result = await _machineTypeService.DeleteAsync(id, ct);

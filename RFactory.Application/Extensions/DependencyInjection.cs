@@ -18,7 +18,10 @@ public static class DependencyInjection
         services.AddScoped<IAuthService, AuthService>();
 
         // Administration
+        // Registered before its consumers for readability only — DI resolves by type.
+        services.AddScoped<IUserPermissionService, UserPermissionService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IUserGroupService, UserGroupService>();
         services.AddScoped<IMenuService, MenuService>();
         services.AddScoped<IFunctionGroupService, FunctionGroupService>();
         services.AddScoped<IFunctionService, FunctionService>();
@@ -28,6 +31,8 @@ public static class DependencyInjection
         services.AddScoped<IAreaService, AreaService>();
         services.AddScoped<ILineService, LineService>();
         services.AddScoped<IOrganizationService, OrganizationService>();
+        services.AddScoped<IShiftService, ShiftService>();
+        services.AddScoped<IShiftBreakService, ShiftBreakService>();
 
         // Equipment
         services.AddScoped<IMachineTypeService, MachineTypeService>();

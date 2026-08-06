@@ -30,3 +30,9 @@ public class UpdateFunctionRequest
     public string FunctionName { get; set; } = string.Empty;
     public int? FunctionGroupId { get; set; }
 }
+
+/// <summary>
+/// What a catalogue sync wrote. <see cref="CatalogSize"/> is the total the application
+/// enforces, so a run that added nothing still tells the admin the database is complete.
+/// </summary>
+public sealed record PermissionSyncResult(int GroupsCreated, int PermissionsCreated, int CatalogSize);

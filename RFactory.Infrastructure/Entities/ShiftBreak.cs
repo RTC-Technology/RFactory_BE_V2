@@ -32,4 +32,6 @@ public partial class ShiftBreak
     public TimeOnly? EndTime { get; set; }
 
     public int? SortOrder { get; set; }
+
+    public long? ShiftId { get; set; }
 }

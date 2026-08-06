@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RFactory.API.Authorization;
 using RFactory.Application.Modules.Equipment.DTOs;
 using RFactory.Application.Modules.Equipment.Services;
 using RFactory.Shared.Api;
+using RFactory.Shared.Constants;
 
 namespace RFactory.API.Controllers.Equipment;
 
@@ -22,6 +24,7 @@ public class MachineController : ControllerBase
     }
 
     [HttpGet]
+    [RequirePermission(PermissionCodes.Machine.View)]
     public async Task<ActionResult<ApiResponse<List<MachineDto>>>> GetAll(CancellationToken ct)
     {
         var machines = await _machineService.GetAllAsync(ct);
@@ -29,6 +32,7 @@ public class MachineController : ControllerBase
     }
 
     [HttpGet("{id:long}")]
+    [RequirePermission(PermissionCodes.Machine.View)]
     public async Task<ActionResult<ApiResponse<MachineDto>>> GetById(ulong id, CancellationToken ct)
     {
         var machine = await _machineService.GetByIdAsync(id, ct);
@@ -41,6 +45,7 @@ public class MachineController : ControllerBase
     }
 
     [HttpPost]
+    [RequirePermission(PermissionCodes.Machine.Add)]
     public async Task<ActionResult<ApiResponse<MachineDto>>> Create(CreateMachineRequest request, CancellationToken ct)
     {
         var result = await _machineService.CreateAsync(request, ct);
@@ -53,6 +58,7 @@ public class MachineController : ControllerBase
     }
 
     [HttpPut("{id:long}")]
+    [RequirePermission(PermissionCodes.Machine.Edit)]
     public async Task<ActionResult<ApiResponse<MachineDto>>> Update(ulong id, UpdateMachineRequest request, CancellationToken ct)
     {
         var result = await _machineService.UpdateAsync(id, request, ct);
@@ -65,6 +71,7 @@ public class MachineController : ControllerBase
     }
 
     [HttpDelete("{id:long}")]
+    [RequirePermission(PermissionCodes.Machine.Delete)]
     public async Task<ActionResult<ApiResponse<object?>>> Delete(ulong id, CancellationToken ct)
     {
         var result = await _machineService.DeleteAsync(id, ct);
