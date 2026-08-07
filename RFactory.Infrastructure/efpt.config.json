@@ -47,6 +47,34 @@
          "ObjectType": 0
       },
       {
+         "Name": "inventory",
+         "ObjectType": 0
+      },
+      {
+         "Name": "inventory_cycle_count",
+         "ObjectType": 0
+      },
+      {
+         "Name": "inventory_cycle_count_detail",
+         "ObjectType": 0
+      },
+      {
+         "Name": "inventory_lot",
+         "ObjectType": 0
+      },
+      {
+         "Name": "inventory_reservation",
+         "ObjectType": 0
+      },
+      {
+         "Name": "inventory_serial",
+         "ObjectType": 0
+      },
+      {
+         "Name": "inventory_transaction",
+         "ObjectType": 0
+      },
+      {
          "Name": "line",
          "ObjectType": 0
       },
@@ -76,6 +104,14 @@
       },
       {
          "Name": "product_unit",
+         "ObjectType": 0
+      },
+      {
+         "Name": "routing",
+         "ObjectType": 0
+      },
+      {
+         "Name": "routing_operation",
          "ObjectType": 0
       },
       {
@@ -116,6 +152,18 @@
       },
       {
          "Name": "users",
+         "ObjectType": 0
+      },
+      {
+         "Name": "warehouse",
+         "ObjectType": 0
+      },
+      {
+         "Name": "warehouse_location",
+         "ObjectType": 0
+      },
+      {
+         "Name": "warehouse_zone",
          "ObjectType": 0
       }
    ],
