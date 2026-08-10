@@ -8,7 +8,7 @@ namespace RFactory.Infrastructure.Entities;
 /// <summary>
 /// Base Template Table
 /// </summary>
-public partial class InventoryTransaction
+public partial class MaterialIssueDetail
 {
     /// <summary>
     /// Primary Key
@@ -25,26 +25,15 @@ public partial class InventoryTransaction
 
     public bool IsDeleted { get; set; }
 
-    public string TransactionNo { get; set; }
-
-    public string TransactionType { get; set; }
+    public long? MaterialIssueId { get; set; }
 
     public long? ProductId { get; set; }
 
-    public long? WarehouseId { get; set; }
+    public string LotNo { get; set; }
 
-    public long? WarehouseLocationId { get; set; }
-
-    public decimal? Quantity { get; set; }
+    public long? LocationId { get; set; }
 
     public long? UnitId { get; set; }
 
-    /// <summary>
-    /// 1: GR; 2: GI; 3: TRANSFER_IN; 4: TRANSFER_OUT; 5: MATERIAL_ISSUE; 6: MATERIAL_RETURN; 7: PRODUCTION_RECEIPT; 8: PRODUCTION_CONSUME; 9: ADJUSTMENT; 10: SCRAP\n
-    /// </summary>
-    public int ReferenceType { get; set; }
-
-    public long? ReferenceId { get; set; }
-
-    public DateTime? TransactionDate { get; set; }
+    public decimal? Quantity { get; set; }
 }

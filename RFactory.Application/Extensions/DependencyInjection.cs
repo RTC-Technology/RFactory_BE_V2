@@ -2,6 +2,7 @@
 using RFactory.Application.Modules.Administration.Services;
 using RFactory.Application.Modules.Auth.Services;
 using RFactory.Application.Modules.Equipment.Services;
+using RFactory.Application.Modules.GoodsReceipt.Services;
 using RFactory.Application.Modules.MasterData.Services;
 using RFactory.Application.Modules.Product.Services;
 
@@ -47,6 +48,9 @@ public static class DependencyInjection
         // Equipment
         services.AddScoped<IMachineTypeService, MachineTypeService>();
         services.AddScoped<IMachineService, MachineService>();
+
+
+        services.AddScoped<IGoodsReceiptServices, GoodsReceiptServices>();
 
         // Add other module services here as the project grows
 
