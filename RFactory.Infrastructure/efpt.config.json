@@ -43,6 +43,22 @@
          "ObjectType": 0
       },
       {
+         "Name": "goods_issue",
+         "ObjectType": 0
+      },
+      {
+         "Name": "goods_issue_detail",
+         "ObjectType": 0
+      },
+      {
+         "Name": "goods_receipt",
+         "ObjectType": 0
+      },
+      {
+         "Name": "goods_receipt_detail",
+         "ObjectType": 0
+      },
+      {
          "Name": "holiday",
          "ObjectType": 0
       },
@@ -87,6 +103,22 @@
          "ObjectType": 0
       },
       {
+         "Name": "material_issue",
+         "ObjectType": 0
+      },
+      {
+         "Name": "material_issue_detail",
+         "ObjectType": 0
+      },
+      {
+         "Name": "material_return",
+         "ObjectType": 0
+      },
+      {
+         "Name": "material_return_detail",
+         "ObjectType": 0
+      },
+      {
          "Name": "menu",
          "ObjectType": 0
       },
@@ -120,6 +152,14 @@
       },
       {
          "Name": "shift_break",
+         "ObjectType": 0
+      },
+      {
+         "Name": "stock_transfer",
+         "ObjectType": 0
+      },
+      {
+         "Name": "stock_transfer_detail",
          "ObjectType": 0
       },
       {

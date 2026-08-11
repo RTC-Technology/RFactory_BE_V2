@@ -2,6 +2,7 @@
 using RFactory.Application.Modules.Administration.Services;
 using RFactory.Application.Modules.Auth.Services;
 using RFactory.Application.Modules.Equipment.Services;
+using RFactory.Application.Modules.GoodsReceipt.Services;
 using RFactory.Application.Modules.MasterData.Services;
 using RFactory.Application.Modules.Product.Services;
 
@@ -49,6 +50,11 @@ public static class DependencyInjection
         services.AddScoped<IMachineService, MachineService>();
 
         // Add other module services here as the project grows
+
+        //GoodsReceipt
+        services.AddScoped<IGoodsReceiptServices, GoodsReceiptServices>();
+        services.AddScoped<IGoodsReceiptDetailServices, GoodsReceiptDetailServices>();
+
 
         return services;
     }
