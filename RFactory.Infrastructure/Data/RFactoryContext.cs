@@ -26,6 +26,14 @@ public partial class RFactoryContext : DbContext
 
     public virtual DbSet<FunctionGroup> FunctionGroups { get; set; }
 
+    public virtual DbSet<GoodsIssue> GoodsIssues { get; set; }
+
+    public virtual DbSet<GoodsIssueDetail> GoodsIssueDetails { get; set; }
+
+    public virtual DbSet<GoodsReceipt> GoodsReceipts { get; set; }
+
+    public virtual DbSet<GoodsReceiptDetail> GoodsReceiptDetails { get; set; }
+
     public virtual DbSet<Holiday> Holidays { get; set; }
 
     public virtual DbSet<Inventory> Inventories { get; set; }
@@ -48,6 +56,14 @@ public partial class RFactoryContext : DbContext
 
     public virtual DbSet<MachineType> MachineTypes { get; set; }
 
+    public virtual DbSet<MaterialIssue> MaterialIssues { get; set; }
+
+    public virtual DbSet<MaterialIssueDetail> MaterialIssueDetails { get; set; }
+
+    public virtual DbSet<MaterialReturn> MaterialReturns { get; set; }
+
+    public virtual DbSet<MaterialReturnDetail> MaterialReturnDetails { get; set; }
+
     public virtual DbSet<Menu> Menus { get; set; }
 
     public virtual DbSet<Organization> Organizations { get; set; }
@@ -65,6 +81,10 @@ public partial class RFactoryContext : DbContext
     public virtual DbSet<Shift> Shifts { get; set; }
 
     public virtual DbSet<ShiftBreak> ShiftBreaks { get; set; }
+
+    public virtual DbSet<StockTransfer> StockTransfers { get; set; }
+
+    public virtual DbSet<StockTransferDetail> StockTransferDetails { get; set; }
 
     public virtual DbSet<TableBase> TableBases { get; set; }
 
@@ -239,6 +259,121 @@ public partial class RFactoryContext : DbContext
                 .HasColumnType("datetime");
             entity.Property(e => e.Description).HasMaxLength(255);
             entity.Property(e => e.Name).HasMaxLength(255);
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<GoodsIssue>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("goods_issue", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.HasIndex(e => e.IssueNo, "IssueNo").IsUnique();
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.ApprovedDate).HasColumnType("datetime");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.IssueDate).HasColumnType("datetime");
+            entity.Property(e => e.IssueNo).HasMaxLength(50);
+            entity.Property(e => e.PostedDate).HasColumnType("datetime");
+            entity.Property(e => e.ReferenceType).HasMaxLength(50);
+            entity.Property(e => e.Remark).HasColumnType("text");
+            entity.Property(e => e.Status).HasComment("1: Purchase; 2: Production; 3: Return; 4: Transfer In; 5: Adjustment");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<GoodsIssueDetail>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("goods_issue_detail", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.LotNo).HasMaxLength(100);
+            entity.Property(e => e.Quantity).HasPrecision(18, 6);
+            entity.Property(e => e.Remark).HasColumnType("text");
+            entity.Property(e => e.SerialNo).HasMaxLength(100);
+            entity.Property(e => e.UnitPrice).HasPrecision(18, 6);
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<GoodsReceipt>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("goods_receipt", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.HasIndex(e => e.ReceiptNo, "ReceiptNo").IsUnique();
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.ApprovedDate).HasColumnType("datetime");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.PostedDate).HasColumnType("datetime");
+            entity.Property(e => e.ReceiptDate).HasColumnType("datetime");
+            entity.Property(e => e.ReceiptNo)
+                .IsRequired()
+                .HasMaxLength(50);
+            entity.Property(e => e.ReceiptType).HasComment("1: Purchase; 2: Production; 3: Return; 4: Transfer In; 5: Adjustment");
+            entity.Property(e => e.ReferenceType).HasMaxLength(50);
+            entity.Property(e => e.Remark).HasColumnType("text");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<GoodsReceiptDetail>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("goods_receipt_detail", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.LotNo).HasMaxLength(100);
+            entity.Property(e => e.Quantity).HasPrecision(18, 6);
+            entity.Property(e => e.ReceivedQty).HasPrecision(18, 6);
+            entity.Property(e => e.Remark).HasColumnType("text");
+            entity.Property(e => e.SerialNo).HasMaxLength(100);
+            entity.Property(e => e.UnitPrice).HasPrecision(18, 6);
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });
@@ -436,9 +571,7 @@ public partial class RFactoryContext : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
             entity.Property(e => e.Quantity).HasPrecision(18, 6);
-            entity.Property(e => e.ReferenceType)
-                .HasMaxLength(255)
-                .HasComment("Ví dụ: Purchase, Order\n, Production Order,\n Stock Transfer, \nCycle Count\n, Sales Order");
+            entity.Property(e => e.ReferenceType).HasComment("1: GR; 2: GI; 3: TRANSFER_IN; 4: TRANSFER_OUT; 5: MATERIAL_ISSUE; 6: MATERIAL_RETURN; 7: PRODUCTION_RECEIPT; 8: PRODUCTION_CONSUME; 9: ADJUSTMENT; 10: SCRAP\\n");
             entity.Property(e => e.TransactionDate).HasColumnType("datetime");
             entity.Property(e => e.TransactionNo).HasMaxLength(255);
             entity.Property(e => e.TransactionType).HasColumnType("enum('RECEIPT','ISSUE','TRANSFER','ADJUST','PRODUCTION_IN','PRODUCTION_OUT','SCRAP')");
@@ -512,6 +645,104 @@ public partial class RFactoryContext : DbContext
                 .HasColumnType("datetime");
             entity.Property(e => e.MachineTypeCode).HasMaxLength(50);
             entity.Property(e => e.MachineTypeName).HasMaxLength(255);
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<MaterialIssue>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("material_issue", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.IssueDate).HasColumnType("datetime");
+            entity.Property(e => e.IssueNo).HasMaxLength(50);
+            entity.Property(e => e.Status)
+                .HasDefaultValueSql("'1'")
+                .HasComment("1: Draft; 2: Approved; 3: Posted; 4: Cancelled");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<MaterialIssueDetail>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("material_issue_detail", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.LotNo).HasMaxLength(100);
+            entity.Property(e => e.Quantity).HasPrecision(18, 6);
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<MaterialReturn>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("material_return", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.ReturnDate).HasColumnType("datetime");
+            entity.Property(e => e.ReturnNo).HasMaxLength(50);
+            entity.Property(e => e.Status)
+                .HasDefaultValueSql("'1'")
+                .HasComment("1: Draft; 2: Approved; 3: Posted; 4: Cancelled");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<MaterialReturnDetail>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("material_return_detail", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.LotNo).HasMaxLength(100);
+            entity.Property(e => e.Quantity).HasPrecision(18, 6);
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });
@@ -743,6 +974,60 @@ public partial class RFactoryContext : DbContext
                 .HasColumnType("datetime");
             entity.Property(e => e.EndTime).HasColumnType("time");
             entity.Property(e => e.StartTime).HasColumnType("time");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<StockTransfer>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("stock_transfer", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.HasIndex(e => e.TransferNo, "TransferNo").IsUnique();
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.PostedDate).HasColumnType("datetime");
+            entity.Property(e => e.Remark).HasColumnType("text");
+            entity.Property(e => e.Status)
+                .HasDefaultValueSql("'1'")
+                .HasComment("1: Draft; 2: Approved; 3: Posted; 4: Cancelled");
+            entity.Property(e => e.TransferDate).HasColumnType("datetime");
+            entity.Property(e => e.TransferNo).HasMaxLength(50);
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<StockTransferDetail>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("stock_transfer_detail", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.LotNo).HasMaxLength(100);
+            entity.Property(e => e.Quantity).HasPrecision(18, 6);
+            entity.Property(e => e.SerialNo).HasMaxLength(100);
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });

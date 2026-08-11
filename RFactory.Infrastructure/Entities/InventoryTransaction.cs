@@ -40,13 +40,9 @@ public partial class InventoryTransaction
     public long? UnitId { get; set; }
 
     /// <summary>
-    /// Ví dụ: Purchase, Order
-    /// , Production Order,
-    ///  Stock Transfer, 
-    /// Cycle Count
-    /// , Sales Order
+    /// 1: GR; 2: GI; 3: TRANSFER_IN; 4: TRANSFER_OUT; 5: MATERIAL_ISSUE; 6: MATERIAL_RETURN; 7: PRODUCTION_RECEIPT; 8: PRODUCTION_CONSUME; 9: ADJUSTMENT; 10: SCRAP\n
     /// </summary>
-    public string ReferenceType { get; set; }
+    public int ReferenceType { get; set; }
 
     public long? ReferenceId { get; set; }
 
