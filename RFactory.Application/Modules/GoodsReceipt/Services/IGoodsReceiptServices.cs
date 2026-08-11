@@ -18,12 +18,12 @@ namespace RFactory.Application.Modules.GoodsReceipt.Services
         Task<Result> DeleteAsync(ulong id, CancellationToken ct = default);
     }
 
-    //public interface IGoodsReceiptDetailServices
-    //{
-    //    Task<List<GoodsReceiptDetailDto>> GetAllAsync(CancellationToken ct = default);
-    //    Task<GoodsReceiptDetailDto?> GetByIdAsync(ulong id, CancellationToken ct = default);
-    //    Task<Result<GoodsReceiptDetailDto>> CreateAsync(CreateProductTypeRequest request, CancellationToken ct = default);
-    //    Task<Result<GoodsReceiptDetailDto>> UpdateAsync(ulong id, UpdateProductTypeRequest request, CancellationToken ct = default);
-    //    Task<Result> DeleteAsync(ulong id, CancellationToken ct = default);
-    //}
+    public interface IGoodsReceiptDetailServices
+    {
+        Task<List<GoodsReceiptDetailDto>> GetAllAsync(CancellationToken ct = default);
+        Task<GoodsReceiptDetailDto?> GetByIdAsync(ulong id, CancellationToken ct = default);
+        Task<Result<GoodsReceiptDetailDto>> CreateAsync(CreateGoodsReceiptDetailRequest request, CancellationToken ct = default);
+        Task<Result<GoodsReceiptDetailDto>> UpdateAsync(ulong id, UpdatesGoodsReceiptDetailRequest request, CancellationToken ct = default);
+        Task<Result> DeleteAsync(ulong id, CancellationToken ct = default);
+    }
 }

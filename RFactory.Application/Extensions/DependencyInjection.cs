@@ -49,10 +49,12 @@ public static class DependencyInjection
         services.AddScoped<IMachineTypeService, MachineTypeService>();
         services.AddScoped<IMachineService, MachineService>();
 
-
-        services.AddScoped<IGoodsReceiptServices, GoodsReceiptServices>();
-
         // Add other module services here as the project grows
+
+        //GoodsReceipt
+        services.AddScoped<IGoodsReceiptServices, GoodsReceiptServices>();
+        services.AddScoped<IGoodsReceiptDetailServices, GoodsReceiptDetailServices>();
+
 
         return services;
     }
