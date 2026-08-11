@@ -45,7 +45,11 @@ namespace RFactory.Application.Modules.GoodsReceipt.DTOs
         public ulong? PostedBy { get; set; }
         public DateTime? PostedDate { get; set; }
         public int ReceiptType { get; set; }
-        public List<GoodsReceiptDetailDto> GoodsReceiptDetails { get; set; } = new List<GoodsReceiptDetailDto>();
+
+        /// <summary>
+        /// The lines to create with the receipt, in the same transaction.
+        /// </summary>
+        public List<GoodsReceiptLineRequest>? GoodsReceiptDetails { get; set; }
     }
 
     public class UpdateGoodsReceiptRequest
@@ -62,6 +66,31 @@ namespace RFactory.Application.Modules.GoodsReceipt.DTOs
         public ulong? PostedBy { get; set; }
         public DateTime? PostedDate { get; set; }
         public int ReceiptType { get; set; }
-        public List<GoodsReceiptDetailDto> GoodsReceiptDetails { get; set; } = new List<GoodsReceiptDetailDto>();
+
+        /// <summary>
+        /// The complete line set, replacing what the receipt holds today: lines missing from
+        /// the list are deleted. Leave it <c>null</c> — not empty — to edit only the header;
+        /// an empty list is read as "this receipt now has no lines".
+        /// </summary>
+        public List<GoodsReceiptLineRequest>? GoodsReceiptDetails { get; set; }
+    }
+
+    /// <summary>
+    /// A receipt line as it arrives with its receipt. <c>Id</c> is 0 for a line the operator
+    /// just added; any other value must already belong to the receipt being saved. There is
+    /// no GoodsReceiptId here on purpose — the receipt owning the payload supplies it.
+    /// </summary>
+    public class GoodsReceiptLineRequest
+    {
+        public ulong Id { get; set; }
+        public ulong ProductId { get; set; }
+        public ulong UnitId { get; set; }
+        public ulong? LocationId { get; set; }
+        public string? LotNo { get; set; }
+        public string? SerialNo { get; set; }
+        public decimal Quantity { get; set; }
+        public decimal ReceivedQty { get; set; }
+        public decimal? UnitPrice { get; set; }
+        public string? Remark { get; set; }
     }
 }

@@ -34,6 +34,10 @@ public static class DependencyInjection
         // Repositories
         services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
+        // Scoped like the context it wraps: the transaction has to span the same DbContext
+        // instance the repositories are saving through.
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+
         return services;
     }
 }
