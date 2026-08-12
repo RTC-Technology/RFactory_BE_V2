@@ -17,8 +17,4 @@
     <ProjectReference Include="..\RFactory.Shared\RFactory.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\MasterData\" />
-  </ItemGroup>
-
 </Project>
