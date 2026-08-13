@@ -1,17 +1,25 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RFactory.API.Authorization;
 using RFactory.Application.Modules.GoodsReceipt.DTOs;
 using RFactory.Application.Modules.GoodsReceipt.Services;
-using RFactory.Application.Modules.Product.DTOs;
-using RFactory.Application.Modules.Product.Services;
 using RFactory.Shared.Api;
 using RFactory.Shared.Constants;
 
 namespace RFactory.API.Controllers.GoodsReceipt
 {
+    /// <summary>
+    /// CRUD endpoints for goods receipts.
+    ///
+    /// The write actions gate on <c>goods-receipt.*</c> alone even though POST and PUT also
+    /// write the receipt's lines: the lines arrive nested in the same payload and are saved
+    /// in one transaction, so they are part of the receipt aggregate rather than a separate
+    /// thing to authorize. <c>goods-receipt-detail.*</c> gates the standalone line endpoints.
+    /// </summary>
     [Route("api/goods-receipt")]
     [ApiController]
+    [Authorize]
     public class GoodsReceiptController : ControllerBase
     {
         private readonly IGoodsReceiptServices _goodsReceiptServices;
@@ -22,7 +30,7 @@ namespace RFactory.API.Controllers.GoodsReceipt
         }
 
         [HttpGet]
-        //[RequirePermission(PermissionCodes.Bom.View)]
+        [RequirePermission(PermissionCodes.GoodsReceipt.View)]
         public async Task<ActionResult<ApiResponse<List<GoodsReceiptDto>>>> GetAll(CancellationToken ct)
         {
             var items = await _goodsReceiptServices.GetAllAsync(ct);
@@ -30,7 +38,7 @@ namespace RFactory.API.Controllers.GoodsReceipt
         }
 
         [HttpGet("{id:long}")]
-        //[RequirePermission(PermissionCodes.Bom.View)]
+        [RequirePermission(PermissionCodes.GoodsReceipt.View)]
         public async Task<ActionResult<ApiResponse<GoodsReceiptDto>>> GetById(ulong id, CancellationToken ct)
         {
             var item = await _goodsReceiptServices.GetByIdAsync(id, ct);
@@ -43,8 +51,8 @@ namespace RFactory.API.Controllers.GoodsReceipt
         }
 
         [HttpPost]
-        //[RequirePermission(PermissionCodes.Bom.Add)]
-        public async Task<ActionResult<ApiResponse<BomDto>>> Create(CreateGoodsReceiptRequest request, CancellationToken ct)
+        [RequirePermission(PermissionCodes.GoodsReceipt.Add)]
+        public async Task<ActionResult<ApiResponse<GoodsReceiptDto>>> Create(CreateGoodsReceiptRequest request, CancellationToken ct)
         {
             var result = await _goodsReceiptServices.CreateAsync(request, ct);
             if (!result.Succeeded)
@@ -56,8 +64,8 @@ namespace RFactory.API.Controllers.GoodsReceipt
         }
 
         [HttpPut("{id:long}")]
-        //[RequirePermission(PermissionCodes.Bom.Edit)]
-        public async Task<ActionResult<ApiResponse<BomDto>>> Update(ulong id, UpdateGoodsReceiptRequest request, CancellationToken ct)
+        [RequirePermission(PermissionCodes.GoodsReceipt.Edit)]
+        public async Task<ActionResult<ApiResponse<GoodsReceiptDto>>> Update(ulong id, UpdateGoodsReceiptRequest request, CancellationToken ct)
         {
             var result = await _goodsReceiptServices.UpdateAsync(id, request, ct);
             if (!result.Succeeded)
@@ -69,7 +77,7 @@ namespace RFactory.API.Controllers.GoodsReceipt
         }
 
         [HttpDelete("{id:long}")]
-        [RequirePermission(PermissionCodes.Bom.Delete)]
+        [RequirePermission(PermissionCodes.GoodsReceipt.Delete)]
         public async Task<ActionResult<ApiResponse<object?>>> Delete(ulong id, CancellationToken ct)
         {
             var result = await _goodsReceiptServices.DeleteAsync(id, ct);

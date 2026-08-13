@@ -182,6 +182,22 @@ public static class PermissionCodes
         public const string Delete = "menu.delete";
     }
 
+    public static class GoodsReceipt
+    {
+        public const string View = "goods-receipt.view";
+        public const string Add = "goods-receipt.add";
+        public const string Edit = "goods-receipt.edit";
+        public const string Delete = "goods-receipt.delete";
+    }
+
+    public static class GoodsReceiptDetail
+    {
+        public const string View = "goods-receipt-detail.view";
+        public const string Add = "goods-receipt-detail.add";
+        public const string Edit = "goods-receipt-detail.edit";
+        public const string Delete = "goods-receipt-detail.delete";
+    }
+
     public static class Settings
     {
         public const string View = "settings.view";

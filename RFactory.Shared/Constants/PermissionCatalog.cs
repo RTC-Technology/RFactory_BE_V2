@@ -163,6 +163,20 @@ public static class PermissionCatalog
             new(PermissionCodes.Menu.Edit,   "Sửa menu"),
             new(PermissionCodes.Menu.Delete, "Xóa menu"),
         }),
+        new("goods-receipt", "Phiếu nhập kho", new PermissionSpec[]
+        {
+            new(PermissionCodes.GoodsReceipt.View,   "Xem danh sách phiếu nhập"),
+            new(PermissionCodes.GoodsReceipt.Add,    "Thêm phiếu nhập"),
+            new(PermissionCodes.GoodsReceipt.Edit,   "Sửa phiếu nhập"),
+            new(PermissionCodes.GoodsReceipt.Delete, "Xóa phiếu nhập"),
+        }),
+        new("goods-receipt-detail", "Chi tiết phiếu nhập", new PermissionSpec[]
+        {
+            new(PermissionCodes.GoodsReceiptDetail.View,   "Xem chi tiết phiếu nhập"),
+            new(PermissionCodes.GoodsReceiptDetail.Add,    "Thêm dòng phiếu nhập"),
+            new(PermissionCodes.GoodsReceiptDetail.Edit,   "Sửa dòng phiếu nhập"),
+            new(PermissionCodes.GoodsReceiptDetail.Delete, "Xóa dòng phiếu nhập"),
+        }),
         new("settings", "Cài đặt", new PermissionSpec[]
         {
             new(PermissionCodes.Settings.View, "Xem cài đặt hệ thống"),
