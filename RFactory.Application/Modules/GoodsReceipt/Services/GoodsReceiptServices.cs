@@ -4,6 +4,7 @@ using RFactory.Application.Modules.Product.DTOs;
 using RFactory.Infrastructure.Entities;
 using RFactory.Infrastructure.Persistence;
 using RFactory.Shared.Results;
+using static Dapper.SqlMapper;
 using Entities = RFactory.Infrastructure.Entities;
 
 namespace RFactory.Application.Modules.GoodsReceipt.Services
@@ -178,14 +179,33 @@ namespace RFactory.Application.Modules.GoodsReceipt.Services
             return Result<GoodsReceiptDetailDto>.Success(_mapper.Map<GoodsReceiptDetailDto>(entity));
         }
 
+        public async Task<Result<List<GoodsReceiptDetailDto>>> CreateRangeAsync(List<CreateGoodsReceiptDetailRequest> requests, CancellationToken ct = default)
+        {
+            var entitys = _mapper.Map<List<GoodsReceiptDetail>>(requests);
+            await _repository.AddRange(entitys, ct);
+            return Result<List<GoodsReceiptDetailDto>>.Success(_mapper.Map<List<GoodsReceiptDetailDto>>(entitys));
+        }
+
         public async Task<Result> DeleteAsync(ulong id, CancellationToken ct = default)
         {
             var deleted = await _repository.DeleteById(id, ct);
             return deleted ? Result.Success() : Result.Failure($"Goods Receipt Detail line {id} was not found.");
         }
 
-        public async Task<List<GoodsReceiptDetailDto>> GetAllAsync(CancellationToken ct = default)
-         => _mapper.Map<List<GoodsReceiptDetailDto>>(await _repository.GetAll(ct));
+        public async Task<List<GoodsReceiptDetailDto>> GetAllAsync(long? receiptId, CancellationToken ct = default)
+        {
+            //var entitys =  _mapper.Map<List<GoodsReceiptDetailDto>>(await _repository.GetAll(ct));
+            if (receiptId.HasValue)
+            {
+                var entitys = await _repository.Where(x => x.GoodsReceiptId == receiptId.Value, ct);
+                return entitys is null ? _mapper.Map<List<GoodsReceiptDetailDto>>(new List<GoodsReceiptDetailDto>()) : _mapper.Map<List<GoodsReceiptDetailDto>>(entitys);
+            }
+            else
+            {
+                var entitys = await _repository.GetAll(ct);
+                return entitys is null ? _mapper.Map<List<GoodsReceiptDetailDto>>(new List<GoodsReceiptDetailDto>()) : _mapper.Map<List<GoodsReceiptDetailDto>>(entitys);
+            }
+        }
 
         public async Task<GoodsReceiptDetailDto?> GetByIdAsync(ulong id, CancellationToken ct = default)
         {
@@ -204,6 +224,18 @@ namespace RFactory.Application.Modules.GoodsReceipt.Services
             _mapper.Map(request, entity);
             await _repository.Update(entity, ct);
             return Result<GoodsReceiptDetailDto>.Success(_mapper.Map<GoodsReceiptDetailDto>(entity));
+        }
+
+        public async Task<Result<List<GoodsReceiptDetailDto>>> UpdateRangeAsync(List<UpdatesGoodsReceiptDetailRequest> requests, CancellationToken ct = default)
+        {
+            var entitys = _mapper.Map<List<GoodsReceiptDetail>>(requests);
+            await _repository.DeleteRange(entitys, ct);
+
+            requests.ForEach(x => x.Id = 0);
+            var newEntitys = _mapper.Map<List<GoodsReceiptDetail>>(requests);
+
+            await _repository.AddRange(newEntitys, ct);
+            return Result<List<GoodsReceiptDetailDto>>.Success(_mapper.Map<List<GoodsReceiptDetailDto>>(newEntitys));
         }
     }
 }
