@@ -46,6 +46,7 @@ namespace RFactory.Application.Modules.GoodsReceipt.DTOs
 
     public class UpdatesGoodsReceiptDetailRequest
     {
+        public ulong Id { get; set; }
         public ulong GoodsReceiptId { get; set; }
         public ulong ProductId { get; set; }
         public ulong UnitId { get; set; }

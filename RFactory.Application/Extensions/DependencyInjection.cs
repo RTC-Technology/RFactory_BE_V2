@@ -55,6 +55,10 @@ public static class DependencyInjection
         services.AddScoped<IGoodsReceiptServices, GoodsReceiptServices>();
         services.AddScoped<IGoodsReceiptDetailServices, GoodsReceiptDetailServices>();
 
+        //Warehouse
+        services.AddScoped<IWarehouseService, WarehouseService>();
+        services.AddScoped<IWarehouseLocationService, WarehouseLocationService>();
+
 
         return services;
     }

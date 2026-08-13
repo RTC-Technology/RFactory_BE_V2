@@ -5,6 +5,8 @@ using RFactory.Application.Modules.GoodsReceipt.DTOs;
 using RFactory.Application.Modules.GoodsReceipt.Services;
 using RFactory.Application.Modules.Product.DTOs;
 using RFactory.Application.Modules.Product.Services;
+using RFactory.Infrastructure.Entities;
+using RFactory.Infrastructure.Persistence;
 using RFactory.Shared.Api;
 using RFactory.Shared.Constants;
 
@@ -15,19 +17,29 @@ namespace RFactory.API.Controllers.GoodsReceipt
     public class GoodsReceiptDetailController : ControllerBase
     {
         private readonly IGoodsReceiptDetailServices _goodsReceiptDetailServices;
+        private readonly IRepository<GoodsReceiptDetail> _goodsReceiptDetail;
 
-        public GoodsReceiptDetailController(IGoodsReceiptDetailServices goodsReceiptDetailServices)
+        public GoodsReceiptDetailController(IGoodsReceiptDetailServices goodsReceiptDetailServices, IRepository<GoodsReceiptDetail> goodsReceiptDetail)
         {
             _goodsReceiptDetailServices = goodsReceiptDetailServices;
+            _goodsReceiptDetail = goodsReceiptDetail;
         }
 
         [HttpGet]
         //[RequirePermission(PermissionCodes.BomDetail.View)]
-        public async Task<ActionResult<ApiResponse<List<GoodsReceiptDetailDto>>>> GetAll(CancellationToken ct)
+        public async Task<ActionResult<ApiResponse<List<GoodsReceiptDetailDto>>>> GetAll(long? receiptId,CancellationToken ct)
         {
-            var items = await _goodsReceiptDetailServices.GetAllAsync(ct);
+            var items = await _goodsReceiptDetailServices.GetAllAsync(receiptId, ct);
             return Ok(ApiResponseFactory.Success(items));
         }
+
+        //[HttpGet]
+        ////[RequirePermission(PermissionCodes.BomDetail.View)]
+        //public async Task<ActionResult<ApiResponse<List<GoodsReceiptDetailDto>>>> GetAll( [FromQuery] long receiptId, CancellationToken ct)
+        //{
+        //    var items = await _goodsReceiptDetail.Where(x => x.GoodsReceiptId == receiptId, ct);
+        //    return Ok(ApiResponseFactory.Success(items));
+        //}
 
         [HttpGet("{id:long}")]
         //[RequirePermission(PermissionCodes.BomDetail.View)]
@@ -55,11 +67,37 @@ namespace RFactory.API.Controllers.GoodsReceipt
             return Ok(ApiResponseFactory.Success(result.Data));
         }
 
+        [HttpPost("create-range")]
+        //[RequirePermission(PermissionCodes.BomDetail.Add)]
+        public async Task<ActionResult<ApiResponse<List<GoodsReceiptDetailDto>>>> CreateRange(List<CreateGoodsReceiptDetailRequest> requests, CancellationToken ct)
+        {
+            var result = await _goodsReceiptDetailServices.CreateRangeAsync(requests, ct);
+            if (!result.Succeeded)
+            {
+                return BadRequest(ApiResponseFactory.Fail(result.Error!));
+            }
+
+            return Ok(ApiResponseFactory.Success(result.Data));
+        }
+
         [HttpPut("{id:long}")]
         //[RequirePermission(PermissionCodes.BomDetail.Edit)]
         public async Task<ActionResult<ApiResponse<GoodsReceiptDetailDto>>> Update(ulong id, UpdatesGoodsReceiptDetailRequest request, CancellationToken ct)
         {
             var result = await _goodsReceiptDetailServices.UpdateAsync(id, request, ct);
+            if (!result.Succeeded)
+            {
+                return NotFound(ApiResponseFactory.Fail(result.Error!, System.Net.HttpStatusCode.NotFound));
+            }
+
+            return Ok(ApiResponseFactory.Success(result.Data));
+        }
+
+        [HttpPut("update-range")]
+        //[RequirePermission(PermissionCodes.BomDetail.Edit)]
+        public async Task<ActionResult<ApiResponse<GoodsReceiptDetailDto>>> UpdateRange( List<UpdatesGoodsReceiptDetailRequest> requests, CancellationToken ct)
+        {
+            var result = await _goodsReceiptDetailServices.UpdateRangeAsync(requests, ct);
             if (!result.Succeeded)
             {
                 return NotFound(ApiResponseFactory.Fail(result.Error!, System.Net.HttpStatusCode.NotFound));
