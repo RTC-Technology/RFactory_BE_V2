@@ -59,5 +59,9 @@ public class MasterDataProfile : Profile
         CreateMap<ShiftBreak, ShiftBreakDto>();
         CreateMap<CreateShiftBreakRequest, ShiftBreak>();
         CreateMap<UpdateShiftBreakRequest, ShiftBreak>();
+
+        CreateMap<Supplier, SupplierDto>();
+        CreateMap<CreateSupplierRequest, Supplier>();
+        CreateMap<UpdateSupplierRequest, Supplier>();
     }
 }
