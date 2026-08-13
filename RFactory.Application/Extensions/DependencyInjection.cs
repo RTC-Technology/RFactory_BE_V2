@@ -15,12 +15,17 @@ public static class DependencyInjection
         // AutoMapper: scan this assembly for all Profile classes automatically
         services.AddAutoMapper(typeof(DependencyInjection).Assembly);
 
+        // Backs the per-user permission cache below.
+        services.AddMemoryCache();
+
         // Auth
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IAuthService, AuthService>();
 
         // Administration
         // Registered before its consumers for readability only — DI resolves by type.
+        // Singleton: the whole point is one flush signal shared by every request.
+        services.AddSingleton<IPermissionCacheSignal, PermissionCacheSignal>();
         services.AddScoped<IUserPermissionService, UserPermissionService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IUserGroupService, UserGroupService>();
