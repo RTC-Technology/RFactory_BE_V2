@@ -187,4 +187,5 @@ public static class PermissionCodes
         public const string View = "settings.view";
         public const string Edit = "settings.edit";
     }
+
 }
