@@ -40,14 +40,6 @@ namespace RFactory.API.Controllers.GoodsReceipt
             return Ok(ApiResponseFactory.Success(items));
         }
 
-        //[HttpGet]
-        ////[RequirePermission(PermissionCodes.BomDetail.View)]
-        //public async Task<ActionResult<ApiResponse<List<GoodsReceiptDetailDto>>>> GetAll( [FromQuery] long receiptId, CancellationToken ct)
-        //{
-        //    var items = await _goodsReceiptDetail.Where(x => x.GoodsReceiptId == receiptId, ct);
-        //    return Ok(ApiResponseFactory.Success(items));
-        //}
-
         [HttpGet("{id:long}")]
         [RequirePermission(PermissionCodes.GoodsReceiptDetail.View)]
         public async Task<ActionResult<ApiResponse<GoodsReceiptDetailDto>>> GetById(ulong id, CancellationToken ct)
