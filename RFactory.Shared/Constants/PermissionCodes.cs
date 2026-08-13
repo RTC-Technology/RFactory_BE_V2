@@ -182,6 +182,30 @@ public static class PermissionCodes
         public const string Delete = "menu.delete";
     }
 
+    public static class Warehouse
+    {
+        public const string View = "warehouse.view";
+        public const string Add = "warehouse.add";
+        public const string Edit = "warehouse.edit";
+        public const string Delete = "warehouse.delete";
+    }
+
+    public static class WarehouseZone
+    {
+        public const string View = "warehouse-zone.view";
+        public const string Add = "warehouse-zone.add";
+        public const string Edit = "warehouse-zone.edit";
+        public const string Delete = "warehouse-zone.delete";
+    }
+
+    public static class WarehouseLocation
+    {
+        public const string View = "warehouse-location.view";
+        public const string Add = "warehouse-location.add";
+        public const string Edit = "warehouse-location.edit";
+        public const string Delete = "warehouse-location.delete";
+    }
+
     public static class GoodsReceipt
     {
         public const string View = "goods-receipt.view";

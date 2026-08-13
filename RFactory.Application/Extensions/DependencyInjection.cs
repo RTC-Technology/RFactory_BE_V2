@@ -5,7 +5,7 @@ using RFactory.Application.Modules.Equipment.Services;
 using RFactory.Application.Modules.GoodsReceipt.Services;
 using RFactory.Application.Modules.MasterData.Services;
 using RFactory.Application.Modules.Product.Services;
-using RFactory.Application.Modules.Warehouse.Services;
+using RFactory.Application.Modules.Warehouses.Services;
 
 namespace RFactory.Application.Extensions;
 
@@ -63,8 +63,8 @@ public static class DependencyInjection
         // Add other module services here as the project grows
 
         //GoodsReceipt
-        services.AddScoped<IGoodsReceiptServices, GoodsReceiptServices>();
-        services.AddScoped<IGoodsReceiptDetailServices, GoodsReceiptDetailServices>();
+        services.AddScoped<IGoodsReceiptService, GoodsReceiptService>();
+        services.AddScoped<IGoodsReceiptDetailService, GoodsReceiptDetailService>();
 
         //Warehouse
         services.AddScoped<IWarehouseService, WarehouseService>();

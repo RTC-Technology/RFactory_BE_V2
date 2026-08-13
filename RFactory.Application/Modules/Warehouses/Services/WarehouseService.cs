@@ -4,16 +4,7 @@ using RFactory.Infrastructure.Persistence;
 using RFactory.Shared.Results;
 using Entities = RFactory.Infrastructure.Entities;
 
-namespace RFactory.Application.Modules.Warehouse.Services;
-
-public interface IWarehouseService
-{
-    Task<List<WarehouseDto>> GetAllAsync(CancellationToken ct = default);
-    Task<WarehouseDto?> GetByIdAsync(ulong id, CancellationToken ct = default);
-    Task<Result<WarehouseDto>> CreateAsync(CreateWarehouseRequest request, CancellationToken ct = default);
-    Task<Result<WarehouseDto>> UpdateAsync(ulong id, UpdateWarehouseRequest request, CancellationToken ct = default);
-    Task<Result> DeleteAsync(ulong id, CancellationToken ct = default);
-}
+namespace RFactory.Application.Modules.Warehouses.Services;
 
 public class WarehouseService : IWarehouseService
 {

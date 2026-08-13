@@ -163,6 +163,27 @@ public static class PermissionCatalog
             new(PermissionCodes.Menu.Edit,   "Sửa menu"),
             new(PermissionCodes.Menu.Delete, "Xóa menu"),
         }),
+        new("warehouse", "Kho", new PermissionSpec[]
+        {
+            new(PermissionCodes.Warehouse.View,   "Xem danh sách kho"),
+            new(PermissionCodes.Warehouse.Add,    "Thêm kho"),
+            new(PermissionCodes.Warehouse.Edit,   "Sửa kho"),
+            new(PermissionCodes.Warehouse.Delete, "Xóa kho"),
+        }),
+        new("warehouse-zone", "Khu vực trong kho", new PermissionSpec[]
+        {
+            new(PermissionCodes.WarehouseZone.View,   "Xem khu vực trong kho"),
+            new(PermissionCodes.WarehouseZone.Add,    "Thêm khu vực trong kho"),
+            new(PermissionCodes.WarehouseZone.Edit,   "Sửa khu vực trong kho"),
+            new(PermissionCodes.WarehouseZone.Delete, "Xóa khu vực trong kho"),
+        }),
+        new("warehouse-location", "Vị trí lưu trữ", new PermissionSpec[]
+        {
+            new(PermissionCodes.WarehouseLocation.View,   "Xem vị trí lưu trữ"),
+            new(PermissionCodes.WarehouseLocation.Add,    "Thêm vị trí lưu trữ"),
+            new(PermissionCodes.WarehouseLocation.Edit,   "Sửa vị trí lưu trữ"),
+            new(PermissionCodes.WarehouseLocation.Delete, "Xóa vị trí lưu trữ"),
+        }),
         new("goods-receipt", "Phiếu nhập kho", new PermissionSpec[]
         {
             new(PermissionCodes.GoodsReceipt.View,   "Xem danh sách phiếu nhập"),

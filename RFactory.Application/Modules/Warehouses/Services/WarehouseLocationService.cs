@@ -4,16 +4,7 @@ using RFactory.Infrastructure.Persistence;
 using RFactory.Shared.Results;
 using Entities = RFactory.Infrastructure.Entities;
 
-namespace RFactory.Application.Modules.Warehouse.Services;
-
-public interface IWarehouseLocationService
-{
-    Task<List<WarehouseLocationDto>> GetAllAsync(CancellationToken ct = default);
-    Task<WarehouseLocationDto?> GetByIdAsync(ulong id, CancellationToken ct = default);
-    Task<Result<WarehouseLocationDto>> CreateAsync(CreateWarehouseLocationRequest request, CancellationToken ct = default);
-    Task<Result<WarehouseLocationDto>> UpdateAsync(ulong id, UpdateWarehouseLocationRequest request, CancellationToken ct = default);
-    Task<Result> DeleteAsync(ulong id, CancellationToken ct = default);
-}
+namespace RFactory.Application.Modules.Warehouses.Services;
 
 public class WarehouseLocationService : IWarehouseLocationService
 {
