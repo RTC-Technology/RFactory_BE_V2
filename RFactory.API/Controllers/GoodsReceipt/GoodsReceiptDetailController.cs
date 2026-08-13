@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RFactory.API.Authorization;
 using RFactory.Application.Modules.GoodsReceipt.DTOs;
@@ -14,6 +15,7 @@ namespace RFactory.API.Controllers.GoodsReceipt
 {
     [Route("api/goods-receipt-detail")]
     [ApiController]
+    [Authorize]
     public class GoodsReceiptDetailController : ControllerBase
     {
         private readonly IGoodsReceiptDetailServices _goodsReceiptDetailServices;
@@ -26,23 +28,15 @@ namespace RFactory.API.Controllers.GoodsReceipt
         }
 
         [HttpGet]
-        //[RequirePermission(PermissionCodes.BomDetail.View)]
+        [RequirePermission(PermissionCodes.GoodsReceipt.View)]
         public async Task<ActionResult<ApiResponse<List<GoodsReceiptDetailDto>>>> GetAll(long? receiptId,CancellationToken ct)
         {
             var items = await _goodsReceiptDetailServices.GetAllAsync(receiptId, ct);
             return Ok(ApiResponseFactory.Success(items));
         }
 
-        //[HttpGet]
-        ////[RequirePermission(PermissionCodes.BomDetail.View)]
-        //public async Task<ActionResult<ApiResponse<List<GoodsReceiptDetailDto>>>> GetAll( [FromQuery] long receiptId, CancellationToken ct)
-        //{
-        //    var items = await _goodsReceiptDetail.Where(x => x.GoodsReceiptId == receiptId, ct);
-        //    return Ok(ApiResponseFactory.Success(items));
-        //}
-
         [HttpGet("{id:long}")]
-        //[RequirePermission(PermissionCodes.BomDetail.View)]
+        [RequirePermission(PermissionCodes.GoodsReceipt.View)]
         public async Task<ActionResult<ApiResponse<GoodsReceiptDetailDto>>> GetById(ulong id, CancellationToken ct)
         {
             var item = await _goodsReceiptDetailServices.GetByIdAsync(id, ct);
@@ -55,7 +49,7 @@ namespace RFactory.API.Controllers.GoodsReceipt
         }
 
         [HttpPost]
-        //[RequirePermission(PermissionCodes.BomDetail.Add)]
+        [RequirePermission(PermissionCodes.GoodsReceipt.Add)]
         public async Task<ActionResult<ApiResponse<GoodsReceiptDetailDto>>> Create(CreateGoodsReceiptDetailRequest request, CancellationToken ct)
         {
             var result = await _goodsReceiptDetailServices.CreateAsync(request, ct);
@@ -68,7 +62,7 @@ namespace RFactory.API.Controllers.GoodsReceipt
         }
 
         [HttpPost("create-range")]
-        //[RequirePermission(PermissionCodes.BomDetail.Add)]
+        [RequirePermission(PermissionCodes.GoodsReceipt.Add)]
         public async Task<ActionResult<ApiResponse<List<GoodsReceiptDetailDto>>>> CreateRange(List<CreateGoodsReceiptDetailRequest> requests, CancellationToken ct)
         {
             var result = await _goodsReceiptDetailServices.CreateRangeAsync(requests, ct);
@@ -81,7 +75,7 @@ namespace RFactory.API.Controllers.GoodsReceipt
         }
 
         [HttpPut("{id:long}")]
-        //[RequirePermission(PermissionCodes.BomDetail.Edit)]
+        [RequirePermission(PermissionCodes.GoodsReceipt.Edit)]
         public async Task<ActionResult<ApiResponse<GoodsReceiptDetailDto>>> Update(ulong id, UpdatesGoodsReceiptDetailRequest request, CancellationToken ct)
         {
             var result = await _goodsReceiptDetailServices.UpdateAsync(id, request, ct);
@@ -94,7 +88,7 @@ namespace RFactory.API.Controllers.GoodsReceipt
         }
 
         [HttpPut("update-range")]
-        //[RequirePermission(PermissionCodes.BomDetail.Edit)]
+        [RequirePermission(PermissionCodes.GoodsReceipt.Edit)]
         public async Task<ActionResult<ApiResponse<GoodsReceiptDetailDto>>> UpdateRange( List<UpdatesGoodsReceiptDetailRequest> requests, CancellationToken ct)
         {
             var result = await _goodsReceiptDetailServices.UpdateRangeAsync(requests, ct);
@@ -107,7 +101,7 @@ namespace RFactory.API.Controllers.GoodsReceipt
         }
 
         [HttpDelete("{id:long}")]
-        //[RequirePermission(PermissionCodes.BomDetail.Delete)]
+        [RequirePermission(PermissionCodes.GoodsReceipt.Delete)]
         public async Task<ActionResult<ApiResponse<object?>>> Delete(ulong id, CancellationToken ct)
         {
             var result = await _goodsReceiptDetailServices.DeleteAsync(id, ct);

@@ -187,4 +187,31 @@ public static class PermissionCodes
         public const string View = "settings.view";
         public const string Edit = "settings.edit";
     }
+
+
+    public static class GoodsReceipt
+    {
+        public const string View = "goods-receipt.view";
+        public const string Add = "goods-receipt.add";
+        public const string Edit = "goods-receipt.edit";
+        public const string Delete = "goods-receipt.delete";
+        public const string Approve = "goods-receipt.approve";
+        public const string UnApprove = "goods-receipt.unapprove";
+    }
+
+    public static class Warehouse
+    {
+        public const string View = "warehouse.view";
+        public const string Add = "warehouse.add";
+        public const string Edit = "warehouse.edit";
+        public const string Delete = "warehouse.delete";
+    }
+
+    public static class Location
+    {
+        public const string View = "location.view";
+        public const string Add = "location.add";
+        public const string Edit = "location.edit";
+        public const string Delete = "location.delete";
+    }
 }
