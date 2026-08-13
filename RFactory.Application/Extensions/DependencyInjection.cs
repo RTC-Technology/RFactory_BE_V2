@@ -4,6 +4,7 @@ using RFactory.Application.Modules.Auth.Services;
 using RFactory.Application.Modules.Equipment.Services;
 using RFactory.Application.Modules.MasterData.Services;
 using RFactory.Application.Modules.Product.Services;
+using RFactory.Application.Modules.Warehouse.Services;
 
 namespace RFactory.Application.Extensions;
 
@@ -47,6 +48,11 @@ public static class DependencyInjection
         // Equipment
         services.AddScoped<IMachineTypeService, MachineTypeService>();
         services.AddScoped<IMachineService, MachineService>();
+
+        //Warehouse
+        services.AddScoped<IWarehouseService, WarehouseService>();
+        services.AddScoped<IWarehouseLocationService, WarehouseLocationService>();
+        services.AddScoped<IWarehouseZoneService, WarehouseZoneService>();
 
         // Add other module services here as the project grows
 
