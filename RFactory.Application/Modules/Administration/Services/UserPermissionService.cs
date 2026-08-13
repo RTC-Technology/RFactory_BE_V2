@@ -1,59 +1,72 @@
-using RFactory.Infrastructure.Entities;
+using Microsoft.Extensions.Caching.Memory;
 using RFactory.Infrastructure.Persistence;
 
 namespace RFactory.Application.Modules.Administration.Services;
 
 public class UserPermissionService : IUserPermissionService
 {
-    private readonly IRepository<UserGroupLink> _links;
-    private readonly IRepository<UserGroupRightDistribution> _rights;
-    private readonly IRepository<Function> _functions;
+    /// <summary>
+    /// Safety net only — <see cref="IPermissionCacheSignal"/> is what actually keeps this
+    /// honest. Short enough that a grant change missed by the signal still corrects itself
+    /// within a minute rather than lasting the process.
+    /// </summary>
+    private static readonly TimeSpan CacheLifetime = TimeSpan.FromSeconds(60);
+
+    private readonly IUserPermissionQuery _query;
+    private readonly IMemoryCache _cache;
+    private readonly IPermissionCacheSignal _signal;
 
     public UserPermissionService(
-        IRepository<UserGroupLink> links,
-        IRepository<UserGroupRightDistribution> rights,
-        IRepository<Function> functions)
+        IUserPermissionQuery query,
+        IMemoryCache cache,
+        IPermissionCacheSignal signal)
     {
-        _links = links;
-        _rights = rights;
-        _functions = functions;
+        _query = query;
+        _cache = cache;
+        _signal = signal;
     }
 
+    /// <summary>
+    /// Cached because <c>RequirePermissionAttribute</c> resolves this on every authorized
+    /// request, and a screen that loads five endpoints paid for five walks of the chain.
+    /// The JWT still carries no permission claims, so a revoked grant takes effect as soon
+    /// as the cache is signalled — no token has to be invalidated.
+    /// </summary>
     public async Task<UserPermissions> GetForUserAsync(ulong userId, CancellationToken ct = default)
     {
-        var id = (long)userId;
-
-        var links = await _links.Where(l => l.UserId == id, ct);
-        var groupIds = links.Where(l => l.UserGroupId.HasValue)
-                            .Select(l => l.UserGroupId!.Value)
-                            .Distinct()
-                            .ToList();
-        if (groupIds.Count == 0)
+        if (_cache.TryGetValue(CacheKey(userId), out UserPermissions? cached) && cached is not null)
         {
-            return UserPermissions.Empty;
+            return cached;
         }
 
-        var rights = await _rights.Where(r => r.UserGroupId.HasValue && groupIds.Contains(r.UserGroupId.Value), ct);
-        var functionIds = rights.Where(r => r.FunctionId.HasValue)
-                                .Select(r => r.FunctionId!.Value)
-                                .Distinct()
-                                .ToHashSet();
-        if (functionIds.Count == 0)
-        {
-            return UserPermissions.Empty;
-        }
+        var permissions = await ResolveAsync(userId, ct);
 
-        // Function.Id is ulong while the link column is long?; the list is converted up
-        // front so the Contains translates to a plain SQL IN rather than a cast EF would
-        // have to push into the query.
-        var lookupIds = functionIds.Select(fid => (ulong)fid).ToList();
-        var functions = await _functions.Where(f => lookupIds.Contains(f.Id), ct);
+        using var entry = _cache.CreateEntry(CacheKey(userId));
+        entry.Value = permissions;
+        entry.AbsoluteExpirationRelativeToNow = CacheLifetime;
+        entry.AddExpirationToken(_signal.Token);
 
-        var codes = functions.Select(f => f.FunctionCode)
-                             .Where(code => !string.IsNullOrWhiteSpace(code))
-                             .Distinct(StringComparer.OrdinalIgnoreCase)
-                             .ToList();
-
-        return new UserPermissions(functionIds, codes);
+        return permissions;
     }
+
+    private async Task<UserPermissions> ResolveAsync(ulong userId, CancellationToken ct)
+    {
+        var grants = await _query.GetGrantsForUserAsync((long)userId, ct);
+        if (grants.FunctionIds.Count == 0)
+        {
+            return UserPermissions.Empty;
+        }
+
+        // Codes are typed by hand on the permission screen, so two rows differing only in
+        // case are the same permission — de-duplicated here so the client never has to care.
+        var codes = grants.Functions
+                          .Select(g => g.FunctionCode)
+                          .Where(code => !string.IsNullOrWhiteSpace(code))
+                          .Distinct(StringComparer.OrdinalIgnoreCase)
+                          .ToList();
+
+        return new UserPermissions(grants.FunctionIds, codes);
+    }
+
+    private static string CacheKey(ulong userId) => $"permissions:{userId}";
 }

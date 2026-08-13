@@ -12,17 +12,20 @@ public class UserGroupService : IUserGroupService
     private readonly IRepository<UserGroupRightDistribution> _rights;
     private readonly IRepository<UserGroupLink> _links;
     private readonly IMapper _mapper;
+    private readonly IPermissionCacheSignal _permissionCache;
 
     public UserGroupService(
         IRepository<UserGroup> groups,
         IRepository<UserGroupRightDistribution> rights,
         IRepository<UserGroupLink> links,
-        IMapper mapper)
+        IMapper mapper,
+        IPermissionCacheSignal permissionCache)
     {
         _groups = groups;
         _rights = rights;
         _links = links;
         _mapper = mapper;
+        _permissionCache = permissionCache;
     }
 
     public async Task<List<UserGroupDto>> GetAllAsync(CancellationToken ct = default)
@@ -86,6 +89,7 @@ public class UserGroupService : IUserGroupService
         await _links.DeleteRange(await _links.Where(l => l.UserGroupId == groupId, ct), ct);
         await _groups.Delete(group, ct);
 
+        _permissionCache.Invalidate();
         return Result.Success();
     }
 
@@ -122,6 +126,8 @@ public class UserGroupService : IUserGroupService
 
         await _rights.DeleteRange(stale, ct);
         await _rights.AddRange(added, ct);
+
+        _permissionCache.Invalidate();
         return Result.Success();
     }
 
@@ -156,6 +162,8 @@ public class UserGroupService : IUserGroupService
 
         await _links.DeleteRange(stale, ct);
         await _links.AddRange(added, ct);
+
+        _permissionCache.Invalidate();
         return Result.Success();
     }
 }

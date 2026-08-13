@@ -34,6 +34,11 @@ public static class DependencyInjection
         // Repositories
         services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
+        // Read model for the permission chain, which IRepository<T> cannot express: it
+        // returns materialised lists, so joining three tables through it would mean three
+        // round trips on every authorized request.
+        services.AddScoped<IUserPermissionQuery, UserPermissionQuery>();
+
         // Scoped like the context it wraps: the transaction has to span the same DbContext
         // instance the repositories are saving through.
         services.AddScoped<IUnitOfWork, UnitOfWork>();

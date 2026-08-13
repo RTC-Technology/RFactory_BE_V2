@@ -12,15 +12,18 @@ public class FunctionService : IFunctionService
     private readonly IRepository<Function> _repository;
     private readonly IRepository<FunctionGroup> _groups;
     private readonly IMapper _mapper;
+    private readonly IPermissionCacheSignal _permissionCache;
 
     public FunctionService(
         IRepository<Function> repository,
         IRepository<FunctionGroup> groups,
-        IMapper mapper)
+        IMapper mapper,
+        IPermissionCacheSignal permissionCache)
     {
         _repository = repository;
         _groups = groups;
         _mapper = mapper;
+        _permissionCache = permissionCache;
     }
 
     public async Task<List<FunctionDto>> GetAllAsync(CancellationToken ct = default)
@@ -64,13 +67,23 @@ public class FunctionService : IFunctionService
 
         _mapper.Map(request, function);
         await _repository.Update(function, ct);
+
+        // The code itself may have changed, and it is the code every cached permission set
+        // is made of. Creating a function needs no such flush: no right points at it yet.
+        _permissionCache.Invalidate();
         return Result<FunctionDto>.Success(_mapper.Map<FunctionDto>(function));
     }
 
     public async Task<Result> DeleteAsync(ulong id, CancellationToken ct = default)
     {
         var deleted = await _repository.DeleteById(id, ct);
-        return deleted ? Result.Success() : Result.Failure($"Function {id} was not found.");
+        if (!deleted)
+        {
+            return Result.Failure($"Function {id} was not found.");
+        }
+
+        _permissionCache.Invalidate();
+        return Result.Success();
     }
 
     /// <summary>
