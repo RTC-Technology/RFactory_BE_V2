@@ -230,6 +230,14 @@ public static class PermissionCodes
         public const string Delete = "supplier.delete";
     }
 
+    public static class GoodsIssue
+    {
+        public const string View = "goods-issue.view";
+        public const string Add = "goods-issue.add";
+        public const string Edit = "goods-issue.edit";
+        public const string Delete = "goods-issue.delete";
+    }
+
     public static class Settings
     {
         public const string View = "settings.view";

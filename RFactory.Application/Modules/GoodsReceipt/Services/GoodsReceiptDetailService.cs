@@ -14,13 +14,16 @@ namespace RFactory.Application.Modules.GoodsReceipt.Services;
 public class GoodsReceiptDetailService : IGoodsReceiptDetailService
 {
     private readonly IRepository<Entities.GoodsReceiptDetail> _repository;
+    private readonly IRepository<Entities.GoodsReceipt> _receipt;
     private readonly IMapper _mapper;
 
     public GoodsReceiptDetailService(
         IRepository<Entities.GoodsReceiptDetail> repository,
-        IMapper mapper)
+        IRepository<Entities.GoodsReceipt> receipt,
+    IMapper mapper)
     {
         _repository = repository;
+        _receipt = receipt;
         _mapper = mapper;
     }
 
@@ -45,13 +48,35 @@ public class GoodsReceiptDetailService : IGoodsReceiptDetailService
     }
 
     /// <summary>Lines of one receipt, or every line when <paramref name="receiptId"/> is null.</summary>
-    public async Task<List<GoodsReceiptDetailDto>> GetAllAsync(long? receiptId, CancellationToken ct = default)
+    public async Task<List<GoodsReceiptDetailDto>> GetAllAsync(ulong? receiptId, CancellationToken ct = default)
     {
         var entities = receiptId.HasValue
-            ? await _repository.Where(x => x.GoodsReceiptId == receiptId.Value, ct)
+            ? await _repository.Where(x => x.GoodsReceiptId == (long)receiptId.Value, ct)
             : await _repository.GetAll(ct);
 
-        return _mapper.Map<List<GoodsReceiptDetailDto>>(entities);
+
+        var receipts = await _receipt.GetAll(ct);
+
+        var result = entities
+                    .Join(
+                        receipts,
+                        detail => detail.GoodsReceiptId,
+                        receipt => (long)receipt.Id,
+                        (detail, receipt) => new
+                        {
+                            detail,
+                            receipt.ReceiptDate
+                        })
+                    .Select(x =>
+                    {
+                        var dto = _mapper.Map<GoodsReceiptDetailDto>(x.detail);
+                        dto.ReceiptDate = x.ReceiptDate;
+                        return dto;
+                    })
+                    .ToList();
+
+
+        return _mapper.Map<List<GoodsReceiptDetailDto>>(result);
     }
 
     public async Task<GoodsReceiptDetailDto?> GetByIdAsync(ulong id, CancellationToken ct = default)
@@ -84,4 +109,6 @@ public class GoodsReceiptDetailService : IGoodsReceiptDetailService
         await _repository.AddRange(replacements, ct);
         return Result<List<GoodsReceiptDetailDto>>.Success(_mapper.Map<List<GoodsReceiptDetailDto>>(replacements));
     }
+
+    
 }

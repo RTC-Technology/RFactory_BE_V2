@@ -1,3 +1,4 @@
+using RFactory.Application.Modules.GoodsIssue.DTOs;
 using RFactory.Application.Modules.GoodsReceipt.DTOs;
 using RFactory.Shared.Results;
 
@@ -5,7 +6,7 @@ namespace RFactory.Application.Modules.GoodsReceipt.Services;
 
 public interface IGoodsReceiptDetailService
 {
-    Task<List<GoodsReceiptDetailDto>> GetAllAsync(long? receiptId, CancellationToken ct = default);
+    Task<List<GoodsReceiptDetailDto>> GetAllAsync(ulong? receiptId, CancellationToken ct = default);
     Task<GoodsReceiptDetailDto?> GetByIdAsync(ulong id, CancellationToken ct = default);
     Task<Result<GoodsReceiptDetailDto>> CreateAsync(CreateGoodsReceiptDetailRequest request, CancellationToken ct = default);
     Task<Result<List<GoodsReceiptDetailDto>>> CreateRangeAsync(List<CreateGoodsReceiptDetailRequest> requests, CancellationToken ct = default);
