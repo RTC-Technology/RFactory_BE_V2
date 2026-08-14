@@ -163,6 +163,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "supplier",
+         "ObjectType": 0
+      },
+      {
          "Name": "table_base",
          "ObjectType": 0
       },

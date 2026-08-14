@@ -70,6 +70,9 @@ public static class DependencyInjection
         services.AddScoped<IWarehouseService, WarehouseService>();
         services.AddScoped<IWarehouseLocationService, WarehouseLocationService>();
 
+        //Supplier
+        services.AddScoped<ISupplierService, SupplierService>();   
+
 
         return services;
     }
