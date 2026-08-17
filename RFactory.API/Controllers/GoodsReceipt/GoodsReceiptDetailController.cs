@@ -34,7 +34,7 @@ public class GoodsReceiptDetailController : ControllerBase
 
     [HttpGet]
     [RequirePermission(PermissionCodes.GoodsReceiptDetail.View)]
-    public async Task<ActionResult<ApiResponse<List<GoodsReceiptDetailDto>>>> GetAll(long? receiptId,CancellationToken ct)
+    public async Task<ActionResult<ApiResponse<List<GoodsReceiptDetailDto>>>> GetAll(ulong? receiptId,CancellationToken ct)
     {
         var items = await _goodsReceiptDetailServices.GetAllAsync(receiptId, ct);
         return Ok(ApiResponseFactory.Success(items));

@@ -54,13 +54,20 @@ public class GoodsReceiptController : ControllerBase
     [RequirePermission(PermissionCodes.GoodsReceipt.Add)]
     public async Task<ActionResult<ApiResponse<GoodsReceiptDto>>> Create(CreateGoodsReceiptRequest request, CancellationToken ct)
     {
-        var result = await _goodsReceiptServices.CreateAsync(request, ct);
-        if (!result.Succeeded)
+        try
         {
-            return BadRequest(ApiResponseFactory.Fail(result.Error!));
-        }
+            var result = await _goodsReceiptServices.CreateAsync(request, ct);
+            if (!result.Succeeded)
+            {
+                return BadRequest(ApiResponseFactory.Fail(result.Error!));
+            }
 
-        return Ok(ApiResponseFactory.Success(result.Data));
+            return Ok(ApiResponseFactory.Success(result.Data));
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
     }
 
     [HttpPut("{id:long}")]

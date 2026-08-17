@@ -44,4 +44,6 @@ public partial class GoodsReceiptDetail
     public decimal? UnitPrice { get; set; }
 
     public string Remark { get; set; }
+
+    public DateTime? ExpireDate { get; set; }
 }

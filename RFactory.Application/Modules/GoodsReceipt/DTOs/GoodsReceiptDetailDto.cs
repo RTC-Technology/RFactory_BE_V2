@@ -28,6 +28,8 @@ public class GoodsReceiptDetailDto
     public decimal? UnitPrice { get; set; }
 
     public string? Remark { get; set; }
+    public DateTime? ReceiptDate { get; set; }
+    public DateTime? ExpireDate { get; set; }
 }
 
 public class CreateGoodsReceiptDetailRequest

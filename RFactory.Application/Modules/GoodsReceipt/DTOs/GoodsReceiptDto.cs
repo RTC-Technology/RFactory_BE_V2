@@ -92,4 +92,5 @@ public class GoodsReceiptLineRequest
     public decimal ReceivedQty { get; set; }
     public decimal? UnitPrice { get; set; }
     public string? Remark { get; set; }
+    public DateTime ExpireDate { get; set; }
 }
