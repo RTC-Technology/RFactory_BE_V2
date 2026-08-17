@@ -15,15 +15,18 @@ public class GoodsReceiptDetailService : IGoodsReceiptDetailService
 {
     private readonly IRepository<Entities.GoodsReceiptDetail> _repository;
     private readonly IRepository<Entities.GoodsReceipt> _receipt;
+    private readonly IRepository<Entities.Product> _product;
     private readonly IMapper _mapper;
 
     public GoodsReceiptDetailService(
         IRepository<Entities.GoodsReceiptDetail> repository,
         IRepository<Entities.GoodsReceipt> receipt,
+        IRepository<Entities.Product> product,
     IMapper mapper)
     {
         _repository = repository;
         _receipt = receipt;
+        _product = product;
         _mapper = mapper;
     }
 
@@ -56,6 +59,7 @@ public class GoodsReceiptDetailService : IGoodsReceiptDetailService
 
 
         var receipts = await _receipt.GetAll(ct);
+        var products = await _product.GetAll(ct);
 
         var result = entities
                     .Join(
@@ -67,10 +71,22 @@ public class GoodsReceiptDetailService : IGoodsReceiptDetailService
                             detail,
                             receipt.ReceiptDate
                         })
+                    .Join(
+                        products,
+                        x => x.detail.ProductId,
+                        product => (long)product.Id,
+                        (x, product) => new
+                        {
+                            x.detail,
+                            x.ReceiptDate,
+                            Product = product
+                        })
                     .Select(x =>
                     {
                         var dto = _mapper.Map<GoodsReceiptDetailDto>(x.detail);
                         dto.ReceiptDate = x.ReceiptDate;
+                        dto.ProductCode = x.Product.ProductCode;
+                        dto.ProductName = x.Product.ProductName;
                         return dto;
                     })
                     .ToList();

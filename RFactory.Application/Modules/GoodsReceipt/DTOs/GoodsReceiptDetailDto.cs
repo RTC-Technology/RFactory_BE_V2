@@ -14,22 +14,20 @@ public class GoodsReceiptDetailDto
     public DateTime? UpdatedDate { get; set; }
     public string? UpdatedBy { get; set; }
     public bool IsDeleted { get; set; }
-
     public ulong GoodsReceiptId { get; set; }
     public ulong ProductId { get; set; }
     public ulong UnitId { get; set; }
     public ulong? LocationId { get; set; }
-
     public string? LotNo { get; set; }
     public string? SerialNo { get; set; }
-
     public decimal Quantity { get; set; }
     public decimal ReceivedQty { get; set; }
     public decimal? UnitPrice { get; set; }
-
     public string? Remark { get; set; }
     public DateTime? ReceiptDate { get; set; }
     public DateTime? ExpireDate { get; set; }
+    public string? ProductCode { get; set; }
+    public string? ProductName { get; set; }
 }
 
 public class CreateGoodsReceiptDetailRequest
