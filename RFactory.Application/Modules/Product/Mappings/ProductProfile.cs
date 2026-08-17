@@ -29,5 +29,15 @@ public class ProductProfile : Profile
         CreateMap<Entities.BomDetail, BomDetailDto>();
         CreateMap<CreateBomDetailRequest, Entities.BomDetail>();
         CreateMap<UpdateBomDetailRequest, Entities.BomDetail>();
+
+        CreateMap<Entities.Routing, RoutingDto>()
+            .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive == true));
+        CreateMap<CreateRoutingRequest, Entities.Routing>();
+        CreateMap<UpdateRoutingRequest, Entities.Routing>();
+
+        CreateMap<Entities.RoutingOperation, RoutingOperationDto>();
+        CreateMap<CreateRoutingOperationRequest, Entities.RoutingOperation>();
+        CreateMap<UpdateRoutingOperationRequest, Entities.RoutingOperation>();
     }
 }
+
