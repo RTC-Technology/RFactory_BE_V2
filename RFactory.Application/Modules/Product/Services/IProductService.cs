@@ -38,3 +38,22 @@ public interface IBomDetailService
     Task<Result<BomDetailDto>> UpdateAsync(ulong id, UpdateBomDetailRequest request, CancellationToken ct = default);
     Task<Result> DeleteAsync(ulong id, CancellationToken ct = default);
 }
+
+public interface IRoutingService
+{
+    Task<List<RoutingDto>> GetAllAsync(CancellationToken ct = default);
+    Task<RoutingDto?> GetByIdAsync(ulong id, CancellationToken ct = default);
+    Task<Result<RoutingDto>> CreateAsync(CreateRoutingRequest request, CancellationToken ct = default);
+    Task<Result<RoutingDto>> UpdateAsync(ulong id, UpdateRoutingRequest request, CancellationToken ct = default);
+    Task<Result> DeleteAsync(ulong id, CancellationToken ct = default);
+}
+
+public interface IRoutingOperationService
+{
+    Task<List<RoutingOperationDto>> GetAllAsync(CancellationToken ct = default);
+    Task<RoutingOperationDto?> GetByIdAsync(ulong id, CancellationToken ct = default);
+    Task<Result<RoutingOperationDto>> CreateAsync(CreateRoutingOperationRequest request, CancellationToken ct = default);
+    Task<Result<RoutingOperationDto>> UpdateAsync(ulong id, UpdateRoutingOperationRequest request, CancellationToken ct = default);
+    Task<Result> DeleteAsync(ulong id, CancellationToken ct = default);
+}
+

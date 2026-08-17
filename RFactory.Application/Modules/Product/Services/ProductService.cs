@@ -299,3 +299,112 @@ public class BomDetailService : IBomDetailService
         return deleted ? Result.Success() : Result.Failure($"BOM line {id} was not found.");
     }
 }
+
+public class RoutingService : IRoutingService
+{
+    private readonly IRepository<Entities.Routing> _repository;
+    private readonly IRepository<Entities.RoutingOperation> _operations;
+    private readonly IMapper _mapper;
+
+    public RoutingService(
+        IRepository<Entities.Routing> repository,
+        IRepository<Entities.RoutingOperation> operations,
+        IMapper mapper)
+    {
+        _repository = repository;
+        _operations = operations;
+        _mapper = mapper;
+    }
+
+    public async Task<List<RoutingDto>> GetAllAsync(CancellationToken ct = default)
+        => _mapper.Map<List<RoutingDto>>(await _repository.GetAll(ct));
+
+    public async Task<RoutingDto?> GetByIdAsync(ulong id, CancellationToken ct = default)
+    {
+        var entity = await _repository.GetById(id, ct);
+        return entity is null ? null : _mapper.Map<RoutingDto>(entity);
+    }
+
+    public async Task<Result<RoutingDto>> CreateAsync(CreateRoutingRequest request, CancellationToken ct = default)
+    {
+        var entity = _mapper.Map<Entities.Routing>(request);
+        await _repository.Add(entity, ct);
+        return Result<RoutingDto>.Success(_mapper.Map<RoutingDto>(entity));
+    }
+
+    public async Task<Result<RoutingDto>> UpdateAsync(ulong id, UpdateRoutingRequest request, CancellationToken ct = default)
+    {
+        var entity = await _repository.GetById(id, ct);
+        if (entity is null)
+        {
+            return Result<RoutingDto>.Failure($"Routing {id} was not found.");
+        }
+
+        _mapper.Map(request, entity);
+        await _repository.Update(entity, ct);
+        return Result<RoutingDto>.Success(_mapper.Map<RoutingDto>(entity));
+    }
+
+    /// <summary>Deletes the routing together with its operations — they exist only for it.</summary>
+    public async Task<Result> DeleteAsync(ulong id, CancellationToken ct = default)
+    {
+        var entity = await _repository.GetById(id, ct);
+        if (entity is null)
+        {
+            return Result.Failure($"Routing {id} was not found.");
+        }
+
+        var routingId = (long)id;
+        await _operations.DeleteRange(await _operations.Where(o => o.RoutingId == routingId, ct), ct);
+        await _repository.Delete(entity, ct);
+        return Result.Success();
+    }
+}
+
+public class RoutingOperationService : IRoutingOperationService
+{
+    private readonly IRepository<Entities.RoutingOperation> _repository;
+    private readonly IMapper _mapper;
+
+    public RoutingOperationService(IRepository<Entities.RoutingOperation> repository, IMapper mapper)
+    {
+        _repository = repository;
+        _mapper = mapper;
+    }
+
+    public async Task<List<RoutingOperationDto>> GetAllAsync(CancellationToken ct = default)
+        => _mapper.Map<List<RoutingOperationDto>>(await _repository.GetAll(ct));
+
+    public async Task<RoutingOperationDto?> GetByIdAsync(ulong id, CancellationToken ct = default)
+    {
+        var entity = await _repository.GetById(id, ct);
+        return entity is null ? null : _mapper.Map<RoutingOperationDto>(entity);
+    }
+
+    public async Task<Result<RoutingOperationDto>> CreateAsync(CreateRoutingOperationRequest request, CancellationToken ct = default)
+    {
+        var entity = _mapper.Map<Entities.RoutingOperation>(request);
+        await _repository.Add(entity, ct);
+        return Result<RoutingOperationDto>.Success(_mapper.Map<RoutingOperationDto>(entity));
+    }
+
+    public async Task<Result<RoutingOperationDto>> UpdateAsync(ulong id, UpdateRoutingOperationRequest request, CancellationToken ct = default)
+    {
+        var entity = await _repository.GetById(id, ct);
+        if (entity is null)
+        {
+            return Result<RoutingOperationDto>.Failure($"Routing operation {id} was not found.");
+        }
+
+        _mapper.Map(request, entity);
+        await _repository.Update(entity, ct);
+        return Result<RoutingOperationDto>.Success(_mapper.Map<RoutingOperationDto>(entity));
+    }
+
+    public async Task<Result> DeleteAsync(ulong id, CancellationToken ct = default)
+    {
+        var deleted = await _repository.DeleteById(id, ct);
+        return deleted ? Result.Success() : Result.Failure($"Routing operation {id} was not found.");
+    }
+}
+

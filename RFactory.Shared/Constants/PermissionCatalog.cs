@@ -198,6 +198,20 @@ public static class PermissionCatalog
             new(PermissionCodes.GoodsReceiptDetail.Edit,   "Sửa dòng phiếu nhập"),
             new(PermissionCodes.GoodsReceiptDetail.Delete, "Xóa dòng phiếu nhập"),
         }),
+        new("routing", "Quy trình sản xuất", new PermissionSpec[]
+        {
+            new(PermissionCodes.Routing.View,   "Xem danh sách quy trình"),
+            new(PermissionCodes.Routing.Add,    "Thêm quy trình"),
+            new(PermissionCodes.Routing.Edit,   "Sửa quy trình"),
+            new(PermissionCodes.Routing.Delete, "Xóa quy trình"),
+        }),
+        new("routing-operation", "Công đoạn", new PermissionSpec[]
+        {
+            new(PermissionCodes.RoutingOperation.View,   "Xem danh sách công đoạn"),
+            new(PermissionCodes.RoutingOperation.Add,    "Thêm công đoạn"),
+            new(PermissionCodes.RoutingOperation.Edit,   "Sửa công đoạn"),
+            new(PermissionCodes.RoutingOperation.Delete, "Xóa công đoạn"),
+        }),
         new("settings", "Cài đặt", new PermissionSpec[]
         {
             new(PermissionCodes.Settings.View, "Xem cài đặt hệ thống"),
