@@ -238,6 +238,14 @@ public static class PermissionCodes
         public const string Delete = "goods-receipt-detail.delete";
     }
 
+    public static class Supplier
+    {
+        public const string View = "supplier.view";
+        public const string Add = "supplier.add";
+        public const string Edit = "supplier.edit";
+        public const string Delete = "supplier.delete";
+    }
+
     public static class Settings
     {
         public const string View = "settings.view";

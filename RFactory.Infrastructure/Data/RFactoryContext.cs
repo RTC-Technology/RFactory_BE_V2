@@ -86,6 +86,8 @@ public partial class RFactoryContext : DbContext
 
     public virtual DbSet<StockTransferDetail> StockTransferDetails { get; set; }
 
+    public virtual DbSet<Supplier> Suppliers { get; set; }
+
     public virtual DbSet<TableBase> TableBases { get; set; }
 
     public virtual DbSet<Unit> Units { get; set; }
@@ -1030,6 +1032,44 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.SerialNo).HasMaxLength(100);
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<Supplier>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("supplier", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.ContactPerson).HasMaxLength(255);
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.CurrencyCode).HasMaxLength(10);
+            entity.Property(e => e.Description).HasColumnType("text");
+            entity.Property(e => e.Email).HasMaxLength(255);
+            entity.Property(e => e.PaymentTerm).HasMaxLength(100);
+            entity.Property(e => e.Phone).HasMaxLength(50);
+            entity.Property(e => e.ShortName).HasMaxLength(100);
+            entity.Property(e => e.Status).HasDefaultValueSql("'1'");
+            entity.Property(e => e.SupplierCode)
+                .IsRequired()
+                .HasMaxLength(50);
+            entity.Property(e => e.SupplierName)
+                .IsRequired()
+                .HasMaxLength(255);
+            entity.Property(e => e.SupplierType).HasMaxLength(30);
+            entity.Property(e => e.TaxCode).HasMaxLength(50);
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            entity.Property(e => e.Website).HasMaxLength(255);
         });
 
         modelBuilder.Entity<TableBase>(entity =>
