@@ -24,10 +24,16 @@ public class GoodsReceiptDetailDto
     public decimal ReceivedQty { get; set; }
     public decimal? UnitPrice { get; set; }
     public string? Remark { get; set; }
+
+    public string? ReceiptNo { get; set; }
     public DateTime? ReceiptDate { get; set; }
     public DateTime? ExpireDate { get; set; }
     public string? ProductCode { get; set; }
     public string? ProductName { get; set; }
+    public int? Status { get; set; }
+    public int? DefaultUnitId { get; set; }
+    public string? UnitCode { get; set; }
+    public string? UnitName { get; set; }
 }
 
 public class CreateGoodsReceiptDetailRequest
