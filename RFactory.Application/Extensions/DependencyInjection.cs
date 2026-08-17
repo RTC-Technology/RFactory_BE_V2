@@ -51,6 +51,9 @@ public static class DependencyInjection
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IBomService, BomService>();
         services.AddScoped<IBomDetailService, BomDetailService>();
+        services.AddScoped<IRoutingService, RoutingService>();
+        services.AddScoped<IRoutingOperationService, RoutingOperationService>();
+
 
         // Equipment
         services.AddScoped<IMachineTypeService, MachineTypeService>();

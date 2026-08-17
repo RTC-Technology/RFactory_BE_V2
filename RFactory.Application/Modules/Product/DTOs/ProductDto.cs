@@ -141,3 +141,72 @@ public class UpdateBomDetailRequest
     public decimal? ScrapRate { get; set; }
     public int? FixedScrapQty { get; set; }
 }
+
+// ─── Routing (process specification) ────────────────────────────────────────
+
+/// <summary>
+/// A process specification (routing) belongs to one product and carries a version, so a
+/// product can hold several revisions with one of them flagged active. Mirrors Bom.
+/// </summary>
+public class RoutingDto
+{
+    public ulong Id { get; set; }
+    public long? ProductId { get; set; }
+    public string Version { get; set; } = string.Empty;
+    public bool IsActive { get; set; }
+}
+
+public class CreateRoutingRequest
+{
+    public long? ProductId { get; set; }
+    public string Version { get; set; } = string.Empty;
+    public bool IsActive { get; set; } = true;
+}
+
+public class UpdateRoutingRequest
+{
+    public long? ProductId { get; set; }
+    public string Version { get; set; } = string.Empty;
+    public bool IsActive { get; set; }
+}
+
+// ─── Routing operation (công đoạn) ──────────────────────────────────────────
+
+/// <summary>
+/// One work step inside a routing. <see cref="RoutingId"/> is the routing it belongs to;
+/// <see cref="Sequence"/> orders the steps. Mirrors BomDetail.
+/// </summary>
+public class RoutingOperationDto
+{
+    public ulong Id { get; set; }
+    public long? RoutingId { get; set; }
+    public int? Sequence { get; set; }
+    public string RoutingOperationCode { get; set; } = string.Empty;
+    public string RoutingOperationName { get; set; } = string.Empty;
+    public string? Description { get; set; }
+    public bool IsFinishOperation { get; set; }
+    public bool IsOutputOperation { get; set; }
+}
+
+public class CreateRoutingOperationRequest
+{
+    public long? RoutingId { get; set; }
+    public int? Sequence { get; set; }
+    public string RoutingOperationCode { get; set; } = string.Empty;
+    public string RoutingOperationName { get; set; } = string.Empty;
+    public string? Description { get; set; }
+    public bool IsFinishOperation { get; set; }
+    public bool IsOutputOperation { get; set; }
+}
+
+public class UpdateRoutingOperationRequest
+{
+    public long? RoutingId { get; set; }
+    public int? Sequence { get; set; }
+    public string RoutingOperationCode { get; set; } = string.Empty;
+    public string RoutingOperationName { get; set; } = string.Empty;
+    public string? Description { get; set; }
+    public bool IsFinishOperation { get; set; }
+    public bool IsOutputOperation { get; set; }
+}
+

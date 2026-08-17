@@ -102,6 +102,22 @@ public static class PermissionCodes
         public const string Delete = "bom-detail.delete";
     }
 
+    public static class Routing
+    {
+        public const string View = "routing.view";
+        public const string Add = "routing.add";
+        public const string Edit = "routing.edit";
+        public const string Delete = "routing.delete";
+    }
+
+    public static class RoutingOperation
+    {
+        public const string View = "routing-operation.view";
+        public const string Add = "routing-operation.add";
+        public const string Edit = "routing-operation.edit";
+        public const string Delete = "routing-operation.delete";
+    }
+
     public static class Shift
     {
         public const string View = "shift.view";
