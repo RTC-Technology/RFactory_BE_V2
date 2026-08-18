@@ -260,4 +260,20 @@ public static class PermissionCodes
         public const string Edit = "settings.edit";
     }
 
+    public static class Inventory
+    {
+        public const string View = "inventory.view";
+        public const string Add = "inventory.add";
+        public const string Edit = "inventory.edit";
+        public const string Delete = "inventory.delete";
+    }
+
+    public static class InventoryTransaction
+    {
+        public const string View = "inventory-transaction.view";
+        public const string Add = "inventory-transaction.add";
+        public const string Edit = "inventory-transaction.edit";
+        public const string Delete = "inventory-transaction.delete";
+    }
+
 }

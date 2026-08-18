@@ -577,7 +577,7 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.ReferenceType).HasComment("1: GR; 2: GI; 3: TRANSFER_IN; 4: TRANSFER_OUT; 5: MATERIAL_ISSUE; 6: MATERIAL_RETURN; 7: PRODUCTION_RECEIPT; 8: PRODUCTION_CONSUME; 9: ADJUSTMENT; 10: SCRAP\\n");
             entity.Property(e => e.TransactionDate).HasColumnType("datetime");
             entity.Property(e => e.TransactionNo).HasMaxLength(255);
-            entity.Property(e => e.TransactionType).HasColumnType("enum('RECEIPT','ISSUE','TRANSFER','ADJUST','PRODUCTION_IN','PRODUCTION_OUT','SCRAP')");
+            entity.Property(e => e.TransactionType).HasComment("1: RECEIPT; 2: ISSUE; 3: TRANSFER; 4: ADJUST; 5: PRODUCTION_IN; 6: PRODUCTION_OUT; 7: SCRAP");
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });

@@ -27,24 +27,27 @@ public partial class InventoryTransaction
 
     public string TransactionNo { get; set; }
 
-    public string TransactionType { get; set; }
+    /// <summary>
+    /// 1: RECEIPT; 2: ISSUE; 3: TRANSFER; 4: ADJUST; 5: PRODUCTION_IN; 6: PRODUCTION_OUT; 7: SCRAP
+    /// </summary>
+    public int? TransactionType { get; set; }
 
-    public long? ProductId { get; set; }
+    public ulong? ProductId { get; set; }
 
-    public long? WarehouseId { get; set; }
+    public ulong? WarehouseId { get; set; }
 
-    public long? WarehouseLocationId { get; set; }
+    public ulong? WarehouseLocationId { get; set; }
 
     public decimal? Quantity { get; set; }
 
-    public long? UnitId { get; set; }
+    public ulong? UnitId { get; set; }
 
     /// <summary>
     /// 1: GR; 2: GI; 3: TRANSFER_IN; 4: TRANSFER_OUT; 5: MATERIAL_ISSUE; 6: MATERIAL_RETURN; 7: PRODUCTION_RECEIPT; 8: PRODUCTION_CONSUME; 9: ADJUSTMENT; 10: SCRAP\n
     /// </summary>
     public int ReferenceType { get; set; }
 
-    public long? ReferenceId { get; set; }
+    public ulong? ReferenceId { get; set; }
 
     public DateTime? TransactionDate { get; set; }
 }

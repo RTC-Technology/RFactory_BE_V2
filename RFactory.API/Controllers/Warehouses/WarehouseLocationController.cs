@@ -26,9 +26,9 @@ public class WarehouseLocationController : ControllerBase
 
     [HttpGet]
     [RequirePermission(PermissionCodes.WarehouseLocation.View)]
-    public async Task<ActionResult<ApiResponse<List<WarehouseLocationDto>>>> GetAll(CancellationToken ct)
+    public async Task<ActionResult<ApiResponse<List<WarehouseLocationDto>>>> GetAll(ulong? warehouseId, CancellationToken ct)
     {
-        var items = await _service.GetAllAsync(ct);
+        var items = await _service.GetAllAsync(warehouseId, ct);
         return Ok(ApiResponseFactory.Success(items));
     }
 

@@ -4,6 +4,7 @@ using RFactory.Application.Modules.Auth.Services;
 using RFactory.Application.Modules.Equipment.Services;
 using RFactory.Application.Modules.GoodsIssue.Services;
 using RFactory.Application.Modules.GoodsReceipt.Services;
+using RFactory.Application.Modules.Inventory.Services;
 using RFactory.Application.Modules.MasterData.Services;
 using RFactory.Application.Modules.Product.Services;
 using RFactory.Application.Modules.Warehouses.Services;
@@ -79,7 +80,11 @@ public static class DependencyInjection
 
         //GoodsIssue
         services.AddScoped<IGoodsIssueService, GoodsIssueService>();   
-        services.AddScoped<IGoodsIssueDetailService, GoodsIssueDetailService>();   
+        services.AddScoped<IGoodsIssueDetailService, GoodsIssueDetailService>();
+
+        //Inventory
+        services.AddScoped<IInventoryService, InventoryService>();   
+        services.AddScoped<IInventoryTransactionService, InventoryTransactionService>();   
 
 
         return services;

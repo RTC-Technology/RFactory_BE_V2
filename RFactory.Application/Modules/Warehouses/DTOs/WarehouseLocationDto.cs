@@ -9,6 +9,11 @@ public class WarehouseLocationDto
     public decimal? MaxCapacity { get; set; }
     public bool? IsPickingLocation { get; set; }
     public bool? IsActive { get; set; }
+    public ulong? WarehouseId { get; set; }
+    public string? WarehouseCode { get; set; }
+    public string? WarehouseName { get; set; }
+    public string? WarehouseZoneCode { get; set; }
+    public string? WarehouseZoneName { get; set; }
 }
 
 public class CreateWarehouseLocationRequest

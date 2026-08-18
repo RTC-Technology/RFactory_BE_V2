@@ -1,5 +1,8 @@
 using AutoMapper;
+using RFactory.Application.Modules.GoodsIssue.DTOs;
 using RFactory.Application.Modules.GoodsReceipt.DTOs;
+using RFactory.Application.Modules.Inventory.DTOs;
+using RFactory.Infrastructure.Entities;
 using RFactory.Infrastructure.Persistence;
 using RFactory.Shared.Results;
 using Entities = RFactory.Infrastructure.Entities;
@@ -14,17 +17,23 @@ public class GoodsReceiptService : IGoodsReceiptService
 {
     private readonly IRepository<Entities.GoodsReceipt> _goodsReceipt;
     private readonly IRepository<Entities.GoodsReceiptDetail> _goodsReceiptDetail;
+    private readonly IRepository<Entities.Inventory> _inventory;
+    private readonly IRepository<Entities.InventoryTransaction> _transaction;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
     public GoodsReceiptService(
         IRepository<Entities.GoodsReceipt> goodsReceipt,
         IRepository<Entities.GoodsReceiptDetail> goodsReceiptDetail,
+        IRepository<Entities.Inventory> inventory,
+        IRepository<Entities.InventoryTransaction> transaction,
         IUnitOfWork unitOfWork,
         IMapper mapper)
     {
         _goodsReceipt = goodsReceipt;
         _goodsReceiptDetail = goodsReceiptDetail;
+        _inventory = inventory;
+        _transaction = transaction;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
@@ -47,6 +56,12 @@ public class GoodsReceiptService : IGoodsReceiptService
             await _goodsReceipt.Add(entity, token);
             await _goodsReceiptDetail.AddRange(
                 lines.Select(line => ToLineEntity(line, entity.Id)).ToList(), token);
+
+            await _inventory.AddRange(
+                lines.Select(l => ToIventoryEntity(l, entity)).ToList(), token);
+
+            await _transaction.AddRange(
+                    lines.Select(line => ToTransactionEntity(line, entity)).ToList(), token);
 
             return Result<GoodsReceiptDto>.Success(_mapper.Map<GoodsReceiptDto>(entity));
         }, ct);
@@ -137,6 +152,10 @@ public class GoodsReceiptService : IGoodsReceiptService
 
                 await _goodsReceiptDetail.AddRange(
                     lines.Where(l => l.Id == 0).Select(line => ToLineEntity(line, id)).ToList(), token);
+
+
+                await _transaction.AddRange(
+                    lines.Select(line => ToTransactionEntity(line, entity)).ToList(), token);
             }
 
             return Result<GoodsReceiptDto>.Success(_mapper.Map<GoodsReceiptDto>(entity));
@@ -147,6 +166,44 @@ public class GoodsReceiptService : IGoodsReceiptService
     {
         var entity = _mapper.Map<Entities.GoodsReceiptDetail>(line);
         entity.GoodsReceiptId = (long)receiptId;
+        return entity;
+    }
+
+    private Entities.InventoryTransaction ToTransactionEntity(GoodsReceiptLineRequest line, Entities.GoodsReceipt receipt)
+    {
+        var entity = new Entities.InventoryTransaction
+        {
+            TransactionNo = receipt.ReceiptNo,
+            TransactionType = (int)InventoryTransactionType.Receipt,
+            ReferenceType = (int)InventoryReferenceType.GoodsReceipt,
+            //ReferenceId = issue.Id,
+            ProductId = line.ProductId,
+            WarehouseId = (ulong)(receipt.WarehouseId),
+            WarehouseLocationId = line.LocationId,
+            Quantity = line.Quantity,
+            UnitId = line.UnitId,
+            TransactionDate = DateTime.Now
+        };
+
+        return entity;
+    }
+
+    private Entities.Inventory ToIventoryEntity(GoodsReceiptLineRequest line, Entities.GoodsReceipt receipt)
+    {
+        var entity = new Entities.Inventory
+        {
+            ProductId = (long)line.ProductId,
+            WarehouseId =(long)receipt.WarehouseId,
+            LocationId = (long)(line.LocationId ?? 0),
+            LotNo = line.LotNo,
+            SerialNo = line.SerialNo,
+            Quantity = line.Quantity,
+            ReservedQuantity = 0,
+            AvailableQuantity = 0,
+            UnitId =(long) line.UnitId,
+            LastTransactionDate = DateTime.Now
+        };
+
         return entity;
     }
 }

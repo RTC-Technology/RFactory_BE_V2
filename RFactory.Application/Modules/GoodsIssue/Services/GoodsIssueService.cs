@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using RFactory.Application.Modules.GoodsIssue.DTOs;
 using RFactory.Application.Modules.GoodsReceipt.DTOs;
+using RFactory.Application.Modules.Inventory.DTOs;
 using RFactory.Infrastructure.Entities;
 using RFactory.Infrastructure.Persistence;
 using RFactory.Shared.Results;
@@ -18,17 +19,20 @@ public class GoodsIssueService:IGoodsIssueService
 {
     private readonly IRepository<Entities.GoodsIssue> _goodsIssue;
     private readonly IRepository<Entities.GoodsIssueDetail> _goodsIssueDetail;
+    private readonly IRepository<Entities.InventoryTransaction> _transaction;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
     public GoodsIssueService(
         IRepository<Entities.GoodsIssue> goodsIssue,
         IRepository<Entities.GoodsIssueDetail> goodsIssueDetail,
+        IRepository<Entities.InventoryTransaction> transaction,
         IUnitOfWork unitOfWork,
         IMapper mapper)
     {
         _goodsIssue = goodsIssue;
         _goodsIssueDetail = goodsIssueDetail;
+        _transaction = transaction;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
@@ -53,6 +57,9 @@ public class GoodsIssueService:IGoodsIssueService
                 await _goodsIssue.Add(entity, token);
                 await _goodsIssueDetail.AddRange(
                     lines.Select(line => ToLineEntity(line, entity.Id)).ToList(), token);
+
+                await _transaction.AddRange(
+                    lines.Select(line => ToTransactionEntity(line,entity)).ToList(),token);
 
                 return Result<GoodsIssueDto>.Success(_mapper.Map<GoodsIssueDto>(entity));
             }, ct);
@@ -149,6 +156,10 @@ public class GoodsIssueService:IGoodsIssueService
 
                 await _goodsIssueDetail.AddRange(
                     lines.Where(l => l.Id == 0).Select(line => ToLineEntity(line, id)).ToList(), token);
+
+
+                await _transaction.AddRange(
+                    lines.Select(line => ToTransactionEntity(line, entity)).ToList(), token);
             }
 
             return Result<GoodsIssueDto>.Success(_mapper.Map<GoodsIssueDto>(entity));
@@ -161,6 +172,27 @@ public class GoodsIssueService:IGoodsIssueService
         entity.GoodsIssueId = (long)receiptId;
         return entity;
     }
+
+    private Entities.InventoryTransaction ToTransactionEntity(GoodsIssueDetailRequest line, Entities.GoodsIssue issue )
+    {
+        var entity = new Entities.InventoryTransaction
+        {
+            TransactionNo = issue.IssueNo,
+            TransactionType = (int)InventoryTransactionType.Issue,
+            ReferenceType = (int)InventoryReferenceType.GoodsIssue,
+            //ReferenceId = issue.Id,
+            ProductId = line.ProductId,
+            WarehouseId = (ulong)(issue.WarehouseId ??0),
+            WarehouseLocationId = line.LocationId,
+            Quantity = line.Quantity,
+            UnitId = line.UnitId,
+            TransactionDate = DateTime.Now
+        };
+
+        return entity;
+    }
+
+    
 }
 
 public class GoodsIssueDetailService : IGoodsIssueDetailService
@@ -220,7 +252,6 @@ public class GoodsIssueDetailService : IGoodsIssueDetailService
         await _repository.Update(entity, ct);
         return Result<GoodsIssueDetailDto>.Success(_mapper.Map<GoodsIssueDetailDto>(entity));
     }
-
    
 }
 

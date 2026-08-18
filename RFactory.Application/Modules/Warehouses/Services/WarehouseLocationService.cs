@@ -1,5 +1,7 @@
 using AutoMapper;
+using RFactory.Application.Modules.GoodsReceipt.DTOs;
 using RFactory.Application.Modules.Warehouses.DTOs;
+using RFactory.Infrastructure.Dapper;
 using RFactory.Infrastructure.Persistence;
 using RFactory.Shared.Results;
 using Entities = RFactory.Infrastructure.Entities;
@@ -10,15 +12,25 @@ public class WarehouseLocationService : IWarehouseLocationService
 {
     private readonly IRepository<Entities.WarehouseLocation> _repository;
     private readonly IMapper _mapper;
+    private readonly IProcedureExecutor _proc;
 
-    public WarehouseLocationService(IRepository<Entities.WarehouseLocation> repository, IMapper mapper)
+    public WarehouseLocationService(IRepository<Entities.WarehouseLocation> repository, IMapper mapper, IProcedureExecutor proc)
     {
         _repository = repository;
         _mapper = mapper;
+        _proc = proc;
     }
 
-    public async Task<List<WarehouseLocationDto>> GetAllAsync(CancellationToken ct = default)
-        => _mapper.Map<List<WarehouseLocationDto>>(await _repository.GetAll(ct));
+    public async Task<List<WarehouseLocationDto>> GetAllAsync(ulong? warehouseId,CancellationToken ct = default)
+    //=> _mapper.Map<List<WarehouseLocationDto>>(await _repository.GetAll(ct));
+    {
+        var param = new
+        {
+            p_WarehouseId = warehouseId.HasValue ? warehouseId.Value : 0,
+        };
+        var entities = await _proc.QueryAsync<WarehouseLocationDto>("spGetWarehouseLocation", param);
+        return entities;
+    }
 
     public async Task<WarehouseLocationDto?> GetByIdAsync(ulong id, CancellationToken ct = default)
     {
