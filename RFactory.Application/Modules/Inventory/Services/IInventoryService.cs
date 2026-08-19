@@ -1,5 +1,6 @@
 ﻿using RFactory.Application.Modules.GoodsIssue.DTOs;
 using RFactory.Application.Modules.Inventory.DTOs;
+using RFactory.Infrastructure.Entities;
 using RFactory.Shared.Results;
 using System;
 using System.Collections.Generic;
@@ -25,4 +26,9 @@ public interface IInventoryTransactionService
     Task<Result<InventoryTransactionDto>> CreateAsync(CreateInventoryTransactionRequest request, CancellationToken ct = default);
     Task<Result<InventoryTransactionDto>> UpdateAsync(ulong id, UpdateInventoryTransactionRequest request, CancellationToken ct = default);
     Task<Result> DeleteAsync(ulong id, CancellationToken ct = default);
+    List<InventoryTransaction> BuildTransactionChanges(
+    IEnumerable<CreateInventoryTransactionRequest> oldLines,
+    IEnumerable<CreateInventoryTransactionRequest> newLines,
+    Func<CreateInventoryTransactionRequest, InventoryTransactionActionType, InventoryTransaction> createTransaction,
+    CancellationToken ct = default);
 }

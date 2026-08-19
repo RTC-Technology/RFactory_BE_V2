@@ -569,6 +569,7 @@ public partial class RFactoryContext : DbContext
             entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
 
             entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.ActionType).HasComment("1:Add; 2: Update; 3:Remove");
             entity.Property(e => e.CreatedBy).HasMaxLength(50);
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")

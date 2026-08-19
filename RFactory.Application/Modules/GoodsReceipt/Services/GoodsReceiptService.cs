@@ -2,6 +2,7 @@ using AutoMapper;
 using RFactory.Application.Modules.GoodsIssue.DTOs;
 using RFactory.Application.Modules.GoodsReceipt.DTOs;
 using RFactory.Application.Modules.Inventory.DTOs;
+using RFactory.Application.Modules.Inventory.Services;
 using RFactory.Infrastructure.Entities;
 using RFactory.Infrastructure.Persistence;
 using RFactory.Shared.Results;
@@ -19,6 +20,7 @@ public class GoodsReceiptService : IGoodsReceiptService
     private readonly IRepository<Entities.GoodsReceiptDetail> _goodsReceiptDetail;
     private readonly IRepository<Entities.Inventory> _inventory;
     private readonly IRepository<Entities.InventoryTransaction> _transaction;
+    private readonly IInventoryTransactionService _transactionService;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
@@ -27,13 +29,15 @@ public class GoodsReceiptService : IGoodsReceiptService
         IRepository<Entities.GoodsReceiptDetail> goodsReceiptDetail,
         IRepository<Entities.Inventory> inventory,
         IRepository<Entities.InventoryTransaction> transaction,
-        IUnitOfWork unitOfWork,
+        IInventoryTransactionService transactionService,
+    IUnitOfWork unitOfWork,
         IMapper mapper)
     {
         _goodsReceipt = goodsReceipt;
         _goodsReceiptDetail = goodsReceiptDetail;
         _inventory = inventory;
         _transaction = transaction;
+        _transactionService = transactionService;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
@@ -57,11 +61,23 @@ public class GoodsReceiptService : IGoodsReceiptService
             await _goodsReceiptDetail.AddRange(
                 lines.Select(line => ToLineEntity(line, entity.Id)).ToList(), token);
 
-            await _inventory.AddRange(
-                lines.Select(l => ToIventoryEntity(l, entity)).ToList(), token);
+            //Add inventory
+            var inventories = await AddInventoryAsync(lines, token);
+            if (inventories.Count > 0) await _inventory.AddRange(inventories, token);
 
-            await _transaction.AddRange(
-                    lines.Select(line => ToTransactionEntity(line, entity)).ToList(), token);
+            //Add inventory transaction
+            var newTransactionLines = lines.Select(x => new CreateInventoryTransactionRequest
+            {
+                Id = x.Id,
+                ProductId = (long)x.ProductId,
+                WarehouseId = (long)entity.WarehouseId,
+                WarehouseLocationId = (long)(x.LocationId ?? 0),
+                Quantity = x.Quantity,
+                UnitId = (long)x.UnitId
+            }).ToList();
+            var transactionChanges = _transactionService.BuildTransactionChanges([], newTransactionLines, (line, action) => ToTransactionEntity(line, action, entity));
+            if (transactionChanges.Count > 0) await _transaction.AddRange(transactionChanges, token);
+
 
             return Result<GoodsReceiptDto>.Success(_mapper.Map<GoodsReceiptDto>(entity));
         }, ct);
@@ -84,6 +100,22 @@ public class GoodsReceiptService : IGoodsReceiptService
         {
             await _goodsReceiptDetail.DeleteRange(lines, token);
             await _goodsReceipt.Delete(entity, token);
+
+            //Add inventory transaction
+            var oldLines = lines.Select(x => new CreateInventoryTransactionRequest
+            {
+                Id = x.Id,
+                ProductId = x.ProductId,
+                WarehouseId = entity.WarehouseId,
+                WarehouseLocationId = x.LocationId,
+                Quantity = x.Quantity,
+                UnitId = x.UnitId
+            }).ToList();
+            
+
+            var transactionChanges = _transactionService.BuildTransactionChanges(oldLines, [], (line, action) => ToTransactionEntity(line, action, entity));
+            if (transactionChanges.Count > 0) await _transaction.AddRange(transactionChanges, token);
+
             return Result.Success();
         }, ct);
     }
@@ -130,6 +162,13 @@ public class GoodsReceiptService : IGoodsReceiptService
                 $"Line(s) {string.Join(", ", foreign)} do not belong to Goods Receipt {id}.");
         }
 
+        var oldReceipt = new Entities.GoodsReceipt
+        {
+            Id = entity.Id,
+            ReceiptNo = entity.ReceiptNo,
+            WarehouseId = entity.WarehouseId
+        };
+
         _mapper.Map(request, entity);
 
         return await _unitOfWork.ExecuteAsync(async token =>
@@ -140,6 +179,31 @@ public class GoodsReceiptService : IGoodsReceiptService
             // the receipt really has no lines left.
             if (lines is not null)
             {
+
+                var newLines = lines.ToList();
+                var oldLines = stored.Select(x => new CreateInventoryTransactionRequest
+                {
+                    Id = x.Id,
+                    ProductId = x.ProductId,
+                    WarehouseId = oldReceipt.WarehouseId,
+                    WarehouseLocationId = x.LocationId,
+                    Quantity = x.Quantity,
+                    UnitId = x.UnitId
+                }).ToList();
+
+                var newTransactionLines = lines.Select(x => new CreateInventoryTransactionRequest
+                {
+                    Id = x.Id,
+                    ProductId = (long)(x.ProductId),
+                    WarehouseId = (long)(entity.WarehouseId),
+                    WarehouseLocationId = (long)(x.LocationId ?? 0),
+                    Quantity = x.Quantity,
+                    UnitId = (long)(x.UnitId)
+                }).ToList();
+
+                var transactionChanges = _transactionService.BuildTransactionChanges(oldLines, newTransactionLines, (line, action) => ToTransactionEntity(line, action, entity));
+
+
                 await _goodsReceiptDetail.DeleteRange(
                     stored.Where(s => !keptIds.Contains(s.Id)).ToList(), token);
 
@@ -153,9 +217,13 @@ public class GoodsReceiptService : IGoodsReceiptService
                 await _goodsReceiptDetail.AddRange(
                     lines.Where(l => l.Id == 0).Select(line => ToLineEntity(line, id)).ToList(), token);
 
+                //Add inventory
+                var inventories = await AddInventoryAsync(lines, token);
+                if (inventories.Count > 0) await _inventory.AddRange(inventories, token);
 
-                await _transaction.AddRange(
-                    lines.Select(line => ToTransactionEntity(line, entity)).ToList(), token);
+                //Add inventory transaction
+                if (transactionChanges.Count > 0) await _transaction.AddRange(transactionChanges, token);
+
             }
 
             return Result<GoodsReceiptDto>.Success(_mapper.Map<GoodsReceiptDto>(entity));
@@ -169,41 +237,61 @@ public class GoodsReceiptService : IGoodsReceiptService
         return entity;
     }
 
-    private Entities.InventoryTransaction ToTransactionEntity(GoodsReceiptLineRequest line, Entities.GoodsReceipt receipt)
+    private Entities.Inventory ToInventoryEntity(GoodsReceiptLineRequest line)
     {
-        var entity = new Entities.InventoryTransaction
+        var entity = new Entities.Inventory
         {
-            TransactionNo = receipt.ReceiptNo,
-            TransactionType = (int)InventoryTransactionType.Receipt,
-            ReferenceType = (int)InventoryReferenceType.GoodsReceipt,
-            //ReferenceId = issue.Id,
-            ProductId = line.ProductId,
-            WarehouseId = (ulong)(receipt.WarehouseId),
-            WarehouseLocationId = line.LocationId,
-            Quantity = line.Quantity,
-            UnitId = line.UnitId,
-            TransactionDate = DateTime.Now
+            ProductId = (long)line.ProductId,
+            LocationId = (long)(line.LocationId ?? 0),
+            //LotNo = line.LotNo,
+            //SerialNo = line.SerialNo,
+            //Quantity = line.Quantity,
+            //ReservedQuantity = 0,
+            //AvailableQuantity = 0,
+            UnitId = (long)line.UnitId,
+            LastTransactionDate = DateTime.Now
         };
 
         return entity;
     }
 
-    private Entities.Inventory ToIventoryEntity(GoodsReceiptLineRequest line, Entities.GoodsReceipt receipt)
-    {
-        var entity = new Entities.Inventory
-        {
-            ProductId = (long)line.ProductId,
-            WarehouseId =(long)receipt.WarehouseId,
-            LocationId = (long)(line.LocationId ?? 0),
-            LotNo = line.LotNo,
-            SerialNo = line.SerialNo,
-            Quantity = line.Quantity,
-            ReservedQuantity = 0,
-            AvailableQuantity = 0,
-            UnitId =(long) line.UnitId,
-            LastTransactionDate = DateTime.Now
-        };
 
-        return entity;
+    private async Task<List<Entities.Inventory>> AddInventoryAsync(List<GoodsReceiptLineRequest> lines, CancellationToken ct = default)
+    {
+        var inventories = new List<Entities.Inventory>();
+
+        foreach (var line in lines)
+        {
+            var locationId = (long)(line.LocationId ?? 0);
+
+            var existing = await _inventory.FirstOrDefault(x => x.ProductId == (long)line.ProductId && x.LocationId == locationId, ct);
+
+            if (existing is null)
+            {
+                inventories.Add(ToInventoryEntity(line));
+            }
+        }
+
+        return inventories;
+    }
+
+    private Entities.InventoryTransaction ToTransactionEntity(CreateInventoryTransactionRequest line, InventoryTransactionActionType action, Entities.GoodsReceipt entity)
+    {
+        return new Entities.InventoryTransaction
+        {
+            TransactionNo = entity.ReceiptNo,
+            TransactionType = (int)InventoryTransactionType.Receipt,
+            ReferenceType = (int)InventoryReferenceType.GoodsReceipt,
+            ReferenceId = (long)entity.Id,
+
+            ProductId = line.ProductId,
+            WarehouseId = line.WarehouseId,
+            WarehouseLocationId = line.WarehouseLocationId,
+            Quantity = line.Quantity,
+            UnitId = line.UnitId,
+
+            ActionType = (int)action,
+            TransactionDate = DateTime.UtcNow
+        };
     }
 }

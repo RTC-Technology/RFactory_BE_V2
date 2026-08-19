@@ -41,7 +41,7 @@ public class InventoryService : IInventoryService
     }
 
     /// <summary>Lines of one receipt, or every line when <paramref name="receiptId"/> is null.</summary>
-    public async Task<List<InventoryDto>> GetAllAsync( CancellationToken ct = default)
+    public async Task<List<InventoryDto>> GetAllAsync(CancellationToken ct = default)
     => _mapper.Map<List<InventoryDto>>(await _repository.GetAll(ct));
 
 
@@ -119,4 +119,58 @@ public class InventoryTransactionService : IInventoryTransactionService
         return Result<InventoryTransactionDto>.Success(_mapper.Map<InventoryTransactionDto>(entity));
     }
 
+    public List<InventoryTransaction> BuildTransactionChanges(IEnumerable<CreateInventoryTransactionRequest> oldLines, IEnumerable<CreateInventoryTransactionRequest> newLines, Func<CreateInventoryTransactionRequest, InventoryTransactionActionType, InventoryTransaction> createTransaction, CancellationToken ct)
+    {
+        ct.ThrowIfCancellationRequested();
+
+        var oldById = oldLines.ToDictionary(x => x.Id);
+        var newList = newLines.ToList();
+
+        var transactions = new List<InventoryTransaction>();
+
+        // REMOVE
+        foreach (var oldLine in oldById.Values)
+        {
+            ct.ThrowIfCancellationRequested();
+
+            if (!newList.Any(x => x.Id == oldLine.Id))
+            {
+                transactions.Add(createTransaction(oldLine, InventoryTransactionActionType.Remove));
+            }
+        }
+
+        // UPDATE / REPLACE
+        foreach (var newLine in newList.Where(x => x.Id != 0))
+        {
+            ct.ThrowIfCancellationRequested();
+
+            if (!oldById.TryGetValue(newLine.Id, out var oldLine)) continue;
+
+            // Product hoặc Warehouse thay đổi
+            if (oldLine.ProductId != newLine.ProductId || oldLine.WarehouseId != newLine.WarehouseId)
+            {
+                transactions.Add(createTransaction(oldLine, InventoryTransactionActionType.Remove));
+                transactions.Add(createTransaction(newLine, InventoryTransactionActionType.Add));
+                continue;
+            }
+
+            // Cùng Product + Warehouse nhưng thông tin line thay đổi
+            if (oldLine.WarehouseLocationId != newLine.WarehouseLocationId ||
+                oldLine.Quantity != newLine.Quantity ||
+                oldLine.UnitId != newLine.UnitId
+                )
+            {
+                transactions.Add(createTransaction(newLine, InventoryTransactionActionType.Update));
+            }
+        }
+
+        // ADD
+        foreach (var newLine in newList.Where(x => x.Id == 0))
+        {
+            ct.ThrowIfCancellationRequested();
+            transactions.Add(createTransaction(newLine,InventoryTransactionActionType.Add));
+        }
+
+        return transactions;
+    }
 }

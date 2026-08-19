@@ -73,6 +73,10 @@ namespace RFactory.Application.Modules.Inventory.DTOs
         public int ReferenceType { get; set; }
         public long? ReferenceId { get; set; }
         public DateTime? TransactionDate { get; set; }
+        /// <summary>
+        /// 1:Add; 2: Update; 3:Remove
+        /// </summary>
+        public int? ActionType { get; set; }
     }
 
     public class CreateInventoryTransactionRequest
@@ -218,5 +222,23 @@ namespace RFactory.Application.Modules.Inventory.DTOs
         /// 10: SCRAP - Scrap
         /// </summary>
         Scrap = 10
+    }
+
+    public enum InventoryTransactionActionType
+    {
+        /// <summary>
+        /// Thêm sản phẩm vào phiếu
+        /// </summary>
+        Add = 1,
+
+        /// <summary>
+        /// Xóa sản phẩm khỏi phiếu
+        /// </summary>
+        Update = 2,
+
+        /// <summary>
+        /// Cập nhật thông tin sản phẩm
+        /// </summary>
+        Remove = 3
     }
 }
