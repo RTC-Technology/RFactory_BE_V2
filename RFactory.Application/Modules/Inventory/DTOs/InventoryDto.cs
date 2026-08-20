@@ -19,6 +19,14 @@ namespace RFactory.Application.Modules.Inventory.DTOs
         public decimal? AvailableQuantity { get; set; }
         public long? UnitId { get; set; }
         public DateTime? LastTransactionDate { get; set; }
+        public decimal? TotalReceipt { get; set; }
+        public decimal? TotalIssue { get; set; }
+        public string? ProductCode { get; set; }
+        public string? ProductName { get; set; }
+        public string? WarehouseLocationCode { get; set; }
+        public string? WarehouseLocationName { get; set; }
+        public string? UnitCode { get; set; }
+        public string? UnitName { get; set; }
     }
 
     public class CreateInventoryRequest

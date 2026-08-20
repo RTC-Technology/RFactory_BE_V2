@@ -57,46 +57,6 @@ public class GoodsReceiptDetailService : IGoodsReceiptDetailService
     /// <summary>Lines of one receipt, or every line when <paramref name="receiptId"/> is null.</summary>
     public async Task<List<GoodsReceiptDetailDto>> GetAllAsync(ulong? receiptId, CancellationToken ct = default)
     {
-        //var entities = receiptId.HasValue
-        //    ? await _repository.Where(x => x.GoodsReceiptId == (long)receiptId.Value, ct)
-        //    : await _repository.GetAll(ct);
-
-
-        //var receipts = await _receipt.GetAll(ct);
-        //var products = await _product.GetAll(ct);
-
-        //var result = entities
-        //            .Join(
-        //                receipts,
-        //                detail => detail.GoodsReceiptId,
-        //                receipt => (long)receipt.Id,
-        //                (detail, receipt) => new
-        //                {
-        //                    detail,
-        //                    receipt.ReceiptDate
-        //                })
-        //            .Join(
-        //                products,
-        //                x => x.detail.ProductId,
-        //                product => (long)product.Id,
-        //                (x, product) => new
-        //                {
-        //                    x.detail,
-        //                    x.ReceiptDate,
-        //                    Product = product
-        //                })
-        //            .Select(x =>
-        //            {
-        //                var dto = _mapper.Map<GoodsReceiptDetailDto>(x.detail);
-        //                dto.ReceiptDate = x.ReceiptDate;
-        //                dto.ProductCode = x.Product.ProductCode;
-        //                dto.ProductName = x.Product.ProductName;
-        //                return dto;
-        //            })
-        //            .ToList();
-
-        //return _mapper.Map<List<GoodsReceiptDetailDto>>(entities);
-
         var param = new
         {
             p_GoodsReceiptId = receiptId.HasValue ? receiptId.Value : 0,

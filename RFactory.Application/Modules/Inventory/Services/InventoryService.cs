@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using RFactory.Application.Modules.GoodsReceipt.DTOs;
 using RFactory.Application.Modules.Inventory.DTOs;
 using RFactory.Application.Modules.Product.DTOs;
 using RFactory.Infrastructure.Dapper;
@@ -42,8 +43,12 @@ public class InventoryService : IInventoryService
 
     /// <summary>Lines of one receipt, or every line when <paramref name="receiptId"/> is null.</summary>
     public async Task<List<InventoryDto>> GetAllAsync(CancellationToken ct = default)
-    => _mapper.Map<List<InventoryDto>>(await _repository.GetAll(ct));
-
+    //=> _mapper.Map<List<InventoryDto>>(await _repository.GetAll(ct));
+    {
+        var param = new{};
+        var entities = await _proc.QueryAsync<InventoryDto>("spGetInventory", param);
+        return entities;
+    }
 
 
     public async Task<InventoryDto?> GetByIdAsync(ulong id, CancellationToken ct = default)
