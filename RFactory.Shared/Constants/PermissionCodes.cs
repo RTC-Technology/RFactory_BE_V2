@@ -275,5 +275,12 @@ public static class PermissionCodes
         public const string Edit = "inventory-transaction.edit";
         public const string Delete = "inventory-transaction.delete";
     }
+    public static class PurchaseOrder
+    {
+        public const string View = "purchase-order.view";
+        public const string Add = "purchase-order.add";
+        public const string Edit = "purchase-order.edit";
+        public const string Delete = "purchase-order.delete";
+    }
 
 }

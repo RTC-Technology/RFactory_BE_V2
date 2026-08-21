@@ -6,9 +6,9 @@ using System.Collections.Generic;
 namespace RFactory.Infrastructure.Entities;
 
 /// <summary>
-/// Base Template Table
+/// Purchase Order Detail
 /// </summary>
-public partial class GoodsReceiptDetail
+public partial class PurchaseOrderDetail
 {
     /// <summary>
     /// Primary Key
@@ -25,27 +25,13 @@ public partial class GoodsReceiptDetail
 
     public bool IsDeleted { get; set; }
 
-    public long GoodsReceiptId { get; set; }
+    public ulong PurchaseOrderId { get; set; }
 
-    public long ProductId { get; set; }
+    public ulong ProductId { get; set; }
 
-    public long UnitId { get; set; }
-
-    public long? LocationId { get; set; }
-
-    public string LotNo { get; set; }
-
-    public string SerialNo { get; set; }
+    public ulong UnitId { get; set; }
 
     public decimal Quantity { get; set; }
 
-    public decimal ReceivedQty { get; set; }
-
     public decimal? UnitPrice { get; set; }
-
-    public string Remark { get; set; }
-
-    public DateTime? ExpireDate { get; set; }
-
-    public int? PurchaseOrderDetailId { get; set; }
 }

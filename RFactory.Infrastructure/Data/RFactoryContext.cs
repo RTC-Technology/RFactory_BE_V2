@@ -52,6 +52,8 @@ public partial class RFactoryContext : DbContext
 
     public virtual DbSet<Line> Lines { get; set; }
 
+    public virtual DbSet<Lot> Lots { get; set; }
+
     public virtual DbSet<Machine> Machines { get; set; }
 
     public virtual DbSet<MachineType> MachineTypes { get; set; }
@@ -73,6 +75,12 @@ public partial class RFactoryContext : DbContext
     public virtual DbSet<ProductType> ProductTypes { get; set; }
 
     public virtual DbSet<ProductUnit> ProductUnits { get; set; }
+
+    public virtual DbSet<PurchaseOrder> PurchaseOrders { get; set; }
+
+    public virtual DbSet<PurchaseOrderDeliverySchedule> PurchaseOrderDeliverySchedules { get; set; }
+
+    public virtual DbSet<PurchaseOrderDetail> PurchaseOrderDetails { get; set; }
 
     public virtual DbSet<Routing> Routings { get; set; }
 
@@ -607,6 +615,38 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });
 
+        modelBuilder.Entity<Lot>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("lot", tb => tb.HasComment("Lot"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.HasIndex(e => e.ProductId, "IX_ProductId");
+
+            entity.HasIndex(e => e.SupplierId, "IX_SupplierId");
+
+            entity.HasIndex(e => e.LotNo, "UX_LotNo").IsUnique();
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.LotNo)
+                .IsRequired()
+                .HasMaxLength(100);
+            entity.Property(e => e.Status).HasComment("1: AVAILABLE;2: HOLD; 3: BLOCKED; 4: CLOSED");
+            entity.Property(e => e.SupplierLotNo).HasMaxLength(100);
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
         modelBuilder.Entity<Machine>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
@@ -872,6 +912,90 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<PurchaseOrder>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("purchase_order", tb => tb.HasComment("Purchase Order"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.HasIndex(e => e.SupplierId, "IX_SupplierId");
+
+            entity.HasIndex(e => e.Pono, "UX_PONo").IsUnique();
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.ExpectedDeliveryDate).HasColumnType("datetime");
+            entity.Property(e => e.OrderDate).HasColumnType("datetime");
+            entity.Property(e => e.Pono)
+                .IsRequired()
+                .HasMaxLength(50)
+                .HasColumnName("PONo");
+            entity.Property(e => e.Status).HasComment("1: Draft; 2: Approved; 3: PartiallyReceived; 4: FullyReceived; 5: Cancelled; 6: Closed");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<PurchaseOrderDeliverySchedule>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("purchase_order_delivery_schedule", tb => tb.HasComment("Purchase Order Delivery Schedule"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.HasIndex(e => e.PurchaseOrderDetailId, "IX_PurchaseOrderDetailId");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.DeliveryDate).HasColumnType("datetime");
+            entity.Property(e => e.Quantity).HasPrecision(18, 4);
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<PurchaseOrderDetail>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("purchase_order_detail", tb => tb.HasComment("Purchase Order Detail"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.HasIndex(e => e.ProductId, "IX_ProductId");
+
+            entity.HasIndex(e => e.PurchaseOrderId, "IX_PurchaseOrderId");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Quantity).HasPrecision(18, 4);
+            entity.Property(e => e.UnitPrice).HasPrecision(18, 4);
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });

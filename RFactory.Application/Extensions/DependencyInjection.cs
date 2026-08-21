@@ -7,6 +7,7 @@ using RFactory.Application.Modules.GoodsReceipt.Services;
 using RFactory.Application.Modules.Inventory.Services;
 using RFactory.Application.Modules.MasterData.Services;
 using RFactory.Application.Modules.Product.Services;
+using RFactory.Application.Modules.PurchaseOrder.Services;
 using RFactory.Application.Modules.Warehouses.Services;
 
 namespace RFactory.Application.Extensions;
@@ -85,6 +86,10 @@ public static class DependencyInjection
         //Inventory
         services.AddScoped<IInventoryService, InventoryService>();   
         services.AddScoped<IInventoryTransactionService, InventoryTransactionService>();   
+
+        //Purchase Order
+        services.AddScoped<IPurchaseOrderService, PurchaseOrderService>();   
+        //services.AddScoped<IInventoryTransactionService, InventoryTransactionService>();   
 
 
         return services;
