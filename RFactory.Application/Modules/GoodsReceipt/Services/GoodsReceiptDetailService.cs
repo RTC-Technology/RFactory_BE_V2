@@ -1,7 +1,9 @@
 using AutoMapper;
 using RFactory.Application.Modules.GoodsReceipt.DTOs;
+using RFactory.Infrastructure.Dapper;
 using RFactory.Infrastructure.Persistence;
 using RFactory.Shared.Results;
+using System.Collections.Generic;
 using Entities = RFactory.Infrastructure.Entities;
 
 namespace RFactory.Application.Modules.GoodsReceipt.Services;
@@ -14,17 +16,22 @@ namespace RFactory.Application.Modules.GoodsReceipt.Services;
 public class GoodsReceiptDetailService : IGoodsReceiptDetailService
 {
     private readonly IRepository<Entities.GoodsReceiptDetail> _repository;
-    private readonly IRepository<Entities.GoodsReceipt> _receipt;
+    //private readonly IRepository<Entities.GoodsReceipt> _receipt;
+    //private readonly IRepository<Entities.Product> _product;
     private readonly IMapper _mapper;
+    private readonly IProcedureExecutor _proc;
 
     public GoodsReceiptDetailService(
         IRepository<Entities.GoodsReceiptDetail> repository,
-        IRepository<Entities.GoodsReceipt> receipt,
-    IMapper mapper)
+        //IRepository<Entities.GoodsReceipt> receipt,
+        //IRepository<Entities.Product> product,
+    IMapper mapper, IProcedureExecutor proc)
     {
         _repository = repository;
-        _receipt = receipt;
+        //_receipt = receipt;
+        //_product = product;
         _mapper = mapper;
+        _proc = proc;
     }
 
     public async Task<Result<GoodsReceiptDetailDto>> CreateAsync(CreateGoodsReceiptDetailRequest request, CancellationToken ct = default)
@@ -50,33 +57,12 @@ public class GoodsReceiptDetailService : IGoodsReceiptDetailService
     /// <summary>Lines of one receipt, or every line when <paramref name="receiptId"/> is null.</summary>
     public async Task<List<GoodsReceiptDetailDto>> GetAllAsync(ulong? receiptId, CancellationToken ct = default)
     {
-        var entities = receiptId.HasValue
-            ? await _repository.Where(x => x.GoodsReceiptId == (long)receiptId.Value, ct)
-            : await _repository.GetAll(ct);
-
-
-        var receipts = await _receipt.GetAll(ct);
-
-        var result = entities
-                    .Join(
-                        receipts,
-                        detail => detail.GoodsReceiptId,
-                        receipt => (long)receipt.Id,
-                        (detail, receipt) => new
-                        {
-                            detail,
-                            receipt.ReceiptDate
-                        })
-                    .Select(x =>
-                    {
-                        var dto = _mapper.Map<GoodsReceiptDetailDto>(x.detail);
-                        dto.ReceiptDate = x.ReceiptDate;
-                        return dto;
-                    })
-                    .ToList();
-
-
-        return _mapper.Map<List<GoodsReceiptDetailDto>>(result);
+        var param = new
+        {
+            p_GoodsReceiptId = receiptId.HasValue ? receiptId.Value : 0,
+        };
+        var entities = await _proc.QueryAsync<GoodsReceiptDetailDto>("spGetGoodsReceiptDetail", param);
+        return entities;
     }
 
     public async Task<GoodsReceiptDetailDto?> GetByIdAsync(ulong id, CancellationToken ct = default)

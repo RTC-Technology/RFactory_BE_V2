@@ -27,7 +27,10 @@ public partial class InventoryTransaction
 
     public string TransactionNo { get; set; }
 
-    public string TransactionType { get; set; }
+    /// <summary>
+    /// 1: RECEIPT; 2: ISSUE; 3: TRANSFER; 4: ADJUST; 5: PRODUCTION_IN; 6: PRODUCTION_OUT; 7: SCRAP
+    /// </summary>
+    public int? TransactionType { get; set; }
 
     public long? ProductId { get; set; }
 
@@ -47,4 +50,9 @@ public partial class InventoryTransaction
     public long? ReferenceId { get; set; }
 
     public DateTime? TransactionDate { get; set; }
+
+    /// <summary>
+    /// 1:Add; 2: Update; 3:Remove
+    /// </summary>
+    public int? ActionType { get; set; }
 }

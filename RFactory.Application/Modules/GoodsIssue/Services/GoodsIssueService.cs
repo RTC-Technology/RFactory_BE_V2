@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using RFactory.Application.Modules.GoodsIssue.DTOs;
 using RFactory.Application.Modules.GoodsReceipt.DTOs;
+using RFactory.Application.Modules.Inventory.DTOs;
+using RFactory.Application.Modules.Inventory.Services;
 using RFactory.Infrastructure.Entities;
 using RFactory.Infrastructure.Persistence;
 using RFactory.Shared.Results;
@@ -14,21 +16,27 @@ using Entities = RFactory.Infrastructure.Entities;
 
 namespace RFactory.Application.Modules.GoodsIssue.Services;
 
-public class GoodsIssueService:IGoodsIssueService
+public class GoodsIssueService : IGoodsIssueService
 {
     private readonly IRepository<Entities.GoodsIssue> _goodsIssue;
     private readonly IRepository<Entities.GoodsIssueDetail> _goodsIssueDetail;
+    private readonly IRepository<Entities.InventoryTransaction> _transaction;
+    private readonly IInventoryTransactionService _transactionService;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
     public GoodsIssueService(
         IRepository<Entities.GoodsIssue> goodsIssue,
         IRepository<Entities.GoodsIssueDetail> goodsIssueDetail,
+        IRepository<Entities.InventoryTransaction> transaction,
+        IInventoryTransactionService transactionService,
         IUnitOfWork unitOfWork,
         IMapper mapper)
     {
         _goodsIssue = goodsIssue;
         _goodsIssueDetail = goodsIssueDetail;
+        _transaction = transaction;
+        _transactionService = transactionService;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
@@ -50,9 +58,26 @@ public class GoodsIssueService:IGoodsIssueService
             {
                 // Two saves rather than one: the lines need the id the database generates for
                 // the receipt, which is only known once the receipt is in.
+                
+
                 await _goodsIssue.Add(entity, token);
                 await _goodsIssueDetail.AddRange(
                     lines.Select(line => ToLineEntity(line, entity.Id)).ToList(), token);
+
+                var newTransactionLines = lines.Select(x => new CreateInventoryTransactionRequest
+                {
+                    Id = x.Id,
+                    ProductId = (long)(x.ProductId ?? 0),
+                    WarehouseId = (long)(entity.WarehouseId ?? 0),
+                    WarehouseLocationId = (long)(x.LocationId ?? 0),
+                    Quantity = x.Quantity,
+                    UnitId = (long)(x.UnitId ?? 0)
+                }).ToList();
+                var transactionChanges = _transactionService.BuildTransactionChanges([], newTransactionLines, (line, action) => ToTransactionEntity(line, action, entity));
+                if (transactionChanges.Count > 0)
+                {
+                    await _transaction.AddRange(transactionChanges, token);
+                }
 
                 return Result<GoodsIssueDto>.Success(_mapper.Map<GoodsIssueDto>(entity));
             }, ct);
@@ -81,6 +106,22 @@ public class GoodsIssueService:IGoodsIssueService
         {
             await _goodsIssueDetail.DeleteRange(lines, token);
             await _goodsIssue.Delete(entity, token);
+
+            //Add inventory transaction
+            var oldLines = lines.Select(x => new CreateInventoryTransactionRequest
+            {
+                Id = x.Id,
+                ProductId = x.ProductId,
+                WarehouseId = entity.WarehouseId,
+                WarehouseLocationId = x.LocationId,
+                Quantity = x.Quantity,
+                UnitId = x.UnitId
+            }).ToList();
+
+
+            var transactionChanges = _transactionService.BuildTransactionChanges(oldLines, [], (line, action) => ToTransactionEntity(line, action, entity));
+            if (transactionChanges.Count > 0) await _transaction.AddRange(transactionChanges, token);
+
             return Result.Success();
         }, ct);
     }
@@ -127,6 +168,13 @@ public class GoodsIssueService:IGoodsIssueService
                 $"Line(s) {string.Join(", ", foreign)} do not belong to Goods Receipt {id}.");
         }
 
+        var oldIssue = new Entities.GoodsIssue
+        {
+            Id = entity.Id,
+            IssueNo = entity.IssueNo,
+            WarehouseId = entity.WarehouseId
+        };
+
         _mapper.Map(request, entity);
 
         return await _unitOfWork.ExecuteAsync(async token =>
@@ -137,8 +185,30 @@ public class GoodsIssueService:IGoodsIssueService
             // the receipt really has no lines left.
             if (lines is not null)
             {
-                await _goodsIssueDetail.DeleteRange(
-                    stored.Where(s => !keptIds.Contains(s.Id)).ToList(), token);
+                var newLines = lines.ToList();
+                var oldLines = stored.Select(x => new CreateInventoryTransactionRequest
+                {
+                    Id = x.Id,
+                    ProductId = x.ProductId,
+                    WarehouseId = (long)(oldIssue.WarehouseId ?? 0),
+                    WarehouseLocationId = x.LocationId,
+                    Quantity = x.Quantity,
+                    UnitId = x.UnitId
+                }).ToList();
+
+                var newTransactionLines = lines.Select(x => new CreateInventoryTransactionRequest
+                {
+                    Id = x.Id,
+                    ProductId = (long)(x.ProductId ?? 0),
+                    WarehouseId = (long)(entity.WarehouseId ?? 0),
+                    WarehouseLocationId = (long)(x.LocationId ?? 0),
+                    Quantity = x.Quantity,
+                    UnitId = (long)(x.UnitId ?? 0)
+                }).ToList();
+
+                var transactionChanges = _transactionService.BuildTransactionChanges(oldLines,newTransactionLines,(line, action) => ToTransactionEntity(line,action,entity));
+
+                await _goodsIssueDetail.DeleteRange(stored.Where(s => !keptIds.Contains(s.Id)).ToList(), token);
 
                 foreach (var line in lines.Where(l => l.Id != 0))
                 {
@@ -147,8 +217,12 @@ public class GoodsIssueService:IGoodsIssueService
                     await _goodsIssueDetail.Update(target, token);
                 }
 
-                await _goodsIssueDetail.AddRange(
-                    lines.Where(l => l.Id == 0).Select(line => ToLineEntity(line, id)).ToList(), token);
+                await _goodsIssueDetail.AddRange(lines.Where(l => l.Id == 0).Select(line => ToLineEntity(line, id)).ToList(), token);
+
+                if (transactionChanges.Count > 0)
+                {
+                    await _transaction.AddRange(transactionChanges,token);
+                }
             }
 
             return Result<GoodsIssueDto>.Success(_mapper.Map<GoodsIssueDto>(entity));
@@ -161,6 +235,27 @@ public class GoodsIssueService:IGoodsIssueService
         entity.GoodsIssueId = (long)receiptId;
         return entity;
     }
+
+    private Entities.InventoryTransaction ToTransactionEntity(CreateInventoryTransactionRequest line,InventoryTransactionActionType action,Entities.GoodsIssue entity)
+    {
+        return new Entities.InventoryTransaction
+        {
+            TransactionNo = entity.IssueNo,
+            TransactionType = (int)InventoryTransactionType.Issue,
+            ReferenceType = (int)InventoryReferenceType.GoodsIssue,
+            ReferenceId = (long)entity.Id,
+
+            ProductId = line.ProductId,
+            WarehouseId = line.WarehouseId,
+            WarehouseLocationId = line.WarehouseLocationId,
+            Quantity = line.Quantity,
+            UnitId = line.UnitId,
+
+            ActionType = (int)action,
+            TransactionDate = DateTime.UtcNow
+        };
+    }
+
 }
 
 public class GoodsIssueDetailService : IGoodsIssueDetailService
@@ -221,6 +316,5 @@ public class GoodsIssueDetailService : IGoodsIssueDetailService
         return Result<GoodsIssueDetailDto>.Success(_mapper.Map<GoodsIssueDetailDto>(entity));
     }
 
-   
 }
 
