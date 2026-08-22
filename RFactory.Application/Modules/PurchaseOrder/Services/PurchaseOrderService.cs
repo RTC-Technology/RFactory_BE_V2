@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using RFactory.Application.Modules.GoodsIssue.DTOs;
+using RFactory.Application.Modules.GoodsReceipt.DTOs;
 using RFactory.Application.Modules.Inventory.DTOs;
 using RFactory.Application.Modules.Inventory.Services;
 using RFactory.Application.Modules.PurchaseOrder.DTOs;
@@ -98,7 +99,17 @@ namespace RFactory.Application.Modules.PurchaseOrder.Services
         }
 
         public async Task<List<PurchaseOrderDto>> GetAllAsync(CancellationToken ct = default)
-        => _mapper.Map<List<PurchaseOrderDto>>(await _po.GetAll(ct));
+        //=> _mapper.Map<List<PurchaseOrderDto>>(await _po.GetAll(ct));
+        {
+            var pos = _mapper.Map<List<PurchaseOrderDto>>(await _po.GetAll(ct)); ;
+            var details = _mapper.Map<List<PurchaseOrderDetailDto>>(await _poDetail.GetAll(ct)); ;
+            foreach (var po in pos)
+            {
+                po.PurchaseOrderDetails = _mapper.Map<List<PurchaseOrderDetailDto>>(details.Where(x => x.PurchaseOrderId == po.Id).ToList());
+            }
+            
+            return pos;
+        }
 
         public async Task<PurchaseOrderDto?> GetByIdAsync(ulong id, CancellationToken ct = default)
         {
@@ -179,10 +190,108 @@ namespace RFactory.Application.Modules.PurchaseOrder.Services
             return entity;
         }
     }
-    //public class PurchaseOrderDetailService : IPurchaseOrderDetailService
-    //{
-    //}
-    //public class PurchaseOrderDeliveryScheduleService : IPurchaseOrderDeliveryScheduleService
-    //{
-    //}
+
+    public class PurchaseOrderDetailService : IPurchaseOrderDetailService
+    {
+        private readonly IRepository<Entities.PurchaseOrderDetail> _repository;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+
+        public PurchaseOrderDetailService(
+            IRepository<Entities.PurchaseOrderDetail> repository,
+            IUnitOfWork unitOfWork,
+            IMapper mapper)
+        {
+            _repository = repository;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
+        }
+
+        public async Task<Result<PurchaseOrderDetailDto>> CreateAsync(PurchaseOrderDetailRequest request, CancellationToken ct = default)
+        {
+            var entity = _mapper.Map<Entities.PurchaseOrderDetail>(request);
+            await _repository.Add(entity, ct);
+            return Result<PurchaseOrderDetailDto>.Success(_mapper.Map<PurchaseOrderDetailDto>(entity));
+        }
+
+        public async Task<Result> DeleteAsync(ulong id, CancellationToken ct = default)
+        {
+            var deleted = await _repository.DeleteById(id, ct);
+            return deleted ? Result.Success() : Result.Failure($"Purchase order line {id} was not found.");
+        }
+
+        public async Task<List<PurchaseOrderDetailDto>> GetAllAsync(CancellationToken ct = default)
+        => _mapper.Map<List<PurchaseOrderDetailDto>>(await _repository.GetAll(ct));
+
+        public async Task<PurchaseOrderDetailDto?> GetByIdAsync(ulong id, CancellationToken ct = default)
+        {
+            var entity = await _repository.GetById(id, ct);
+            return entity is null ? null : _mapper.Map<PurchaseOrderDetailDto>(entity);
+        }
+
+        public async Task<Result<PurchaseOrderDetailDto>> UpdateAsync(ulong id, PurchaseOrderDetailRequest request, CancellationToken ct = default)
+        {
+            var entity = await _repository.GetById(id, ct);
+            if (entity is null)
+            {
+                return Result<PurchaseOrderDetailDto>.Failure($"Purchase order line {id} was not found.");
+            }
+
+            _mapper.Map(request, entity);
+            await _repository.Update(entity, ct);
+            return Result<PurchaseOrderDetailDto>.Success(_mapper.Map<PurchaseOrderDetailDto>(entity));
+        }
+    }
+
+    public class PurchaseOrderDeliveryScheduleService : IPurchaseOrderDeliveryScheduleService
+    {
+        private readonly IRepository<Entities.PurchaseOrderDeliverySchedule> _repository;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+
+        public PurchaseOrderDeliveryScheduleService(
+            IRepository<Entities.PurchaseOrderDeliverySchedule> repository,
+            IUnitOfWork unitOfWork,
+            IMapper mapper)
+        {
+            _repository = repository;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
+        }
+
+        public async Task<Result<PurchaseOrderDeliveryScheduleDto>> CreateAsync(PurchaseOrderDeliveryScheduleRequest request, CancellationToken ct = default)
+        {
+            var entity = _mapper.Map<Entities.PurchaseOrderDeliverySchedule>(request);
+            await _repository.Add(entity, ct);
+            return Result<PurchaseOrderDeliveryScheduleDto>.Success(_mapper.Map<PurchaseOrderDeliveryScheduleDto>(entity));
+        }
+
+        public async Task<Result> DeleteAsync(ulong id, CancellationToken ct = default)
+        {
+            var deleted = await _repository.DeleteById(id, ct);
+            return deleted ? Result.Success() : Result.Failure($"Purchase order delivery schedule line {id} was not found.");
+        }
+
+        public async Task<List<PurchaseOrderDeliveryScheduleDto>> GetAllAsync(CancellationToken ct = default)
+         => _mapper.Map<List<PurchaseOrderDeliveryScheduleDto>>(await _repository.GetAll(ct));
+
+        public async Task<PurchaseOrderDeliveryScheduleDto?> GetByIdAsync(ulong id, CancellationToken ct = default)
+        {
+            var entity = await _repository.GetById(id, ct);
+            return entity is null ? null : _mapper.Map<PurchaseOrderDeliveryScheduleDto>(entity);
+        }
+
+        public async Task<Result<PurchaseOrderDeliveryScheduleDto>> UpdateAsync(ulong id, PurchaseOrderDeliveryScheduleRequest request, CancellationToken ct = default)
+        {
+            var entity = await _repository.GetById(id, ct);
+            if (entity is null)
+            {
+                return Result<PurchaseOrderDeliveryScheduleDto>.Failure($"Purchase order delivery schedule line {id} was not found.");
+            }
+
+            _mapper.Map(request, entity);
+            await _repository.Update(entity, ct);
+            return Result<PurchaseOrderDeliveryScheduleDto>.Success(_mapper.Map<PurchaseOrderDeliveryScheduleDto>(entity));
+        }
+    }
 }

@@ -2,10 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RFactory.API.Authorization;
-using RFactory.Application.Modules.GoodsIssue.DTOs;
-using RFactory.Application.Modules.GoodsIssue.Services;
-using RFactory.Application.Modules.Inventory.DTOs;
-using RFactory.Application.Modules.Inventory.Services;
 using RFactory.Application.Modules.PurchaseOrder.DTOs;
 using RFactory.Application.Modules.PurchaseOrder.Services;
 using RFactory.Shared.Api;
@@ -13,42 +9,42 @@ using RFactory.Shared.Constants;
 
 namespace RFactory.API.Controllers.PurchaseOrder
 {
-    [Route("api/purchase-order/orders")]
+    [Route("api/purchase-order/delivery-schedules")]
     [ApiController]
     [Authorize]
-    public class PurchaseOrderController : ControllerBase
+    public class PurchaseOrderDeliveryScheduleController : ControllerBase
     {
-        private readonly IPurchaseOrderService _service;
+        private readonly IPurchaseOrderDeliveryScheduleService _service;
 
-        public PurchaseOrderController(IPurchaseOrderService service)
+        public PurchaseOrderDeliveryScheduleController(IPurchaseOrderDeliveryScheduleService service)
         {
             _service = service;
         }
 
         [HttpGet]
-        [RequirePermission(PermissionCodes.PurchaseOrder.View)]
-        public async Task<ActionResult<ApiResponse<List<PurchaseOrderDto>>>> GetAll(CancellationToken ct)
+        [RequirePermission(PermissionCodes.PurchaseOrderDeliverySchedule.View)]
+        public async Task<ActionResult<ApiResponse<List<PurchaseOrderDeliveryScheduleDto>>>> GetAll(CancellationToken ct)
         {
             var items = await _service.GetAllAsync(ct);
             return Ok(ApiResponseFactory.Success(items));
         }
 
         [HttpGet("{id:long}")]
-        [RequirePermission(PermissionCodes.PurchaseOrder.View)]
-        public async Task<ActionResult<ApiResponse<PurchaseOrderDto>>> GetById(ulong id, CancellationToken ct)
+        [RequirePermission(PermissionCodes.PurchaseOrderDeliverySchedule.View)]
+        public async Task<ActionResult<ApiResponse<PurchaseOrderDeliveryScheduleDto>>> GetById(ulong id, CancellationToken ct)
         {
             var item = await _service.GetByIdAsync(id, ct);
             if (item is null)
             {
-                return NotFound(ApiResponseFactory.Fail($"Purchase order {id} was not found.", System.Net.HttpStatusCode.NotFound));
+                return NotFound(ApiResponseFactory.Fail($"Purchase order delivery schedule line {id} was not found.", System.Net.HttpStatusCode.NotFound));
             }
 
             return Ok(ApiResponseFactory.Success(item));
         }
 
         [HttpPost]
-        [RequirePermission(PermissionCodes.PurchaseOrder.Add)]
-        public async Task<ActionResult<ApiResponse<PurchaseOrderDto>>> Create(PurchaseOrderRequest request, CancellationToken ct)
+        [RequirePermission(PermissionCodes.PurchaseOrderDeliverySchedule.Add)]
+        public async Task<ActionResult<ApiResponse<PurchaseOrderDeliveryScheduleDto>>> Create(PurchaseOrderDeliveryScheduleRequest request, CancellationToken ct)
         {
             var result = await _service.CreateAsync(request, ct);
             if (!result.Succeeded)
@@ -60,8 +56,8 @@ namespace RFactory.API.Controllers.PurchaseOrder
         }
 
         [HttpPut("{id:long}")]
-        [RequirePermission(PermissionCodes.PurchaseOrder.Edit)]
-        public async Task<ActionResult<ApiResponse<PurchaseOrderDto>>> Update(ulong id, PurchaseOrderRequest request, CancellationToken ct)
+        [RequirePermission(PermissionCodes.PurchaseOrderDeliverySchedule.Edit)]
+        public async Task<ActionResult<ApiResponse<PurchaseOrderDeliveryScheduleDto>>> Update(ulong id, PurchaseOrderDeliveryScheduleRequest request, CancellationToken ct)
         {
             var result = await _service.UpdateAsync(id, request, ct);
             if (!result.Succeeded)
@@ -73,7 +69,7 @@ namespace RFactory.API.Controllers.PurchaseOrder
         }
 
         [HttpDelete("{id:long}")]
-        [RequirePermission(PermissionCodes.PurchaseOrder.Delete)]
+        [RequirePermission(PermissionCodes.PurchaseOrderDeliverySchedule.Delete)]
         public async Task<ActionResult<ApiResponse<object?>>> Delete(ulong id, CancellationToken ct)
         {
             var result = await _service.DeleteAsync(id, ct);
@@ -82,7 +78,7 @@ namespace RFactory.API.Controllers.PurchaseOrder
                 return BadRequest(ApiResponseFactory.Fail(result.Error!));
             }
 
-            return Ok(ApiResponseFactory.Success<object?>(null, "Purchase order deleted."));
+            return Ok(ApiResponseFactory.Success<object?>(null, "Purchase order delivery schedule line deleted."));
         }
     }
 }

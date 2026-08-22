@@ -282,5 +282,19 @@ public static class PermissionCodes
         public const string Edit = "purchase-order.edit";
         public const string Delete = "purchase-order.delete";
     }
+    public static class PurchaseOrderDetail
+    {
+        public const string View = "purchase-order-detail.view";
+        public const string Add = "purchase-order-detail.add";
+        public const string Edit = "purchase-order-detail.edit";
+        public const string Delete = "purchase-order-detail.delete";
+    }
+    public static class PurchaseOrderDeliverySchedule
+    {
+        public const string View = "purchase-order-delivery-schedule.view";
+        public const string Add = "purchase-order-delivery-schedule.add";
+        public const string Edit = "purchase-order-delivery-schedule.edit";
+        public const string Delete = "purchase-order-delivery-schedule.delete";
+    }
 
 }

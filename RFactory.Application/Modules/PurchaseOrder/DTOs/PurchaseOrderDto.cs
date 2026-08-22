@@ -25,6 +25,7 @@ namespace RFactory.Application.Modules.PurchaseOrder.DTOs
         /// 1: Draft; 2: Approved; 3: PartiallyReceived; 4: FullyReceived; 5: Cancelled; 6: Closed
         /// </summary>
         public int? Status { get; set; }
+        public List<PurchaseOrderDetailDto>? PurchaseOrderDetails { get; set; }
     }
 
     public class PurchaseOrderRequest
@@ -57,6 +58,7 @@ namespace RFactory.Application.Modules.PurchaseOrder.DTOs
         public ulong UnitId { get; set; }
         public decimal Quantity { get; set; }
         public decimal? UnitPrice { get; set; }
+        public List<PurchaseOrderDeliveryScheduleDto>? PurchaseOrderDeliverySchedules{ get; set; }
     }
 
     public class PurchaseOrderDetailRequest
