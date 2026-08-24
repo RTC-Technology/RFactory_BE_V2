@@ -57,19 +57,20 @@ namespace RFactory.Application.Modules.PurchaseOrder.Services
                 await _poDetail.AddRange(detailEntities, token);
 
                 // 3. Map + insert Schedules
-                var scheduleEntities = new List<Entities.PurchaseOrderDeliverySchedule>();
+                //var scheduleEntities = new List<Entities.PurchaseOrderDeliverySchedule>();
 
-                for (var i = 0; i < lines.Count; i++)
-                {
-                    var line = lines[i];
-                    var detailEntity = detailEntities[i];
+                //for (var i = 0; i < lines.Count; i++)
+                //{
+                //    var line = lines[i];
+                //    var detailEntity = detailEntities[i];
 
-                    var schedules = line.PurchaseOrderDeliveryScheduleRequests ?? new List<PurchaseOrderDeliveryScheduleRequest>();
+                //    var schedules = line.PurchaseOrderDeliveryScheduleRequests ?? new List<PurchaseOrderDeliveryScheduleRequest>();
 
-                    scheduleEntities.AddRange(schedules.Select(schedule => ToScheduleEntity(schedule, detailEntity.Id)));
-                }
+                //    scheduleEntities.AddRange(schedules.Select(schedule => ToScheduleEntity(schedule, detailEntity.Id)));
+                //}
 
-                if (scheduleEntities.Count > 0) await _schedule.AddRange(scheduleEntities, token);
+                //if (scheduleEntities.Count > 0) await _schedule.AddRange(scheduleEntities, token);
+
                 return Result<PurchaseOrderDto>.Success(_mapper.Map<PurchaseOrderDto>(entity));
             }, ct);
         }
@@ -159,7 +160,15 @@ namespace RFactory.Application.Modules.PurchaseOrder.Services
                 // the receipt really has no lines left.
                 if (lines is not null)
                 {
-                    await _poDetail.DeleteRange(stored.Where(s => !keptIds.Contains(s.Id)).ToList(), token);
+                    var lineRemoves = stored.Where(s => !keptIds.Contains(s.Id)).ToList();
+                    foreach (var line in lineRemoves)
+                    {
+                        var scheduleStored = await _schedule.Where(x => x.PurchaseOrderDetailId == line.Id);
+                        await _schedule.DeleteRange(scheduleStored, token);
+                    }
+
+
+                    await _poDetail.DeleteRange(lineRemoves, token);
 
                     foreach (var line in lines.Where(l => l.Id != 0))
                     {
@@ -182,36 +191,67 @@ namespace RFactory.Application.Modules.PurchaseOrder.Services
             return entity;
         }
 
-        private Entities.PurchaseOrderDeliverySchedule ToScheduleEntity(PurchaseOrderDeliveryScheduleRequest schedule, ulong purchaseOrderDetailId)
-        {
-            var entity = _mapper.Map<Entities.PurchaseOrderDeliverySchedule>(schedule);
-            entity.PurchaseOrderDetailId = purchaseOrderDetailId;
-
-            return entity;
-        }
+        
     }
 
     public class PurchaseOrderDetailService : IPurchaseOrderDetailService
     {
         private readonly IRepository<Entities.PurchaseOrderDetail> _repository;
+        private readonly IRepository<Entities.PurchaseOrderDeliverySchedule> _schedule;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
         public PurchaseOrderDetailService(
             IRepository<Entities.PurchaseOrderDetail> repository,
+            IRepository<Entities.PurchaseOrderDeliverySchedule> schedule,
             IUnitOfWork unitOfWork,
             IMapper mapper)
         {
             _repository = repository;
+            _schedule = schedule;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
         public async Task<Result<PurchaseOrderDetailDto>> CreateAsync(PurchaseOrderDetailRequest request, CancellationToken ct = default)
         {
+            //var existing = await _po.FirstOrDefault(t => t.Pono == request.Pono, ct);
+            //if (existing is not null)
+            //{
+            //    return Result<PurchaseOrderDto>.Failure($"Purchase order '{request.Pono}' already exists.");
+            //}
+
             var entity = _mapper.Map<Entities.PurchaseOrderDetail>(request);
-            await _repository.Add(entity, ct);
-            return Result<PurchaseOrderDetailDto>.Success(_mapper.Map<PurchaseOrderDetailDto>(entity));
+            var lines = request.PurchaseOrderDeliveryScheduleRequests ?? new List<PurchaseOrderDeliveryScheduleRequest>();
+            //var schedules = lines.SelectMany(x => x.PurchaseOrderDeliveryScheduleRequests ?? new List<PurchaseOrderDeliveryScheduleRequest>());
+
+            return await _unitOfWork.ExecuteAsync(async token =>
+            {
+                // Two saves rather than one: the lines need the id the database generates for
+                // the receipt, which is only known once the receipt is in.
+                //await _po.Add(entity, token);
+
+                // 2. Map + insert Details
+                //var detailEntities = ;
+                await _schedule.AddRange(lines.Select(line => ToScheduleEntity(line, entity.Id)).ToList(), token);
+
+                // 3. Map + insert Schedules
+                //var scheduleEntities = new List<Entities.PurchaseOrderDeliverySchedule>();
+
+                //for (var i = 0; i < lines.Count; i++)
+                //{
+                //    var line = lines[i];
+                //    var detailEntity = detailEntities[i];
+
+                //    var schedules = line.PurchaseOrderDeliveryScheduleRequests ?? new List<PurchaseOrderDeliveryScheduleRequest>();
+
+                //    scheduleEntities.AddRange(schedules.Select(schedule => ToScheduleEntity(schedule, detailEntity.Id)));
+                //}
+
+                //if (scheduleEntities.Count > 0) await _schedule.AddRange(scheduleEntities, token);
+
+                return Result<PurchaseOrderDetailDto>.Success(_mapper.Map<PurchaseOrderDetailDto>(entity));
+            }, ct);
         }
 
         public async Task<Result> DeleteAsync(ulong id, CancellationToken ct = default)
@@ -237,9 +277,62 @@ namespace RFactory.Application.Modules.PurchaseOrder.Services
                 return Result<PurchaseOrderDetailDto>.Failure($"Purchase order line {id} was not found.");
             }
 
-            _mapper.Map(request, entity);
-            await _repository.Update(entity, ct);
-            return Result<PurchaseOrderDetailDto>.Success(_mapper.Map<PurchaseOrderDetailDto>(entity));
+            //var existing = await _repository.FirstOrDefault(t => t.Id != id, ct);
+            //if (existing is not null)
+            //{
+            //    return Result<PurchaseOrderDetailDto>.Failure($"Purchase order line '{request.Pono}' already exists.");
+            //}
+
+            //var receiptId = (long)id;
+            var stored = await _schedule.Where(l => l.PurchaseOrderDetailId == id, ct);
+
+            var lines = request.PurchaseOrderDeliveryScheduleRequests;
+            var keptIds = (lines ?? new List<PurchaseOrderDeliveryScheduleRequest>())
+                .Where(line => line.Id != 0)
+                .Select(line => line.Id)
+                .ToHashSet();
+
+            // The list replaces the whole set, so an id from another receipt would be edited
+            // here and dropped from where it belongs. Reject the payload instead.
+            var foreign = keptIds.Where(lineId => stored.All(s => s.Id != lineId)).ToList();
+            if (foreign.Count > 0)
+            {
+                return Result<PurchaseOrderDetailDto>.Failure(
+                    $"Line(s) {string.Join(", ", foreign)} do not belong to Purchase order {id}.");
+            }
+
+            //_mapper.Map(request, entity);
+
+            return await _unitOfWork.ExecuteAsync(async token =>
+            {
+                //await _repository.Update(entity, token);
+
+                // A null list means the caller is editing the header only; an empty one means
+                // the receipt really has no lines left.
+                if (lines is not null)
+                {
+                    await _schedule.DeleteRange(stored.Where(s => !keptIds.Contains(s.Id)).ToList(), token);
+
+                    foreach (var line in lines.Where(l => l.Id != 0))
+                    {
+                        var target = stored.First(s => s.Id == line.Id);
+                        _mapper.Map(line, target);
+                        await _schedule.Update(target, token);
+                    }
+
+                    await _schedule.AddRange(lines.Where(l => l.Id == 0).Select(line => ToScheduleEntity(line, id)).ToList(), token);
+                }
+
+                return Result<PurchaseOrderDetailDto>.Success(_mapper.Map<PurchaseOrderDetailDto>(entity));
+            }, ct);
+        }
+
+        private Entities.PurchaseOrderDeliverySchedule ToScheduleEntity(PurchaseOrderDeliveryScheduleRequest schedule, ulong purchaseOrderDetailId)
+        {
+            var entity = _mapper.Map<Entities.PurchaseOrderDeliverySchedule>(schedule);
+            entity.PurchaseOrderDetailId = purchaseOrderDetailId;
+
+            return entity;
         }
     }
 

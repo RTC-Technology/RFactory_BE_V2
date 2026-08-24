@@ -27,11 +27,66 @@ public partial class PurchaseOrderDetail
 
     public ulong PurchaseOrderId { get; set; }
 
+    /// <summary>
+    /// Số thứ tự dòng PO
+    /// </summary>
+    public int Stt { get; set; }
+
     public ulong ProductId { get; set; }
 
     public ulong UnitId { get; set; }
 
+    /// <summary>
+    /// Ngày yêu cầu vật tư
+    /// </summary>
+    public DateTime? RequiredDate { get; set; }
+
     public decimal Quantity { get; set; }
 
+    /// <summary>
+    /// Số lượng đã nhận
+    /// </summary>
+    public decimal ReceivedQuantity { get; set; }
+
+    /// <summary>
+    /// Số lượng bị từ chối
+    /// </summary>
+    public decimal RejectedQuantity { get; set; }
+
     public decimal? UnitPrice { get; set; }
+
+    /// <summary>
+    /// Phần trăm chiết khấu
+    /// </summary>
+    public decimal DiscountPercent { get; set; }
+
+    /// <summary>
+    /// Tiền chiết khấu
+    /// </summary>
+    public decimal DiscountAmount { get; set; }
+
+    /// <summary>
+    /// Phần trăm thuế
+    /// </summary>
+    public decimal TaxPercent { get; set; }
+
+    /// <summary>
+    /// Tiền thuế
+    /// </summary>
+    public decimal TaxAmount { get; set; }
+
+    /// <summary>
+    /// Thành tiền
+    /// </summary>
+    public decimal TotalAmount { get; set; }
+
+    /// <summary>
+    /// Kho nhận hàng
+    /// </summary>
+    public ulong? WarehouseId { get; set; }
+
+    /// <summary>
+    /// Ghi chú
+    /// </summary>
+    public string Remark { get; set; }
 }

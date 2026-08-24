@@ -9,44 +9,64 @@ namespace RFactory.Application.Modules.PurchaseOrder.DTOs
 {
     public class PurchaseOrderDto
     {
-        /// <summary>
-        /// Primary Key
-        /// </summary>
         public ulong Id { get; set; }
         public DateTime CreatedDate { get; set; }
+        public string? CreatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }
         public string? UpdatedBy { get; set; }
         public bool IsDeleted { get; set; }
-        public string Pono { get; set; } = string.Empty;
+        public string? Pono { get; set; }
         public ulong SupplierId { get; set; }
         public DateTime OrderDate { get; set; }
         public DateTime? ExpectedDeliveryDate { get; set; }
-        /// <summary>
-        /// 1: Draft; 2: Approved; 3: PartiallyReceived; 4: FullyReceived; 5: Cancelled; 6: Closed
-        /// </summary>
         public int? Status { get; set; }
+        public ulong? CurrencyId { get; set; }
+        public decimal? ExchangeRate { get; set; }
+        public ulong? PaymentTermId { get; set; }
+        public ulong? DeliveryTermId { get; set; }
+        public string? DeliveryAddress { get; set; }
+        public ulong? EmployeeId { get; set; }
+        public DateTime? RequestedDate { get; set; }
+        public decimal? SubTotal { get; set; }
+        public decimal? DiscountAmount { get; set; }
+        public decimal? TaxAmount { get; set; }
+        public decimal? ShippingAmount { get; set; }
+        public decimal? OtherAmount { get; set; }
+        public decimal? TotalAmount { get; set; }
+        public string? Remark { get; set; }
+        public DateTime? ApprovedDate { get; set; }
+        public string? ApprovedBy { get; set; }
         public List<PurchaseOrderDetailDto>? PurchaseOrderDetails { get; set; }
     }
 
     public class PurchaseOrderRequest
     {
-        public ulong Id { get; set; }
         public string Pono { get; set; } = string.Empty;
         public ulong SupplierId { get; set; }
         public DateTime OrderDate { get; set; }
         public DateTime? ExpectedDeliveryDate { get; set; }
-        /// <summary>
-        /// 1: Draft; 2: Approved; 3: PartiallyReceived; 4: FullyReceived; 5: Cancelled; 6: Closed
-        /// </summary>
         public int? Status { get; set; }
+        public ulong? CurrencyId { get; set; }
+        public decimal? ExchangeRate { get; set; }
+        public ulong? PaymentTermId { get; set; }
+        public ulong? DeliveryTermId { get; set; }
+        public string? DeliveryAddress { get; set; }
+        public ulong? EmployeeId { get; set; }
+        public DateTime? RequestedDate { get; set; }
+        public decimal? SubTotal { get; set; }
+        public decimal? DiscountAmount { get; set; }
+        public decimal? TaxAmount { get; set; }
+        public decimal? ShippingAmount { get; set; }
+        public decimal? OtherAmount { get; set; }
+        public decimal? TotalAmount { get; set; }
+        public string? Remark { get; set; }
+        public DateTime? ApprovedDate { get; set; }
+        public string? ApprovedBy { get; set; }
         public List<PurchaseOrderDetailRequest>? PurchaseOrderDetailRequests { get; set; }
     }
 
     public class PurchaseOrderDetailDto
     {
-        /// <summary>
-        /// Primary Key
-        /// </summary>
         public ulong Id { get; set; }
         public DateTime CreatedDate { get; set; }
         public string? CreatedBy { get; set; }
@@ -54,24 +74,43 @@ namespace RFactory.Application.Modules.PurchaseOrder.DTOs
         public string? UpdatedBy { get; set; }
         public bool IsDeleted { get; set; }
         public ulong PurchaseOrderId { get; set; }
+        public int Stt { get; set; }
         public ulong ProductId { get; set; }
         public ulong UnitId { get; set; }
+        public DateTime? RequiredDate { get; set; }
         public decimal Quantity { get; set; }
+        public decimal ReceivedQuantity { get; set; }
+        public decimal RejectedQuantity { get; set; }
         public decimal? UnitPrice { get; set; }
+        public decimal DiscountPercent { get; set; }
+        public decimal DiscountAmount { get; set; }
+        public decimal TaxPercent { get; set; }
+        public decimal TaxAmount { get; set; }
+        public decimal TotalAmount { get; set; }
+        public ulong? WarehouseId { get; set; }
+        public string? Note { get; set; }
         public List<PurchaseOrderDeliveryScheduleDto>? PurchaseOrderDeliverySchedules{ get; set; }
     }
 
     public class PurchaseOrderDetailRequest
     {
-        /// <summary>
-        /// Primary Key
-        /// </summary>
         public ulong Id { get; set; }
         public ulong PurchaseOrderId { get; set; }
+        public int Stt { get; set; }
         public ulong ProductId { get; set; }
         public ulong UnitId { get; set; }
+        public DateTime? RequiredDate { get; set; }
         public decimal Quantity { get; set; }
+        public decimal ReceivedQuantity { get; set; }
+        public decimal RejectedQuantity { get; set; }
         public decimal? UnitPrice { get; set; }
+        public decimal DiscountPercent { get; set; }
+        public decimal DiscountAmount { get; set; }
+        public decimal TaxPercent { get; set; }
+        public decimal TaxAmount { get; set; }
+        public decimal TotalAmount { get; set; }
+        public ulong? WarehouseId { get; set; }
+        public string? Note { get; set; }
         public List<PurchaseOrderDeliveryScheduleRequest>? PurchaseOrderDeliveryScheduleRequests { get; set; }
     }
 

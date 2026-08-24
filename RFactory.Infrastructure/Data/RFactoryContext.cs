@@ -933,17 +933,55 @@ public partial class RFactoryContext : DbContext
             entity.HasIndex(e => e.Pono, "UX_PONo").IsUnique();
 
             entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.ApprovedBy)
+                .HasMaxLength(50)
+                .HasComment("Người duyệt");
+            entity.Property(e => e.ApprovedDate)
+                .HasComment("Ngày duyệt")
+                .HasColumnType("datetime");
             entity.Property(e => e.CreatedBy).HasMaxLength(50);
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
+            entity.Property(e => e.CurrencyId).HasComment("Loại tiền tệ");
+            entity.Property(e => e.DeliveryAddress).HasColumnType("text");
+            entity.Property(e => e.DeliveryTermId).HasComment("Điều khoản giao hàng");
+            entity.Property(e => e.DiscountAmount)
+                .HasPrecision(18, 2)
+                .HasComment("Tổng tiền chiết khấu");
+            entity.Property(e => e.EmployeeId).HasComment("Nhân viên phụ trách mua hàng");
+            entity.Property(e => e.ExchangeRate)
+                .HasPrecision(18, 6)
+                .HasComment("Tỷ giá");
             entity.Property(e => e.ExpectedDeliveryDate).HasColumnType("datetime");
             entity.Property(e => e.OrderDate).HasColumnType("datetime");
+            entity.Property(e => e.OtherAmount)
+                .HasPrecision(18, 2)
+                .HasComment("Chi phí khác");
+            entity.Property(e => e.PaymentTermId).HasComment("Điều khoản thanh toán");
             entity.Property(e => e.Pono)
                 .IsRequired()
                 .HasMaxLength(50)
                 .HasColumnName("PONo");
+            entity.Property(e => e.Remark)
+                .HasComment("Ghi chú")
+                .HasColumnType("text");
+            entity.Property(e => e.RequestedDate)
+                .HasComment("Ngày yêu cầu mua")
+                .HasColumnType("datetime");
+            entity.Property(e => e.ShippingAmount)
+                .HasPrecision(18, 2)
+                .HasComment("Phí vận chuyển");
             entity.Property(e => e.Status).HasComment("1: Draft; 2: Approved; 3: PartiallyReceived; 4: FullyReceived; 5: Cancelled; 6: Closed");
+            entity.Property(e => e.SubTotal)
+                .HasPrecision(18, 2)
+                .HasComment("Tổng tiền trước thuế");
+            entity.Property(e => e.TaxAmount)
+                .HasPrecision(18, 2)
+                .HasComment("Tổng tiền thuế");
+            entity.Property(e => e.TotalAmount)
+                .HasPrecision(18, 2)
+                .HasComment("Tổng giá trị PO");
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });
@@ -994,10 +1032,41 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
+            entity.Property(e => e.DiscountAmount)
+                .HasPrecision(18, 4)
+                .HasComment("Tiền chiết khấu");
+            entity.Property(e => e.DiscountPercent)
+                .HasPrecision(8, 4)
+                .HasComment("Phần trăm chiết khấu");
             entity.Property(e => e.Quantity).HasPrecision(18, 4);
+            entity.Property(e => e.ReceivedQuantity)
+                .HasPrecision(18, 4)
+                .HasComment("Số lượng đã nhận");
+            entity.Property(e => e.RejectedQuantity)
+                .HasPrecision(18, 4)
+                .HasComment("Số lượng bị từ chối");
+            entity.Property(e => e.Remark)
+                .HasComment("Ghi chú")
+                .HasColumnType("text");
+            entity.Property(e => e.RequiredDate)
+                .HasComment("Ngày yêu cầu vật tư")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Stt)
+                .HasDefaultValueSql("'1'")
+                .HasComment("Số thứ tự dòng PO");
+            entity.Property(e => e.TaxAmount)
+                .HasPrecision(18, 4)
+                .HasComment("Tiền thuế");
+            entity.Property(e => e.TaxPercent)
+                .HasPrecision(8, 4)
+                .HasComment("Phần trăm thuế");
+            entity.Property(e => e.TotalAmount)
+                .HasPrecision(18, 4)
+                .HasComment("Thành tiền");
             entity.Property(e => e.UnitPrice).HasPrecision(18, 4);
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            entity.Property(e => e.WarehouseId).HasComment("Kho nhận hàng");
         });
 
         modelBuilder.Entity<Routing>(entity =>

@@ -37,4 +37,81 @@ public partial class PurchaseOrder
     /// 1: Draft; 2: Approved; 3: PartiallyReceived; 4: FullyReceived; 5: Cancelled; 6: Closed
     /// </summary>
     public int? Status { get; set; }
+
+    /// <summary>
+    /// Loại tiền tệ
+    /// </summary>
+    public ulong? CurrencyId { get; set; }
+
+    /// <summary>
+    /// Tỷ giá
+    /// </summary>
+    public decimal? ExchangeRate { get; set; }
+
+    /// <summary>
+    /// Điều khoản thanh toán
+    /// </summary>
+    public ulong? PaymentTermId { get; set; }
+
+    /// <summary>
+    /// Điều khoản giao hàng
+    /// </summary>
+    public ulong? DeliveryTermId { get; set; }
+
+    public string DeliveryAddress { get; set; }
+
+    /// <summary>
+    /// Nhân viên phụ trách mua hàng
+    /// </summary>
+    public ulong? EmployeeId { get; set; }
+
+    /// <summary>
+    /// Ngày yêu cầu mua
+    /// </summary>
+    public DateTime? RequestedDate { get; set; }
+
+    /// <summary>
+    /// Tổng tiền trước thuế
+    /// </summary>
+    public decimal? SubTotal { get; set; }
+
+    /// <summary>
+    /// Tổng tiền chiết khấu
+    /// </summary>
+    public decimal? DiscountAmount { get; set; }
+
+    /// <summary>
+    /// Tổng tiền thuế
+    /// </summary>
+    public decimal? TaxAmount { get; set; }
+
+    /// <summary>
+    /// Phí vận chuyển
+    /// </summary>
+    public decimal? ShippingAmount { get; set; }
+
+    /// <summary>
+    /// Chi phí khác
+    /// </summary>
+    public decimal? OtherAmount { get; set; }
+
+    /// <summary>
+    /// Tổng giá trị PO
+    /// </summary>
+    public decimal? TotalAmount { get; set; }
+
+    /// <summary>
+    /// Ghi chú
+    /// </summary>
+    public string Remark { get; set; }
+
+    /// <summary>
+    /// Ngày duyệt
+    /// </summary>
+    public DateTime? ApprovedDate { get; set; }
+
+    /// <summary>
+    /// Người duyệt
+    /// </summary>
+    public string ApprovedBy { get; set; }
 }
