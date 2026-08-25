@@ -95,6 +95,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "lot",
+         "ObjectType": 0
+      },
+      {
          "Name": "machine",
          "ObjectType": 0
       },
@@ -136,6 +140,18 @@
       },
       {
          "Name": "product_unit",
+         "ObjectType": 0
+      },
+      {
+         "Name": "purchase_order",
+         "ObjectType": 0
+      },
+      {
+         "Name": "purchase_order_delivery_schedule",
+         "ObjectType": 0
+      },
+      {
+         "Name": "purchase_order_detail",
          "ObjectType": 0
       },
       {
