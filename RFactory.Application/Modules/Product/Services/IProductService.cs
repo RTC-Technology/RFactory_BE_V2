@@ -12,6 +12,15 @@ public interface IProductTypeService
     Task<Result> DeleteAsync(ulong id, CancellationToken ct = default);
 }
 
+public interface IProductGroupService
+{
+    Task<List<ProductGroupDto>> GetAllAsync(CancellationToken ct = default);
+    Task<ProductGroupDto?> GetByIdAsync(ulong id, CancellationToken ct = default);
+    Task<Result<ProductGroupDto>> CreateAsync(ProductGroupRequest request, CancellationToken ct = default);
+    Task<Result<ProductGroupDto>> UpdateAsync(ulong id, ProductGroupRequest request, CancellationToken ct = default);
+    Task<Result> DeleteAsync(ulong id, CancellationToken ct = default);
+}
+
 public interface IProductService
 {
     Task<List<ProductDto>> GetAllAsync(CancellationToken ct = default);

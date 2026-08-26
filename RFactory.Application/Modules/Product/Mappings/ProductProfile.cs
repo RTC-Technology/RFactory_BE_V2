@@ -17,6 +17,9 @@ public class ProductProfile : Profile
         CreateMap<CreateProductTypeRequest, Entities.ProductType>();
         CreateMap<UpdateProductTypeRequest, Entities.ProductType>();
 
+        CreateMap<Entities.ProductGroup, ProductGroupDto>();
+        CreateMap<ProductGroupRequest, Entities.ProductGroup>();
+
         CreateMap<Entities.Product, ProductDto>();
         CreateMap<CreateProductRequest, Entities.Product>();
         CreateMap<UpdateProductRequest, Entities.Product>();

@@ -77,6 +77,13 @@ public static class PermissionCodes
         public const string Edit = "product-type.edit";
         public const string Delete = "product-type.delete";
     }
+    public static class ProductGroup
+    {
+        public const string View = "product-group.view";
+        public const string Add = "product-group.add";
+        public const string Edit = "product-group.edit";
+        public const string Delete = "product-group.delete";
+    }
 
     public static class Product
     {

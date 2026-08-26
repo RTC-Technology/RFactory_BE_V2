@@ -30,6 +30,28 @@ public class UpdateProductTypeRequest
     public bool IsActive { get; set; }
 }
 
+// ─── Product Group─────────────────────────────────────────────────────────────────
+public class ProductGroupDto
+{
+    public ulong Id { get; set; }
+    public DateTime CreatedDate { get; set; }
+    public string? CreatedBy { get; set; }
+    public DateTime? UpdatedDate { get; set; }
+    public string? UpdatedBy { get; set; }
+    public bool IsDeleted { get; set; }
+    public string GroupNo { get; set; } = string.Empty;
+    public string GroupName { get; set; } = string.Empty;
+    public ulong? ParentId { get; set; }
+}
+
+public class ProductGroupRequest
+{
+    public string GroupNo { get; set; } = string.Empty;
+    public string GroupName { get; set; } = string.Empty;
+    public ulong? ParentId { get; set; }
+}
+
+
 // ─── Product ─────────────────────────────────────────────────────────────────
 
 public class ProductDto

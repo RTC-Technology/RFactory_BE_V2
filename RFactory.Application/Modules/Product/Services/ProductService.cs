@@ -88,6 +88,82 @@ public class ProductTypeService : IProductTypeService
     }
 }
 
+public class ProductGroupService : IProductGroupService
+{
+    private readonly IRepository<Entities.ProductGroup> _repository;
+    private readonly IRepository<Entities.Product> _products;
+    private readonly IMapper _mapper;
+
+    public ProductGroupService(
+        IRepository<Entities.ProductGroup> repository,
+        IRepository<Entities.Product> products,
+        IMapper mapper)
+    {
+        _repository = repository;
+        _products = products;
+        _mapper = mapper;
+    }
+
+    public async Task<List<ProductGroupDto>> GetAllAsync(CancellationToken ct = default)
+        => _mapper.Map<List<ProductGroupDto>>(await _repository.GetAll(ct));
+
+    public async Task<ProductGroupDto?> GetByIdAsync(ulong id, CancellationToken ct = default)
+    {
+        var entity = await _repository.GetById(id, ct);
+        return entity is null ? null : _mapper.Map<ProductGroupDto>(entity);
+    }
+
+    public async Task<Result<ProductGroupDto>> CreateAsync(ProductGroupRequest request, CancellationToken ct = default)
+    {
+        var existing = await _repository.FirstOrDefault(p => p.GroupNo == request.GroupNo, ct);
+        if (existing is not null)
+        {
+            return Result<ProductGroupDto>.Failure($"Group no '{request.GroupNo}' already exists.");
+        }
+
+        var entity = _mapper.Map<Entities.ProductGroup>(request);
+        await _repository.Add(entity, ct);
+        return Result<ProductGroupDto>.Success(_mapper.Map<ProductGroupDto>(entity));
+    }
+
+    public async Task<Result<ProductGroupDto>> UpdateAsync(ulong id, ProductGroupRequest request, CancellationToken ct = default)
+    {
+        var entity = await _repository.GetById(id, ct);
+        if (entity is null)
+        {
+            return Result<ProductGroupDto>.Failure($"Product {id} was not found.");
+        }
+
+        var existing = await _repository.FirstOrDefault(p => p.Id != id && p.GroupNo == request.GroupNo, ct);
+        if (existing is not null)
+        {
+            return Result<ProductGroupDto>.Failure($"Group no '{request.GroupNo}' already exists.");
+        }
+
+        _mapper.Map(request, entity);
+        await _repository.Update(entity, ct);
+        return Result<ProductGroupDto>.Success(_mapper.Map<ProductGroupDto>(entity));
+    }
+
+    public async Task<Result> DeleteAsync(ulong id, CancellationToken ct = default)
+    {
+        var entity = await _repository.GetById(id, ct);
+        if (entity is null)
+        {
+            return Result.Failure($"Product group {id} was not found.");
+        }
+
+        var inUse = await _products.Where(p => p.ProductGroupId == (long)id, ct);
+        if (inUse.Count > 0)
+        {
+            return Result.Failure($"Product group {id} is still used by {inUse.Count} product(s).");
+        }
+
+        await _repository.Delete(entity, ct);
+        return Result.Success();
+    }
+}
+
 public class ProductService : IProductService
 {
     private readonly IRepository<Entities.Product> _repository;

@@ -50,6 +50,7 @@ public static class DependencyInjection
 
         // Product
         services.AddScoped<IProductTypeService, ProductTypeService>();
+        services.AddScoped<IProductGroupService, ProductGroupService>();
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IBomService, BomService>();
         services.AddScoped<IBomDetailService, BomDetailService>();

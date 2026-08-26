@@ -72,6 +72,8 @@ public partial class RFactoryContext : DbContext
 
     public virtual DbSet<Product> Products { get; set; }
 
+    public virtual DbSet<ProductGroup> ProductGroups { get; set; }
+
     public virtual DbSet<ProductType> ProductTypes { get; set; }
 
     public virtual DbSet<ProductUnit> ProductUnits { get; set; }
@@ -859,10 +861,73 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
+            entity.Property(e => e.DefaultWarehouseId).HasComment("Kho ngầm định");
+            entity.Property(e => e.Description)
+                .HasComment("Mô tả")
+                .HasColumnType("text");
             entity.Property(e => e.DrawingNo).HasMaxLength(255);
             entity.Property(e => e.DrawingPath).HasMaxLength(255);
+            entity.Property(e => e.FixedPurchasePrice)
+                .HasPrecision(18, 2)
+                .HasComment("Đơn giá mua cố định");
+            entity.Property(e => e.IsOutsourced).HasComment("Là thành phẩm thuê gia công");
+            entity.Property(e => e.MaxStock)
+                .HasPrecision(18, 3)
+                .HasComment("Tồn tối đa");
+            entity.Property(e => e.MinStock)
+                .HasPrecision(18, 3)
+                .HasComment("Tồn tối thiểu");
+            entity.Property(e => e.PreparationTime)
+                .HasPrecision(10, 2)
+                .HasComment("Thời gian chuẩn bị");
             entity.Property(e => e.ProductCode).HasMaxLength(50);
+            entity.Property(e => e.ProductGroupId).HasComment("Nhóm VTHH");
             entity.Property(e => e.ProductName).HasMaxLength(255);
+            entity.Property(e => e.ProductNature).HasComment("Tính chất vật tư hàng hóa (1. Finished Product; 2. Raw Material; 3. Goods; 4. Tools and Equipment)");
+            entity.Property(e => e.ProductionColor)
+                .HasMaxLength(20)
+                .HasComment("Màu KHSX");
+            entity.Property(e => e.ProductionUnitId).HasComment("Đơn vị tính sản xuất");
+            entity.Property(e => e.StandardProductionTime)
+                .HasPrecision(10, 3)
+                .HasComment("Thời gian sản xuất tiêu chuẩn");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            entity.Property(e => e.VatRate)
+                .HasPrecision(8, 4)
+                .HasComment("Thuế suất GTGT (%)");
+            entity.Property(e => e.WarrantyPeriod)
+                .HasPrecision(10, 2)
+                .HasComment("Thời hạn bảo hành");
+            entity.Property(e => e.WarrantyPeriodUnit).HasComment("Đơn vị thời hạn bảo hành");
+            entity.Property(e => e.WastageRate)
+                .HasPrecision(8, 4)
+                .HasComment("Tỷ lệ hao hụt (%)");
+        });
+
+        modelBuilder.Entity<ProductGroup>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("product_group", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.GroupName)
+                .IsRequired()
+                .HasMaxLength(255);
+            entity.Property(e => e.GroupNo)
+                .IsRequired()
+                .HasMaxLength(50);
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });

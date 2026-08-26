@@ -135,6 +135,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "product_group",
+         "ObjectType": 0
+      },
+      {
          "Name": "product_type",
          "ObjectType": 0
       },
