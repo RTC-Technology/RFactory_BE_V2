@@ -19,7 +19,7 @@ public interface IUnitConversionService
 {
     Task<List<UnitConversionDto>> GetAllAsync(CancellationToken ct = default);
     Task<UnitConversionDto?> GetByIdAsync(ulong id, CancellationToken ct = default);
-    Task<Result<UnitConversionDto>> CreateAsync(CreateUnitConversionRequest request, CancellationToken ct = default);
+    Task<Result<UnitConversionDto>> CreateAsync(UnitConversionRequest request, CancellationToken ct = default);
     Task<Result<UnitConversionDto>> UpdateAsync(ulong id, UpdateUnitConversionRequest request, CancellationToken ct = default);
     Task<Result> DeleteAsync(ulong id, CancellationToken ct = default);
 }
@@ -121,7 +121,7 @@ public class UnitConversionService : IUnitConversionService
         return entity is null ? null : _mapper.Map<UnitConversionDto>(entity);
     }
 
-    public async Task<Result<UnitConversionDto>> CreateAsync(CreateUnitConversionRequest request, CancellationToken ct = default)
+    public async Task<Result<UnitConversionDto>> CreateAsync(UnitConversionRequest request, CancellationToken ct = default)
     {
         var duplicate = await _repository.FirstOrDefault(
             c => c.FromUnitId == request.FromUnitId && c.ToUnitId == request.ToUnitId, ct);

@@ -1,3 +1,5 @@
+using RFactory.Infrastructure.Entities;
+
 namespace RFactory.Application.Modules.MasterData.DTOs;
 
 /// <summary>
@@ -16,7 +18,7 @@ public class UnitDto
     public bool IsActive { get; set; }
 }
 
-public class CreateUnitRequest
+public class UnitRequest
 {
     public long? UnitCategoryId { get; set; }
     public string UnitCode { get; set; } = string.Empty;
@@ -25,6 +27,7 @@ public class CreateUnitRequest
     public int? DecimalPlaces { get; set; }
     public bool IsBaseUnit { get; set; }
     public bool IsActive { get; set; } = true;
+    public List<UnitConversionRequest>? UnitConversions { get; set; }
 }
 
 public class UpdateUnitRequest
