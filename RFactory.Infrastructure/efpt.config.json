@@ -131,6 +131,30 @@
          "ObjectType": 0
       },
       {
+         "Name": "picking_plan",
+         "ObjectType": 0
+      },
+      {
+         "Name": "picking_plan_item",
+         "ObjectType": 0
+      },
+      {
+         "Name": "picking_plan_item_source",
+         "ObjectType": 0
+      },
+      {
+         "Name": "picking_plan_source",
+         "ObjectType": 0
+      },
+      {
+         "Name": "picking_ticket",
+         "ObjectType": 0
+      },
+      {
+         "Name": "picking_ticket_item",
+         "ObjectType": 0
+      },
+      {
          "Name": "product",
          "ObjectType": 0
       },
