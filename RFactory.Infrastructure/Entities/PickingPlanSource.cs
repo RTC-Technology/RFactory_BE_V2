@@ -25,6 +25,8 @@ public partial class PickingPlanSource
 
     public bool IsDeleted { get; set; }
 
+    public int? PickingPlanId { get; set; }
+
     /// <summary>
     /// 1:Goods Issue; 2: Tranfer Request
     /// </summary>
