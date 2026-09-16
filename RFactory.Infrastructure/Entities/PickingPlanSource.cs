@@ -25,14 +25,14 @@ public partial class PickingPlanSource
 
     public bool IsDeleted { get; set; }
 
-    public int? PickingPlanId { get; set; }
+    public long? PickingPlanId { get; set; }
 
     /// <summary>
     /// 1:Goods Issue; 2: Tranfer Request
     /// </summary>
     public int? SourceType { get; set; }
 
-    public int? SourceId { get; set; }
+    public long? SourceId { get; set; }
 
     public string SourceNo { get; set; }
 }

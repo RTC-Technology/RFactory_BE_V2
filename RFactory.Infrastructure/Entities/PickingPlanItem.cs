@@ -25,11 +25,11 @@ public partial class PickingPlanItem
 
     public bool IsDeleted { get; set; }
 
-    public int? PickingPlanId { get; set; }
+    public long? PickingPlanId { get; set; }
 
-    public int? ProductId { get; set; }
+    public long? ProductId { get; set; }
 
-    public int? UnitId { get; set; }
+    public long? UnitId { get; set; }
 
     public decimal? RequiredQty { get; set; }
 

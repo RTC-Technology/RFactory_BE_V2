@@ -6,6 +6,7 @@ using RFactory.Application.Modules.GoodsIssue.Services;
 using RFactory.Application.Modules.GoodsReceipt.Services;
 using RFactory.Application.Modules.Inventory.Services;
 using RFactory.Application.Modules.MasterData.Services;
+using RFactory.Application.Modules.PickingPlan.Services;
 using RFactory.Application.Modules.Product.Services;
 using RFactory.Application.Modules.PurchaseOrder.Services;
 using RFactory.Application.Modules.Warehouses.Services;
@@ -92,6 +93,14 @@ public static class DependencyInjection
         services.AddScoped<IPurchaseOrderService, PurchaseOrderService>();   
         services.AddScoped<IPurchaseOrderDetailService, PurchaseOrderDetailService>();
         services.AddScoped<IPurchaseOrderDeliveryScheduleService, PurchaseOrderDeliveryScheduleService>();
+
+        //Picking Plan
+        services.AddScoped<IPickingPlanService, PickingPlanService>();
+        services.AddScoped<IPickingPlanItemService, PickingPlanItemService>();
+        services.AddScoped<IPickingPlanItemSourceService, PickingPlanItemSourceService>();
+        services.AddScoped<IPickingPlanSourceService, PickingPlanSourceService>();
+        services.AddScoped<IPickingTicketService, PickingTicketService>();
+        services.AddScoped<IPickingTicketItemService, PickingTicketItemService>();
 
 
         return services;

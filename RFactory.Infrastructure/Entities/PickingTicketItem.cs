@@ -25,15 +25,15 @@ public partial class PickingTicketItem
 
     public bool IsDeleted { get; set; }
 
-    public int? PickingTicketId { get; set; }
+    public long? PickingTicketId { get; set; }
 
-    public int? PickingPlanItemId { get; set; }
+    public long? PickingPlanItemId { get; set; }
 
-    public int? ProductId { get; set; }
+    public long? ProductId { get; set; }
 
-    public int? LocationId { get; set; }
+    public long? LocationId { get; set; }
 
-    public int? LotId { get; set; }
+    public long? LotId { get; set; }
 
     public string SerialNo { get; set; }
 

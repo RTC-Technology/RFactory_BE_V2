@@ -27,7 +27,7 @@ public partial class PickingPlan
 
     public string PlanNo { get; set; }
 
-    public int? WarehouseId { get; set; }
+    public long? WarehouseId { get; set; }
 
     /// <summary>
     /// 1 :(Draft - Nháp), 2: (Approved - Đã duyệt), 3 :(InProgress - Đang lấy hàng), 4: (PartiallyPicked - Lấy một phần), 5: (FullyPicked - Lấy đủ), 6: (Cancelled - Đã hủy), 7: (Closed - Đã đóng)

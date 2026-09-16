@@ -27,9 +27,9 @@ public partial class PickingTicket
 
     public string TicketNo { get; set; }
 
-    public int? PickingPlanId { get; set; }
+    public long? PickingPlanId { get; set; }
 
-    public int? WarehouseId { get; set; }
+    public long? WarehouseId { get; set; }
 
     /// <summary>
     /// 1:Draft ( Nháp), 2 :Released ( Đã phát hành), 3 :InProgress - (Đang lấy hàng), 4 :PartiallyPicked ( Lấy một phần), 5 :Completed ( Hoàn thành), 6 :Cancelled ( Đã hủy)

@@ -303,5 +303,47 @@ public static class PermissionCodes
         public const string Edit = "purchase-order-delivery-schedule.edit";
         public const string Delete = "purchase-order-delivery-schedule.delete";
     }
+    public static class PickingPlan
+    {
+        public const string View = "picking-plan.view";
+        public const string Add = "picking-plan.add";
+        public const string Edit = "picking-plan.edit";
+        public const string Delete = "picking-plan.delete";
+    }
+    public static class PickingPlanItem
+    {
+        public const string View = "picking-plan-item.view";
+        public const string Add = "picking-plan-item.add";
+        public const string Edit = "picking-plan-item.edit";
+        public const string Delete = "picking-plan-item.delete";
+    }
+    public static class PickingPlanItemSource
+    {
+        public const string View = "picking-plan-item-source.view";
+        public const string Add = "picking-plan-item-source.add";
+        public const string Edit = "picking-plan-item-source.edit";
+        public const string Delete = "picking-plan-item-source.delete";
+    }
+    public static class PickingPlanSource
+    {
+        public const string View = "picking-plan-source.view";
+        public const string Add = "picking-plan-source.add";
+        public const string Edit = "picking-plan-source.edit";
+        public const string Delete = "picking-plan-source.delete";
+    }
+    public static class PickingTicket
+    {
+        public const string View = "picking-ticket.view";
+        public const string Add = "picking-ticket.add";
+        public const string Edit = "picking-ticket.edit";
+        public const string Delete = "picking-ticket.delete";
+    }
+    public static class PickingTicketItem
+    {
+        public const string View = "picking-ticket-item.view";
+        public const string Add = "picking-ticket-item.add";
+        public const string Edit = "picking-ticket-item.edit";
+        public const string Delete = "picking-ticket-item.delete";
+    }
 
 }
