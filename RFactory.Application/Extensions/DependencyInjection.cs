@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using RFactory.Application.Modules.Administration.Services;
 using RFactory.Application.Modules.Auth.Services;
+using RFactory.Application.Modules.DeliveryNote.Services;
 using RFactory.Application.Modules.Equipment.Services;
 using RFactory.Application.Modules.GoodsIssue.Services;
 using RFactory.Application.Modules.GoodsReceipt.Services;
@@ -101,6 +102,13 @@ public static class DependencyInjection
         services.AddScoped<IPickingPlanSourceService, PickingPlanSourceService>();
         services.AddScoped<IPickingTicketService, PickingTicketService>();
         services.AddScoped<IPickingTicketItemService, PickingTicketItemService>();
+
+        //Delivery Note
+        services.AddScoped<IDeliveryNoteService, DeliveryNoteService>();
+        services.AddScoped<IDeliveryNoteItemService, DeliveryNoteItemService>();
+        services.AddScoped<IDeliveryNoteSenderService, DeliveryNoteSenderService>();
+        services.AddScoped<IDeliveryNoteSourceService, DeliveryNoteSourceService>();
+        services.AddScoped<IDeliveryNoteReceiverService, DeliveryNoteReceiverService>();
 
 
         return services;

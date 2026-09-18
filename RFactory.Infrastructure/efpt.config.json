@@ -31,6 +31,26 @@
          "ObjectType": 0
       },
       {
+         "Name": "delivery_note",
+         "ObjectType": 0
+      },
+      {
+         "Name": "delivery_note_item",
+         "ObjectType": 0
+      },
+      {
+         "Name": "delivery_note_receiver",
+         "ObjectType": 0
+      },
+      {
+         "Name": "delivery_note_sender",
+         "ObjectType": 0
+      },
+      {
+         "Name": "delivery_note_source",
+         "ObjectType": 0
+      },
+      {
          "Name": "factory",
          "ObjectType": 0
       },

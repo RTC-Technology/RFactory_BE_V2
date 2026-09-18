@@ -345,5 +345,40 @@ public static class PermissionCodes
         public const string Edit = "picking-ticket-item.edit";
         public const string Delete = "picking-ticket-item.delete";
     }
+    public static class DeliveryNote
+    {
+        public const string View = "delivery-note.view";
+        public const string Add = "delivery-note.add";
+        public const string Edit = "delivery-note.edit";
+        public const string Delete = "delivery-note.delete";
+    }
+    public static class DeliveryNoteItem
+    {
+        public const string View = "delivery-note-item.view";
+        public const string Add = "delivery-note-item.add";
+        public const string Edit = "delivery-note-item.edit";
+        public const string Delete = "delivery-note-item.delete";
+    }
+    public static class DeliveryNoteSource
+    {
+        public const string View = "delivery-note-source.view";
+        public const string Add = "delivery-note-source.add";
+        public const string Edit = "delivery-note-source.edit";
+        public const string Delete = "delivery-note-source.delete";
+    }
+    public static class DeliveryNoteSender
+    {
+        public const string View = "delivery-note-sender.view";
+        public const string Add = "delivery-note-sender.add";
+        public const string Edit = "delivery-note-sender.edit";
+        public const string Delete = "delivery-note-sender.delete";
+    }
+    public static class DeliveryNoteReceiver
+    {
+        public const string View = "delivery-note-receiver.view";
+        public const string Add = "delivery-note-receiver.add";
+        public const string Edit = "delivery-note-receiver.edit";
+        public const string Delete = "delivery-note-receiver.delete";
+    }
 
 }
