@@ -45,13 +45,13 @@ public class MasterDataProfile : Profile
 
         CreateMap<UnitConversion, UnitConversionDto>()
             .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive == true));
-        CreateMap<CreateUnitConversionRequest, UnitConversion>();
+        CreateMap<UnitConversionRequest, UnitConversion>();
         CreateMap<UpdateUnitConversionRequest, UnitConversion>();
 
         CreateMap<Unit, UnitDto>()
             .ForMember(dest => dest.IsBaseUnit, opt => opt.MapFrom(src => src.IsBaseUnit.HasValue && src.IsBaseUnit.Value != 0))
             .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive == true));
-        CreateMap<CreateUnitRequest, Unit>()
+        CreateMap<UnitRequest, Unit>()
             .ForMember(dest => dest.IsBaseUnit, opt => opt.MapFrom(src => src.IsBaseUnit ? 1UL : 0UL));
         CreateMap<UpdateUnitRequest, Unit>()
             .ForMember(dest => dest.IsBaseUnit, opt => opt.MapFrom(src => src.IsBaseUnit ? 1UL : 0UL));

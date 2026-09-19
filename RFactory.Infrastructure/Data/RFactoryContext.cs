@@ -20,6 +20,16 @@ public partial class RFactoryContext : DbContext
 
     public virtual DbSet<BomDetail> BomDetails { get; set; }
 
+    public virtual DbSet<DeliveryNote> DeliveryNotes { get; set; }
+
+    public virtual DbSet<DeliveryNoteItem> DeliveryNoteItems { get; set; }
+
+    public virtual DbSet<DeliveryNoteReceiver> DeliveryNoteReceivers { get; set; }
+
+    public virtual DbSet<DeliveryNoteSender> DeliveryNoteSenders { get; set; }
+
+    public virtual DbSet<DeliveryNoteSource> DeliveryNoteSources { get; set; }
+
     public virtual DbSet<Factory> Factories { get; set; }
 
     public virtual DbSet<Function> Functions { get; set; }
@@ -70,7 +80,21 @@ public partial class RFactoryContext : DbContext
 
     public virtual DbSet<Organization> Organizations { get; set; }
 
+    public virtual DbSet<PickingPlan> PickingPlans { get; set; }
+
+    public virtual DbSet<PickingPlanItem> PickingPlanItems { get; set; }
+
+    public virtual DbSet<PickingPlanItemSource> PickingPlanItemSources { get; set; }
+
+    public virtual DbSet<PickingPlanSource> PickingPlanSources { get; set; }
+
+    public virtual DbSet<PickingTicket> PickingTickets { get; set; }
+
+    public virtual DbSet<PickingTicketItem> PickingTicketItems { get; set; }
+
     public virtual DbSet<Product> Products { get; set; }
+
+    public virtual DbSet<ProductGroup> ProductGroups { get; set; }
 
     public virtual DbSet<ProductType> ProductTypes { get; set; }
 
@@ -195,6 +219,161 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.ScrapRate)
                 .HasPrecision(8, 4)
                 .HasComment("% hao hụt");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<DeliveryNote>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("delivery_note", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CompletedAt).HasColumnType("datetime");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.DeliveryNo)
+                .IsRequired()
+                .HasMaxLength(50);
+            entity.Property(e => e.DriverName)
+                .HasMaxLength(200)
+                .UseCollation("utf8mb3_general_ci")
+                .HasCharSet("utf8mb3");
+            entity.Property(e => e.DriverPhone)
+                .HasMaxLength(50)
+                .UseCollation("utf8mb3_general_ci")
+                .HasCharSet("utf8mb3");
+            entity.Property(e => e.Remark).HasColumnType("text");
+            entity.Property(e => e.StartedAt).HasColumnType("datetime");
+            entity.Property(e => e.Status)
+                .HasDefaultValueSql("'1'")
+                .HasComment("1 = Draft; 2 = Confirmed; 3 = Loading; 4 = Loaded; 5 = InTransit; 6 = Delivered; 7 = Cancelled; 8 = Closed");
+            entity.Property(e => e.TransportMethod).HasComment("1: Xe tải; 2: Máy bay; 3: Tàu hỏa; 4: Tàu thủy");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            entity.Property(e => e.VehicleNo).HasMaxLength(50);
+            entity.Property(e => e.VehicleType).HasComment("1: Xe tải; 2: Xe van; 3: Đầu kéo");
+            entity.Property(e => e.Volume).HasPrecision(18, 6);
+            entity.Property(e => e.Weight).HasPrecision(18, 6);
+        });
+
+        modelBuilder.Entity<DeliveryNoteItem>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("delivery_note_item", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.DeliveredQty).HasPrecision(18, 6);
+            entity.Property(e => e.OrderedQty).HasPrecision(18, 6);
+            entity.Property(e => e.ProductCode).HasMaxLength(100);
+            entity.Property(e => e.ProductName).HasMaxLength(255);
+            entity.Property(e => e.Remark).HasColumnType("text");
+            entity.Property(e => e.UnitName).HasMaxLength(100);
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<DeliveryNoteReceiver>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("delivery_note_receiver", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.Address1).HasMaxLength(500);
+            entity.Property(e => e.Address2).HasMaxLength(500);
+            entity.Property(e => e.ContactName).HasMaxLength(255);
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Email1).HasMaxLength(255);
+            entity.Property(e => e.Email2).HasMaxLength(255);
+            entity.Property(e => e.Phone1).HasMaxLength(50);
+            entity.Property(e => e.Phone2).HasMaxLength(50);
+            entity.Property(e => e.ReceiverName).HasMaxLength(255);
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<DeliveryNoteSender>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("delivery_note_sender", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.Address1)
+                .HasMaxLength(500)
+                .UseCollation("utf8mb3_general_ci")
+                .HasCharSet("utf8mb3");
+            entity.Property(e => e.Address2)
+                .HasMaxLength(500)
+                .UseCollation("utf8mb3_general_ci")
+                .HasCharSet("utf8mb3");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Email1).HasMaxLength(255);
+            entity.Property(e => e.Email2).HasMaxLength(255);
+            entity.Property(e => e.Phone1).HasMaxLength(50);
+            entity.Property(e => e.Phone2).HasMaxLength(50);
+            entity.Property(e => e.SenderName).HasMaxLength(255);
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<DeliveryNoteSource>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("delivery_note_source", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.GoodsIssueNo).HasMaxLength(50);
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });
@@ -842,6 +1021,161 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });
 
+        modelBuilder.Entity<PickingPlan>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("picking_plan", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.PlanNo)
+                .IsRequired()
+                .HasMaxLength(45);
+            entity.Property(e => e.Remark).HasColumnType("text");
+            entity.Property(e => e.Status)
+                .HasDefaultValueSql("'1'")
+                .HasComment("1 :(Draft - Nháp), 2: (Approved - Đã duyệt), 3 :(InProgress - Đang lấy hàng), 4: (PartiallyPicked - Lấy một phần), 5: (FullyPicked - Lấy đủ), 6: (Cancelled - Đã hủy), 7: (Closed - Đã đóng)");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<PickingPlanItem>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("picking_plan_item", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.AllocatedQty).HasPrecision(18, 6);
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.PickedQty).HasPrecision(18, 6);
+            entity.Property(e => e.RemainingQty).HasPrecision(18, 6);
+            entity.Property(e => e.Remark).HasColumnType("text");
+            entity.Property(e => e.RequiredQty).HasPrecision(18, 6);
+            entity.Property(e => e.Status).HasComment("1:Pending, 2:Picking, 3:PartiallyPicked, 4:FullyPicked, 5:Cancelled");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<PickingPlanItemSource>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("picking_plan_item_source", tb => tb.HasComment("		"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.PickedQty).HasPrecision(18, 6);
+            entity.Property(e => e.RequiredQty).HasPrecision(18, 6);
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<PickingPlanSource>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("picking_plan_source", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.SourceNo).HasMaxLength(45);
+            entity.Property(e => e.SourceType).HasComment("1:Goods Issue; 2: Tranfer Request");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<PickingTicket>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("picking_ticket", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CompletedAt).HasColumnType("datetime");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Remark).HasMaxLength(45);
+            entity.Property(e => e.StartedAt).HasColumnType("datetime");
+            entity.Property(e => e.Status)
+                .HasDefaultValueSql("'1'")
+                .HasComment("1:Draft ( Nháp), 2 :Released ( Đã phát hành), 3 :InProgress - (Đang lấy hàng), 4 :PartiallyPicked ( Lấy một phần), 5 :Completed ( Hoàn thành), 6 :Cancelled ( Đã hủy)");
+            entity.Property(e => e.TicketNo).HasMaxLength(45);
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<PickingTicketItem>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("picking_ticket_item", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.PickedQty).HasPrecision(18, 6);
+            entity.Property(e => e.Remark).HasColumnType("text");
+            entity.Property(e => e.RequestedQty).HasPrecision(18, 6);
+            entity.Property(e => e.SerialNo).HasMaxLength(50);
+            entity.Property(e => e.Status).HasComment("1:Pending (Chờ lấy), 2:Picking (Đang lấy), 3:PartiallyPicked (Lấy một phần), 4:Picked (Đã lấy đủ), 5:Skipped (Không lấy), 6:Cancelled (Đã hủy)");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
         modelBuilder.Entity<Product>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
@@ -859,10 +1193,73 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
+            entity.Property(e => e.DefaultWarehouseId).HasComment("Kho ngầm định");
+            entity.Property(e => e.Description)
+                .HasComment("Mô tả")
+                .HasColumnType("text");
             entity.Property(e => e.DrawingNo).HasMaxLength(255);
             entity.Property(e => e.DrawingPath).HasMaxLength(255);
+            entity.Property(e => e.FixedPurchasePrice)
+                .HasPrecision(18, 2)
+                .HasComment("Đơn giá mua cố định");
+            entity.Property(e => e.IsOutsourced).HasComment("Là thành phẩm thuê gia công");
+            entity.Property(e => e.MaxStock)
+                .HasPrecision(18, 3)
+                .HasComment("Tồn tối đa");
+            entity.Property(e => e.MinStock)
+                .HasPrecision(18, 3)
+                .HasComment("Tồn tối thiểu");
+            entity.Property(e => e.PreparationTime)
+                .HasPrecision(10, 2)
+                .HasComment("Thời gian chuẩn bị");
             entity.Property(e => e.ProductCode).HasMaxLength(50);
+            entity.Property(e => e.ProductGroupId).HasComment("Nhóm VTHH");
             entity.Property(e => e.ProductName).HasMaxLength(255);
+            entity.Property(e => e.ProductNature).HasComment("Tính chất vật tư hàng hóa (1. Finished Product; 2. Raw Material; 3. Goods; 4. Tools and Equipment)");
+            entity.Property(e => e.ProductionColor)
+                .HasMaxLength(20)
+                .HasComment("Màu KHSX");
+            entity.Property(e => e.ProductionUnitId).HasComment("Đơn vị tính sản xuất");
+            entity.Property(e => e.StandardProductionTime)
+                .HasPrecision(10, 3)
+                .HasComment("Thời gian sản xuất tiêu chuẩn");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            entity.Property(e => e.VatRate)
+                .HasPrecision(8, 4)
+                .HasComment("Thuế suất GTGT (%)");
+            entity.Property(e => e.WarrantyPeriod)
+                .HasPrecision(10, 2)
+                .HasComment("Thời hạn bảo hành");
+            entity.Property(e => e.WarrantyPeriodUnit).HasComment("Đơn vị thời hạn bảo hành");
+            entity.Property(e => e.WastageRate)
+                .HasPrecision(8, 4)
+                .HasComment("Tỷ lệ hao hụt (%)");
+        });
+
+        modelBuilder.Entity<ProductGroup>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("product_group", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.GroupName)
+                .IsRequired()
+                .HasMaxLength(255);
+            entity.Property(e => e.GroupNo)
+                .IsRequired()
+                .HasMaxLength(50);
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });

@@ -1,11 +1,13 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using RFactory.Application.Modules.Administration.Services;
 using RFactory.Application.Modules.Auth.Services;
+using RFactory.Application.Modules.DeliveryNote.Services;
 using RFactory.Application.Modules.Equipment.Services;
 using RFactory.Application.Modules.GoodsIssue.Services;
 using RFactory.Application.Modules.GoodsReceipt.Services;
 using RFactory.Application.Modules.Inventory.Services;
 using RFactory.Application.Modules.MasterData.Services;
+using RFactory.Application.Modules.PickingPlan.Services;
 using RFactory.Application.Modules.Product.Services;
 using RFactory.Application.Modules.PurchaseOrder.Services;
 using RFactory.Application.Modules.Warehouses.Services;
@@ -50,6 +52,7 @@ public static class DependencyInjection
 
         // Product
         services.AddScoped<IProductTypeService, ProductTypeService>();
+        services.AddScoped<IProductGroupService, ProductGroupService>();
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IBomService, BomService>();
         services.AddScoped<IBomDetailService, BomDetailService>();
@@ -91,6 +94,21 @@ public static class DependencyInjection
         services.AddScoped<IPurchaseOrderService, PurchaseOrderService>();   
         services.AddScoped<IPurchaseOrderDetailService, PurchaseOrderDetailService>();
         services.AddScoped<IPurchaseOrderDeliveryScheduleService, PurchaseOrderDeliveryScheduleService>();
+
+        //Picking Plan
+        services.AddScoped<IPickingPlanService, PickingPlanService>();
+        services.AddScoped<IPickingPlanItemService, PickingPlanItemService>();
+        services.AddScoped<IPickingPlanItemSourceService, PickingPlanItemSourceService>();
+        services.AddScoped<IPickingPlanSourceService, PickingPlanSourceService>();
+        services.AddScoped<IPickingTicketService, PickingTicketService>();
+        services.AddScoped<IPickingTicketItemService, PickingTicketItemService>();
+
+        //Delivery Note
+        services.AddScoped<IDeliveryNoteService, DeliveryNoteService>();
+        services.AddScoped<IDeliveryNoteItemService, DeliveryNoteItemService>();
+        services.AddScoped<IDeliveryNoteSenderService, DeliveryNoteSenderService>();
+        services.AddScoped<IDeliveryNoteSourceService, DeliveryNoteSourceService>();
+        services.AddScoped<IDeliveryNoteReceiverService, DeliveryNoteReceiverService>();
 
 
         return services;
