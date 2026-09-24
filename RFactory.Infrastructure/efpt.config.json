@@ -31,6 +31,26 @@
          "ObjectType": 0
       },
       {
+         "Name": "delivery_note",
+         "ObjectType": 0
+      },
+      {
+         "Name": "delivery_note_item",
+         "ObjectType": 0
+      },
+      {
+         "Name": "delivery_note_receiver",
+         "ObjectType": 0
+      },
+      {
+         "Name": "delivery_note_sender",
+         "ObjectType": 0
+      },
+      {
+         "Name": "delivery_note_source",
+         "ObjectType": 0
+      },
+      {
          "Name": "factory",
          "ObjectType": 0
       },
@@ -131,7 +151,55 @@
          "ObjectType": 0
       },
       {
+         "Name": "packing_check",
+         "ObjectType": 0
+      },
+      {
+         "Name": "packing_check_item",
+         "ObjectType": 0
+      },
+      {
+         "Name": "packing_package",
+         "ObjectType": 0
+      },
+      {
+         "Name": "packing_package_item",
+         "ObjectType": 0
+      },
+      {
+         "Name": "packing_scan_log",
+         "ObjectType": 0
+      },
+      {
+         "Name": "picking_plan",
+         "ObjectType": 0
+      },
+      {
+         "Name": "picking_plan_item",
+         "ObjectType": 0
+      },
+      {
+         "Name": "picking_plan_item_source",
+         "ObjectType": 0
+      },
+      {
+         "Name": "picking_plan_source",
+         "ObjectType": 0
+      },
+      {
+         "Name": "picking_ticket",
+         "ObjectType": 0
+      },
+      {
+         "Name": "picking_ticket_item",
+         "ObjectType": 0
+      },
+      {
          "Name": "product",
+         "ObjectType": 0
+      },
+      {
+         "Name": "product_group",
          "ObjectType": 0
       },
       {
