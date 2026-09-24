@@ -81,8 +81,35 @@ namespace RFactory.Application.Modules.DeliveryNote.Services
 
         public async Task<Result> DeleteAsync(ulong id, CancellationToken ct = default)
         {
-            var deleted = await _repository.DeleteById(id, ct);
-            return deleted ? Result.Success() : Result.Failure($"Delivery note {id} was not found.");
+            var entity = await _repository.GetById(id, ct);
+            if (entity is null)
+            {
+                return Result.Failure($"Delivery note {id} was not found.");
+            }
+
+            //var deliveryNoteId = (ulong)id;
+            var sources = await _sourceRepository.Where(p => p.DeliveryNoteId == id, ct);
+            var items = await _itemRepository.Where(x => x.DeliveryNoteId == id, ct);
+
+            var sender = await _senderRepository.Where(x => x.DeliveryNoteId == id, ct);
+            var receiver = await _receiverRepository.Where(x => x.DeliveryNoteId == id, ct);
+
+            
+
+            // The lines belong to this receipt and nothing else, so they go with it instead of
+            // blocking the delete — deleting is soft on both, and the pair moves together.
+            return await _unitOfWork.ExecuteAsync<Result>(async token =>
+            {
+
+                await _sourceRepository.DeleteRange(sources, token);
+                await _itemRepository.DeleteRange(items, token);
+
+                await _senderRepository.DeleteRange(sender, token);
+                await _receiverRepository.DeleteRange(receiver, token);
+                await _repository.Delete(entity, token);
+
+                return Result.Success();
+            }, ct);
         }
 
         public async Task<List<DeliveryNoteDto>> GetAllAsync(CancellationToken ct = default)

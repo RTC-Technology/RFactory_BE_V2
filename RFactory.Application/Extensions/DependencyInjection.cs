@@ -7,6 +7,7 @@ using RFactory.Application.Modules.GoodsIssue.Services;
 using RFactory.Application.Modules.GoodsReceipt.Services;
 using RFactory.Application.Modules.Inventory.Services;
 using RFactory.Application.Modules.MasterData.Services;
+using RFactory.Application.Modules.Packing.Services;
 using RFactory.Application.Modules.PickingPlan.Services;
 using RFactory.Application.Modules.Product.Services;
 using RFactory.Application.Modules.PurchaseOrder.Services;
@@ -109,6 +110,13 @@ public static class DependencyInjection
         services.AddScoped<IDeliveryNoteSenderService, DeliveryNoteSenderService>();
         services.AddScoped<IDeliveryNoteSourceService, DeliveryNoteSourceService>();
         services.AddScoped<IDeliveryNoteReceiverService, DeliveryNoteReceiverService>();
+
+        //Packing
+        services.AddScoped<IPackingCheckService, PackingCheckService>();
+        services.AddScoped<IPackingCheckItemService, PackingCheckItemService>();
+        services.AddScoped<IPackingPackageService, PackingPackageService>();
+        services.AddScoped<IPackingPackageItemService, PackingPackageItemService>();
+        services.AddScoped<IPackingScanLogService, PackingScanLogService>();
 
 
         return services;

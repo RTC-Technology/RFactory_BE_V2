@@ -381,4 +381,40 @@ public static class PermissionCodes
         public const string Delete = "delivery-note-receiver.delete";
     }
 
+    public static class PackingCheck
+    {
+        public const string View = "packing-check.view";
+        public const string Add = "packing-check.add";
+        public const string Edit = "packing-check.edit";
+        public const string Delete = "packing-check.delete";
+    }
+    public static class PackingCheckItem
+    {
+        public const string View = "packing-check-item.view";
+        public const string Add = "packing-check-item.add";
+        public const string Edit = "packing-check-item.edit";
+        public const string Delete = "packing-check-item.delete";
+    } 
+    public static class PackingPackage
+    {
+        public const string View = "packing-package.view";
+        public const string Add = "packing-package.add";
+        public const string Edit = "packing-package.edit";
+        public const string Delete = "packing-package.delete";
+    } 
+    public static class PackingPackageItem
+    {
+        public const string View = "packing-package-item.view";
+        public const string Add = "packing-package-item.add";
+        public const string Edit = "packing-package-item.edit";
+        public const string Delete = "packing-package-item.delete";
+    }
+    public static class PackingScanLog
+    {
+        public const string View = "packing-package-item.view";
+        public const string Add = "packing-package-item.add";
+        public const string Edit = "packing-package-item.edit";
+        public const string Delete = "packing-package-item.delete";
+    }
+
 }
