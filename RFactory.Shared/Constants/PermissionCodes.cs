@@ -416,5 +416,12 @@ public static class PermissionCodes
         public const string Edit = "packing-package-item.edit";
         public const string Delete = "packing-package-item.delete";
     }
+    public static class Company
+    {
+        public const string View = "company.view";
+        public const string Add = "company.add";
+        public const string Edit = "company.edit";
+        public const string Delete = "company.delete";
+    }
 
 }

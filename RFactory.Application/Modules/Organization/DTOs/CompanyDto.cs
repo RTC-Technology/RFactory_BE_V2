@@ -1,0 +1,139 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace RFactory.Application.Modules.Organizations.DTOs
+{
+    public partial class CompanyDto
+    {
+        /// <summary>
+        /// Primary Key
+        /// </summary>
+        public ulong Id { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+
+        public string? CreatedBy { get; set; }
+
+        public DateTime? UpdatedDate { get; set; }
+
+        public string? UpdatedBy { get; set; }
+        public bool IsDeleted { get; set; }
+
+        public string? CompanyCode { get; set; }
+
+        public string? CompanyName { get; set; }
+
+        public string? ShortName { get; set; }
+        public string? EnglishName { get; set; }
+
+        public string? TaxCode { get; set; }
+
+        public string? BusinessRegistrationNo { get; set; }
+
+        public DateTime? BusinessRegistrationDate { get; set; }
+
+        public string? BusinessRegistrationPlace { get; set; }
+        public string? LogoUrl { get; set; }
+
+        public string? Website { get; set; }
+
+        public string? Phone { get; set; }
+        public string? Fax { get; set; }
+
+        public string? Email { get; set; }
+
+        public string? RepresentativeName { get; set; }
+        public string? RepresentativePosition { get; set; }
+
+        public string? Address { get; set; }
+
+        public ulong? ProvinceId { get; set; }
+
+        public ulong? DistrictId { get; set; }
+
+        public ulong? WardId { get; set; }
+
+        public string? ContactName { get; set; }
+
+        public string? ContactPhone { get; set; }
+
+        public string? ContactEmail { get; set; }
+        public string? CurrencyCode { get; set; }
+
+        public string? TimeZone { get; set; }
+
+        public ulong? WeightUnitId { get; set; }
+
+        public ulong? VolumeUnitId { get; set; }
+
+        public ulong? DefaultWarehouseId { get; set; }
+
+        public ulong? DefaultFactoryId { get; set; }
+
+        public bool? IsActive { get; set; }
+
+        public string? Remark { get; set; }
+    }
+
+    public partial class CompanyRequest
+    {
+
+        public string? CompanyCode { get; set; }
+
+        public string? CompanyName { get; set; }
+
+        public string? ShortName { get; set; }
+        public string? EnglishName { get; set; }
+
+        public string? TaxCode { get; set; }
+
+        public string? BusinessRegistrationNo { get; set; }
+
+        public DateTime? BusinessRegistrationDate { get; set; }
+
+        public string? BusinessRegistrationPlace { get; set; }
+        public string? LogoUrl { get; set; }
+
+        public string? Website { get; set; }
+
+        public string? Phone { get; set; }
+        public string? Fax { get; set; }
+
+        public string? Email { get; set; }
+
+        public string? RepresentativeName { get; set; }
+        public string? RepresentativePosition { get; set; }
+
+        public string? Address { get; set; }
+
+        public ulong? ProvinceId { get; set; }
+
+        public ulong? DistrictId { get; set; }
+
+        public ulong? WardId { get; set; }
+
+        public string? ContactName { get; set; }
+
+        public string? ContactPhone { get; set; }
+
+        public string? ContactEmail { get; set; }
+        public string? CurrencyCode { get; set; }
+
+        public string? TimeZone { get; set; }
+
+        public ulong? WeightUnitId { get; set; }
+
+        public ulong? VolumeUnitId { get; set; }
+
+        public ulong? DefaultWarehouseId { get; set; }
+
+        public ulong? DefaultFactoryId { get; set; }
+
+        public bool? IsActive { get; set; }
+
+        public string? Remark { get; set; }
+    }
+}

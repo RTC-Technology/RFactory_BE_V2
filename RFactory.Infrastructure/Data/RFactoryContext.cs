@@ -20,6 +20,8 @@ public partial class RFactoryContext : DbContext
 
     public virtual DbSet<BomDetail> BomDetails { get; set; }
 
+    public virtual DbSet<Company> Companies { get; set; }
+
     public virtual DbSet<DeliveryNote> DeliveryNotes { get; set; }
 
     public virtual DbSet<DeliveryNoteItem> DeliveryNoteItems { get; set; }
@@ -231,6 +233,59 @@ public partial class RFactoryContext : DbContext
                 .HasComment("% hao hụt");
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<Company>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("company", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.Address).HasMaxLength(500);
+            entity.Property(e => e.BusinessRegistrationDate).HasColumnType("datetime");
+            entity.Property(e => e.BusinessRegistrationNo).HasMaxLength(100);
+            entity.Property(e => e.BusinessRegistrationPlace).HasMaxLength(255);
+            entity.Property(e => e.CompanyCode)
+                .IsRequired()
+                .HasMaxLength(50);
+            entity.Property(e => e.CompanyName)
+                .IsRequired()
+                .HasMaxLength(255);
+            entity.Property(e => e.ContactEmail)
+                .HasMaxLength(255)
+                .UseCollation("ascii_general_ci")
+                .HasCharSet("ascii");
+            entity.Property(e => e.ContactName).HasMaxLength(255);
+            entity.Property(e => e.ContactPhone).HasMaxLength(50);
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.CurrencyCode).HasMaxLength(10);
+            entity.Property(e => e.Email).HasMaxLength(255);
+            entity.Property(e => e.EnglishName).HasMaxLength(255);
+            entity.Property(e => e.Fax).HasMaxLength(50);
+            entity.Property(e => e.IsActive)
+                .IsRequired()
+                .HasDefaultValueSql("'1'");
+            entity.Property(e => e.LogoUrl).HasMaxLength(500);
+            entity.Property(e => e.Phone).HasMaxLength(50);
+            entity.Property(e => e.Remark).HasMaxLength(1000);
+            entity.Property(e => e.RepresentativeName).HasMaxLength(255);
+            entity.Property(e => e.RepresentativePosition).HasMaxLength(100);
+            entity.Property(e => e.ShortName).HasMaxLength(100);
+            entity.Property(e => e.TaxCode).HasMaxLength(50);
+            entity.Property(e => e.TimeZone).HasMaxLength(100);
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            entity.Property(e => e.Website).HasMaxLength(255);
         });
 
         modelBuilder.Entity<DeliveryNote>(entity =>
