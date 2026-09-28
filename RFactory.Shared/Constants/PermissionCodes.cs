@@ -423,5 +423,12 @@ public static class PermissionCodes
         public const string Edit = "company.edit";
         public const string Delete = "company.delete";
     }
+    public static class Workshop
+    {
+        public const string View = "workshop.view";
+        public const string Add = "workshop.add";
+        public const string Edit = "workshop.edit";
+        public const string Delete = "workshop.delete";
+    }
 
 }

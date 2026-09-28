@@ -17,7 +17,6 @@ namespace RFactory.Application.Modules.Organizations.Mappings
         {
             CreateMap<Entities.Company, CompanyDto>();
             CreateMap<CompanyRequest, Entities.Company>();
-            
         }
     }
 }

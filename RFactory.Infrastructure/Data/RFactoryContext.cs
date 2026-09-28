@@ -154,6 +154,8 @@ public partial class RFactoryContext : DbContext
 
     public virtual DbSet<WarehouseZone> WarehouseZones { get; set; }
 
+    public virtual DbSet<Workshop> Workshops { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
@@ -2161,6 +2163,42 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             entity.Property(e => e.WarehouseZoneCode).HasMaxLength(50);
             entity.Property(e => e.WarehouseZoneName).HasMaxLength(255);
+        });
+
+        modelBuilder.Entity<Workshop>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("workshop", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Description).HasColumnType("text");
+            entity.Property(e => e.Email).HasMaxLength(200);
+            entity.Property(e => e.EnglishName).HasMaxLength(255);
+            entity.Property(e => e.IsActive)
+                .IsRequired()
+                .HasDefaultValueSql("'1'");
+            entity.Property(e => e.Location).HasMaxLength(500);
+            entity.Property(e => e.Phone).HasMaxLength(50);
+            entity.Property(e => e.ShortName).HasMaxLength(100);
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            entity.Property(e => e.WorkshopCode)
+                .IsRequired()
+                .HasMaxLength(50);
+            entity.Property(e => e.WorkshopName)
+                .IsRequired()
+                .HasMaxLength(255);
         });
 
         OnModelCreatingPartial(modelBuilder);

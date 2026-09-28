@@ -109,6 +109,7 @@ public static class DependencyInjection
         services.AddScoped<IDeliveryNoteService, DeliveryNoteService>();
         services.AddScoped<IDeliveryNoteItemService, DeliveryNoteItemService>();
         services.AddScoped<IDeliveryNoteSenderService, DeliveryNoteSenderService>();
+
         services.AddScoped<IDeliveryNoteSourceService, DeliveryNoteSourceService>();
         services.AddScoped<IDeliveryNoteReceiverService, DeliveryNoteReceiverService>();
 
@@ -121,6 +122,7 @@ public static class DependencyInjection
 
         //Organization
         services.AddScoped<ICompanyService, CompanyService>();
+        services.AddScoped<IWorkshopService, WorkshopService>();
 
 
         return services;

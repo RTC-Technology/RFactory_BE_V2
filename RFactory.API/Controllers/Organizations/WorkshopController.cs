@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RFactory.API.Authorization;
-using RFactory.Application.Modules.DeliveryNote.DTOs;
-using RFactory.Application.Modules.DeliveryNote.Services;
 using RFactory.Application.Modules.Organizations.DTOs;
 using RFactory.Application.Modules.Organizations.Services;
 using RFactory.Shared.Api;
@@ -11,43 +9,43 @@ using RFactory.Shared.Constants;
 
 namespace RFactory.API.Controllers.Organizations
 {
-    [Route("api/organization/company")]
+    [Route("api/organization/workshop")]
     [ApiController]
     [Authorize]
 
-    public class CompanyController : ControllerBase
+    public class WorkshopController : ControllerBase
     {
-        private readonly ICompanyService _service;
+        private readonly IWorkshopService _service;
 
-        public CompanyController(ICompanyService service)
+        public WorkshopController(IWorkshopService service)
         {
             _service = service;
         }
 
         [HttpGet]
-        [RequirePermission(PermissionCodes.Company.View)]
-        public async Task<ActionResult<ApiResponse<List<CompanyDto>>>> GetAll(CancellationToken ct)
+        [RequirePermission(PermissionCodes.Workshop.View)]
+        public async Task<ActionResult<ApiResponse<List<WorkshopDto>>>> GetAll(CancellationToken ct)
         {
             var items = await _service.GetAllAsync(ct);
             return Ok(ApiResponseFactory.Success(items));
         }
 
         [HttpGet("{id:long}")]
-        [RequirePermission(PermissionCodes.Company.View)]
-        public async Task<ActionResult<ApiResponse<CompanyDto>>> GetById(ulong id, CancellationToken ct)
+        [RequirePermission(PermissionCodes.Workshop.View)]
+        public async Task<ActionResult<ApiResponse<WorkshopDto>>> GetById(ulong id, CancellationToken ct)
         {
             var item = await _service.GetByIdAsync(id, ct);
             if (item is null)
             {
-                return NotFound(ApiResponseFactory.Fail($"Company {id} was not found.", System.Net.HttpStatusCode.NotFound));
+                return NotFound(ApiResponseFactory.Fail($"Workshop {id} was not found.", System.Net.HttpStatusCode.NotFound));
             }
 
             return Ok(ApiResponseFactory.Success(item));
         }
 
         [HttpPost]
-        [RequirePermission(PermissionCodes.Company.Add)]
-        public async Task<ActionResult<ApiResponse<CompanyDto>>> Create(CompanyRequest request, CancellationToken ct)
+        [RequirePermission(PermissionCodes.Workshop.Add)]
+        public async Task<ActionResult<ApiResponse<WorkshopDto>>> Create(WorkshopRequest request, CancellationToken ct)
         {
             var result = await _service.CreateAsync(request, ct);
             if (!result.Succeeded)
@@ -59,8 +57,8 @@ namespace RFactory.API.Controllers.Organizations
         }
 
         [HttpPut("{id:long}")]
-        [RequirePermission(PermissionCodes.Company.Edit)]
-        public async Task<ActionResult<ApiResponse<CompanyDto>>> Update(ulong id, CompanyRequest request, CancellationToken ct)
+        [RequirePermission(PermissionCodes.Workshop.Edit)]
+        public async Task<ActionResult<ApiResponse<WorkshopDto>>> Update(ulong id, WorkshopRequest request, CancellationToken ct)
         {
             var result = await _service.UpdateAsync(id, request, ct);
             if (!result.Succeeded)
@@ -72,7 +70,7 @@ namespace RFactory.API.Controllers.Organizations
         }
 
         [HttpDelete("{id:long}")]
-        [RequirePermission(PermissionCodes.Company.Delete)]
+        [RequirePermission(PermissionCodes.Workshop.Delete)]
         public async Task<ActionResult<ApiResponse<object?>>> Delete(ulong id, CancellationToken ct)
         {
             var result = await _service.DeleteAsync(id, ct);
@@ -81,7 +79,7 @@ namespace RFactory.API.Controllers.Organizations
                 return BadRequest(ApiResponseFactory.Fail(result.Error!));
             }
 
-            return Ok(ApiResponseFactory.Success<object?>(null, "Company deleted."));
+            return Ok(ApiResponseFactory.Success<object?>(null, "Workshop deleted."));
         }
     }
 }
