@@ -55,6 +55,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "department",
+         "ObjectType": 0
+      },
+      {
          "Name": "factory",
          "ObjectType": 0
       },

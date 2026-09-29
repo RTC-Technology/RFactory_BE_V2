@@ -123,6 +123,7 @@ public static class DependencyInjection
         //Organization
         services.AddScoped<ICompanyService, CompanyService>();
         services.AddScoped<IWorkshopService, WorkshopService>();
+        services.AddScoped<IDepartmentService, DepartmentService>();
 
 
         return services;
