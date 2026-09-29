@@ -246,6 +246,14 @@ public static class PermissionCodes
         public const string Delete = "supplier.delete";
     }
 
+    public static class Employee
+    {
+        public const string View = "employee.view";
+        public const string Add = "employee.add";
+        public const string Edit = "employee.edit";
+        public const string Delete = "employee.delete";
+    }
+
     public static class GoodsIssue
     {
         public const string View = "goods-issue.view";

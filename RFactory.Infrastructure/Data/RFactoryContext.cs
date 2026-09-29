@@ -20,6 +20,8 @@ public partial class RFactoryContext : DbContext
 
     public virtual DbSet<BomDetail> BomDetails { get; set; }
 
+    public virtual DbSet<Employee> Employees { get; set; }
+
     public virtual DbSet<Factory> Factories { get; set; }
 
     public virtual DbSet<Function> Functions { get; set; }
@@ -195,6 +197,48 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.ScrapRate)
                 .HasPrecision(8, 4)
                 .HasComment("% hao hụt");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<Employee>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("employee", tb => tb.HasComment("Nhân viên"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.HasIndex(e => e.OrganizationId, "IX_OrganizationId");
+
+            entity.HasIndex(e => e.EmployeeCode, "UX_EmployeeCode").IsUnique();
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.BirthDate).HasColumnType("date");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Email).HasMaxLength(255);
+            entity.Property(e => e.EmployeeCode)
+                .IsRequired()
+                .HasMaxLength(50);
+            entity.Property(e => e.FullName)
+                .IsRequired()
+                .HasMaxLength(255);
+            entity.Property(e => e.Gender).HasMaxLength(10);
+            entity.Property(e => e.HireDate).HasColumnType("date");
+            entity.Property(e => e.NickName).HasMaxLength(100);
+            entity.Property(e => e.OrganizationId).HasComment("Phòng / Tổ vụ");
+            entity.Property(e => e.Phone).HasMaxLength(50);
+            entity.Property(e => e.Position).HasMaxLength(100);
+            entity.Property(e => e.Remark).HasColumnType("text");
+            entity.Property(e => e.Status).HasDefaultValueSql("'1'");
+            entity.Property(e => e.TerminationDate).HasColumnType("date");
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });
