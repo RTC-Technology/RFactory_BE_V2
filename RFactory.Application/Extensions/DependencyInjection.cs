@@ -124,6 +124,7 @@ public static class DependencyInjection
         services.AddScoped<ICompanyService, CompanyService>();
         services.AddScoped<IWorkshopService, WorkshopService>();
         services.AddScoped<IDepartmentService, DepartmentService>();
+        services.AddScoped<IWorkCenterService, WorkCenterService>();
 
 
         return services;

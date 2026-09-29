@@ -303,6 +303,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "work_center",
+         "ObjectType": 0
+      },
+      {
          "Name": "workshop",
          "ObjectType": 0
       }
