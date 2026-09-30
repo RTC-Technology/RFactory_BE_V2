@@ -114,6 +114,10 @@ public partial class RFactoryContext : DbContext
 
     public virtual DbSet<ProductUnit> ProductUnits { get; set; }
 
+    public virtual DbSet<ProductionTeam> ProductionTeams { get; set; }
+
+    public virtual DbSet<ProductionTeamEmployee> ProductionTeamEmployees { get; set; }
+
     public virtual DbSet<PurchaseOrder> PurchaseOrders { get; set; }
 
     public virtual DbSet<PurchaseOrderDeliverySchedule> PurchaseOrderDeliverySchedules { get; set; }
@@ -1573,6 +1577,64 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<ProductionTeam>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("production_team", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Description).HasColumnType("text");
+            entity.Property(e => e.Email).HasMaxLength(255);
+            entity.Property(e => e.EnglishName).HasMaxLength(255);
+            entity.Property(e => e.IsActive).HasDefaultValueSql("'1'");
+            entity.Property(e => e.Location).HasMaxLength(255);
+            entity.Property(e => e.ParentId).HasDefaultValueSql("'0'");
+            entity.Property(e => e.Phone).HasMaxLength(50);
+            entity.Property(e => e.ShortName).HasMaxLength(100);
+            entity.Property(e => e.TeamCode).HasMaxLength(50);
+            entity.Property(e => e.TeamName).HasMaxLength(255);
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<ProductionTeamEmployee>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("production_team_employee", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.FromDate).HasColumnType("datetime");
+            entity.Property(e => e.IsPrimary)
+                .IsRequired()
+                .HasDefaultValueSql("'1'");
+            entity.Property(e => e.Remark).HasMaxLength(500);
+            entity.Property(e => e.ToDate).HasColumnType("datetime");
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });

@@ -444,5 +444,19 @@ public static class PermissionCodes
         public const string Edit = "workcenter.edit";
         public const string Delete = "workcenter.delete";
     }
+    public static class ProductionTeam
+    {
+        public const string View = "production-team.view";
+        public const string Add = "production-team.add";
+        public const string Edit = "production-team.edit";
+        public const string Delete = "production-team.delete";
+    }
+    public static class ProductionTeamEmployee
+    {
+        public const string View = "production-team-employee.view";
+        public const string Add = "production-team-employee.add";
+        public const string Edit = "production-team-employee.edit";
+        public const string Delete = "production-team-employee.delete";
+    }
 
 }

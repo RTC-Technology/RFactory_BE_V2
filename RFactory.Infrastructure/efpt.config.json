@@ -219,6 +219,14 @@
          "ObjectType": 0
       },
       {
+         "Name": "production_team",
+         "ObjectType": 0
+      },
+      {
+         "Name": "production_team_employee",
+         "ObjectType": 0
+      },
+      {
          "Name": "purchase_order",
          "ObjectType": 0
       },
