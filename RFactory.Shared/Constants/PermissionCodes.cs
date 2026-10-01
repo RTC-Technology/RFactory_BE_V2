@@ -305,4 +305,28 @@ public static class PermissionCodes
         public const string Delete = "purchase-order-delivery-schedule.delete";
     }
 
+    public static class Position
+    {
+        public const string View   = "position.view";
+        public const string Add    = "position.add";
+        public const string Edit   = "position.edit";
+        public const string Delete = "position.delete";
+    }
+
+    public static class Skill
+    {
+        public const string View   = "skill.view";
+        public const string Add    = "skill.add";
+        public const string Edit   = "skill.edit";
+        public const string Delete = "skill.delete";
+    }
+
+    public static class EmployeeSkill
+    {
+        public const string View   = "employee-skill.view";
+        public const string Add    = "employee-skill.add";
+        public const string Edit   = "employee-skill.edit";
+        public const string Delete = "employee-skill.delete";
+    }
+
 }

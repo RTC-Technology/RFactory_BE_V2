@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using RFactory.Application.Modules.Administration.Services;
 using RFactory.Application.Modules.Auth.Services;
 using RFactory.Application.Modules.Equipment.Services;
@@ -82,6 +82,9 @@ public static class DependencyInjection
 
         //HumanResources
         services.AddScoped<IEmployeeService, EmployeeService>();
+        services.AddScoped<IPositionService, PositionService>();
+        services.AddScoped<ISkillService, SkillService>();
+        services.AddScoped<IEmployeeSkillService, EmployeeSkillService>();
 
         //GoodsIssue
         services.AddScoped<IGoodsIssueService, GoodsIssueService>();   
