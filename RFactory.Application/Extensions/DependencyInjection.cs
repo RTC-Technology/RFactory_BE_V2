@@ -12,6 +12,7 @@ using RFactory.Application.Modules.Packing.Services;
 using RFactory.Application.Modules.PickingPlan.Services;
 using RFactory.Application.Modules.Product.Services;
 using RFactory.Application.Modules.PurchaseOrder.Services;
+using RFactory.Application.Modules.Quality.Services;
 using RFactory.Application.Modules.Warehouses.Services;
 
 namespace RFactory.Application.Extensions;
@@ -128,6 +129,11 @@ public static class DependencyInjection
 
         services.AddScoped<IProductionTeamService, ProductionTeamService>();
         services.AddScoped<IProductionTeamEmployeeService, ProductionTeamEmployeeService>();
+
+        //Quality
+        services.AddScoped<IQualitySpecificationService, QualitySpecificationService>();
+        services.AddScoped<IQualitySpecificationItemService, QualitySpecificationItemService>();
+        services.AddScoped<IQualitySpecificationProductService, QualitySpecificationProductService>();
 
 
         return services;

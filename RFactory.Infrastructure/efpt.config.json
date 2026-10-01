@@ -239,6 +239,18 @@
          "ObjectType": 0
       },
       {
+         "Name": "quality_specification",
+         "ObjectType": 0
+      },
+      {
+         "Name": "quality_specification_item",
+         "ObjectType": 0
+      },
+      {
+         "Name": "quality_specification_product",
+         "ObjectType": 0
+      },
+      {
          "Name": "routing",
          "ObjectType": 0
       },

@@ -124,6 +124,12 @@ public partial class RFactoryContext : DbContext
 
     public virtual DbSet<PurchaseOrderDetail> PurchaseOrderDetails { get; set; }
 
+    public virtual DbSet<QualitySpecification> QualitySpecifications { get; set; }
+
+    public virtual DbSet<QualitySpecificationItem> QualitySpecificationItems { get; set; }
+
+    public virtual DbSet<QualitySpecificationProduct> QualitySpecificationProducts { get; set; }
+
     public virtual DbSet<Routing> Routings { get; set; }
 
     public virtual DbSet<RoutingOperation> RoutingOperations { get; set; }
@@ -1790,6 +1796,97 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             entity.Property(e => e.WarehouseId).HasComment("Kho nhận hàng");
+        });
+
+        modelBuilder.Entity<QualitySpecification>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("quality_specification", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.EffectiveFrom).HasColumnType("datetime");
+            entity.Property(e => e.EffectiveTo).HasColumnType("datetime");
+            entity.Property(e => e.InspectionType)
+                .HasDefaultValueSql("'1'")
+                .HasComment("1: IQC (Incoming Quality Control); 2: IPQC (In-Process Quality Control); 3: OQC (Outgoing Quality Control); 4: FQC (Final Quality Control)");
+            entity.Property(e => e.Remark).HasColumnType("text");
+            entity.Property(e => e.SpecificationCode)
+                .IsRequired()
+                .HasMaxLength(50);
+            entity.Property(e => e.SpecificationName)
+                .IsRequired()
+                .HasMaxLength(255);
+            entity.Property(e => e.Status)
+                .HasDefaultValueSql("'1'")
+                .HasComment("1: Draft; 2: PendingApproval; 3: Approved; 4: Active; 5: Inactive; 6: Expired; 7: Cancelled");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            entity.Property(e => e.Version).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<QualitySpecificationItem>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("quality_specification_item", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.IsRequired)
+                .IsRequired()
+                .HasDefaultValueSql("'1'");
+            entity.Property(e => e.MaxValue).HasPrecision(18, 6);
+            entity.Property(e => e.MinValue).HasPrecision(18, 6);
+            entity.Property(e => e.ParameterCode).HasMaxLength(50);
+            entity.Property(e => e.ParameterName)
+                .IsRequired()
+                .HasMaxLength(255);
+            entity.Property(e => e.Remark).HasColumnType("text");
+            entity.Property(e => e.SequenceNo).HasDefaultValueSql("'1'");
+            entity.Property(e => e.TargetValue).HasMaxLength(255);
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<QualitySpecificationProduct>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("quality_specification_product", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<Routing>(entity =>

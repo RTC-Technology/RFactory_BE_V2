@@ -458,5 +458,26 @@ public static class PermissionCodes
         public const string Edit = "production-team-employee.edit";
         public const string Delete = "production-team-employee.delete";
     }
+    public static class QualitySpecification
+    {
+        public const string View = "quality-specification.view";
+        public const string Add = "quality-specification.add";
+        public const string Edit = "quality-specification.edit";
+        public const string Delete = "quality-specification.delete";
+    }
+    public static class QualitySpecificationItem
+    {
+        public const string View = "quality-specification-item.view";
+        public const string Add = "quality-specification-item.add";
+        public const string Edit = "quality-specification-item.edit";
+        public const string Delete = "quality-specification-item.delete";
+    }
+    public static class QualitySpecificationProduct
+    {
+        public const string View = "quality-specification-product.view";
+        public const string Add = "quality-specification-product.add";
+        public const string Edit = "quality-specification-product.edit";
+        public const string Delete = "quality-specification-product.delete";
+    }
 
 }
