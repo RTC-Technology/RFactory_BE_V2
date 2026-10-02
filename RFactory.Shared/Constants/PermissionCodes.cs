@@ -479,5 +479,33 @@ public static class PermissionCodes
         public const string Edit = "quality-specification-product.edit";
         public const string Delete = "quality-specification-product.delete";
     }
+    public static class InspectionPlan
+    {
+        public const string View = "inspection-plan.view";
+        public const string Add = "inspection-plan.add";
+        public const string Edit = "inspection-plan.edit";
+        public const string Delete = "inspection-plan.delete";
+    }
+    public static class InspectionItem
+    {
+        public const string View = "inspection-item.view";
+        public const string Add = "inspection-item.add";
+        public const string Edit = "inspection-item.edit";
+        public const string Delete = "inspection-item.delete";
+    }
+    public static class InspectionExecution
+    {
+        public const string View = "inspection-execution.view";
+        public const string Add = "inspection-execution.add";
+        public const string Edit = "inspection-execution.edit";
+        public const string Delete = "inspection-execution.delete";
+    }
+    public static class InspectionResult
+    {
+        public const string View = "inspection-result.view";
+        public const string Add = "inspection-result.add";
+        public const string Edit = "inspection-result.edit";
+        public const string Delete = "inspection-result.delete";
+    }
 
 }

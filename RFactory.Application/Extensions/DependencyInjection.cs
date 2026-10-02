@@ -135,6 +135,10 @@ public static class DependencyInjection
         services.AddScoped<IQualitySpecificationItemService, QualitySpecificationItemService>();
         services.AddScoped<IQualitySpecificationProductService, QualitySpecificationProductService>();
 
+        services.AddScoped<IInspectionPlanService, InspectionPlanService>();
+        services.AddScoped<IInspectionItemService, InspectionItemService>();
+        services.AddScoped<IInspectionExecutionService, InspectionExecutionService>();
+        services.AddScoped<IInspectionResultService, InspectionResultService>();
 
         return services;
     }

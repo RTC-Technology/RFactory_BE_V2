@@ -50,6 +50,14 @@ public partial class RFactoryContext : DbContext
 
     public virtual DbSet<Holiday> Holidays { get; set; }
 
+    public virtual DbSet<InspectionExecution> InspectionExecutions { get; set; }
+
+    public virtual DbSet<InspectionItem> InspectionItems { get; set; }
+
+    public virtual DbSet<InspectionPlan> InspectionPlans { get; set; }
+
+    public virtual DbSet<InspectionResult> InspectionResults { get; set; }
+
     public virtual DbSet<Inventory> Inventories { get; set; }
 
     public virtual DbSet<InventoryCycleCount> InventoryCycleCounts { get; set; }
@@ -707,6 +715,134 @@ public partial class RFactoryContext : DbContext
                 .IsRequired()
                 .HasDefaultValueSql("'1'");
             entity.Property(e => e.StartDate).HasColumnType("datetime");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<InspectionExecution>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("inspection_execution", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CompletedAt).HasColumnType("datetime");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.ExecutionNo)
+                .IsRequired()
+                .HasMaxLength(50);
+            entity.Property(e => e.LotNo).HasMaxLength(100);
+            entity.Property(e => e.ProductionOrderId).HasComment("Lệnh sản xuất");
+            entity.Property(e => e.Remark).HasColumnType("text");
+            entity.Property(e => e.SampleSize).HasPrecision(18, 6);
+            entity.Property(e => e.SerialNo).HasMaxLength(100);
+            entity.Property(e => e.StartedAt).HasColumnType("datetime");
+            entity.Property(e => e.Status)
+                .HasDefaultValueSql("'1'")
+                .HasComment("1=Pending, 2=InProgress, 3=Passed, 4=Failed, 5=PartiallyPassed, 6=Cancelled");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<InspectionItem>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("inspection_item", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Frequency).HasMaxLength(100);
+            entity.Property(e => e.InspectionMethod).HasMaxLength(255);
+            entity.Property(e => e.IsRequired)
+                .IsRequired()
+                .HasDefaultValueSql("'1'");
+            entity.Property(e => e.Remark).HasColumnType("text");
+            entity.Property(e => e.SampleSize).HasPrecision(18, 6);
+            entity.Property(e => e.SequenceNo).HasDefaultValueSql("'1'");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<InspectionPlan>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("inspection_plan", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.ApprovedAt).HasColumnType("datetime");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.EffectiveFrom).HasColumnType("datetime");
+            entity.Property(e => e.EffectiveTo).HasColumnType("datetime");
+            entity.Property(e => e.InspectionType).HasComment("1=IQC, 2=IPQC, 3=OQC, 4=FQC");
+            entity.Property(e => e.PlanCode)
+                .IsRequired()
+                .HasMaxLength(50);
+            entity.Property(e => e.PlanName)
+                .IsRequired()
+                .HasMaxLength(255);
+            entity.Property(e => e.Remark).HasColumnType("text");
+            entity.Property(e => e.Status)
+                .HasDefaultValueSql("'1'")
+                .HasComment("1=Draft, 2=PendingApproval, 3=Approved, 4=Active, 5=Inactive, 6=Expired, 7=Cancelled");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            entity.Property(e => e.Version).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<InspectionResult>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("inspection_result", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.ActualValue).HasMaxLength(500);
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.InspectionTime).HasColumnType("datetime");
+            entity.Property(e => e.NumericValue).HasPrecision(18, 6);
+            entity.Property(e => e.Remark).HasColumnType("text");
+            entity.Property(e => e.Result)
+                .HasDefaultValueSql("'1'")
+                .HasComment("1=Pending, 2=Pass, 3=Fail, 4=NA");
+            entity.Property(e => e.TextValue).HasMaxLength(500);
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });

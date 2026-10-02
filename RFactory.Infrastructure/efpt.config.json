@@ -91,6 +91,22 @@
          "ObjectType": 0
       },
       {
+         "Name": "inspection_execution",
+         "ObjectType": 0
+      },
+      {
+         "Name": "inspection_item",
+         "ObjectType": 0
+      },
+      {
+         "Name": "inspection_plan",
+         "ObjectType": 0
+      },
+      {
+         "Name": "inspection_result",
+         "ObjectType": 0
+      },
+      {
          "Name": "inventory",
          "ObjectType": 0
       },
