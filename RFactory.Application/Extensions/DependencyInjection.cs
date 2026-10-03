@@ -143,6 +143,9 @@ public static class DependencyInjection
         services.AddScoped<IDefectService, DefectService>();
         services.AddScoped<IDefectGroupService, DefectGroupService>();
 
+        services.AddScoped<ISamplingPlanService, SamplingPlanService>();
+        services.AddScoped<ISamplingPlanRuleService, SamplingPlanRuleService>();
+
         return services;
     }
 }

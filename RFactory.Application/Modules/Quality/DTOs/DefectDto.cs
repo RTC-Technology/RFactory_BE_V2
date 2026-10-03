@@ -37,7 +37,7 @@ namespace RFactory.Application.Modules.Quality.DTOs
         public bool? IsActive { get; set; }
     }
 
-    public partial class DefectGroupDto
+    public class DefectGroupDto
     {
 
         public ulong Id { get; set; }
@@ -86,7 +86,7 @@ namespace RFactory.Application.Modules.Quality.DTOs
         public bool? IsActive { get; set; }
     }
 
-    public partial class DefectGroupRequest
+    public class DefectGroupRequest
     {
 
         public string GroupCode { get; set; }

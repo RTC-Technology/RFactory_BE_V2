@@ -43,7 +43,7 @@ namespace RFactory.Application.Modules.Quality.DTOs
         public string Remark { get; set; }
     }
 
-    public partial class QualitySpecificationItemDto
+    public class QualitySpecificationItemDto
     {
         /// <summary>
         /// Primary Key
@@ -81,7 +81,7 @@ namespace RFactory.Application.Modules.Quality.DTOs
         public string Remark { get; set; }
     }
 
-    public partial class QualitySpecificationProductDto
+    public class QualitySpecificationProductDto
     {
         public ulong Id { get; set; }
 
@@ -121,7 +121,7 @@ namespace RFactory.Application.Modules.Quality.DTOs
         public List<QualitySpecificationProductRequest>? QualitySpecificationProducts { get; set; }
     }
 
-    public partial class QualitySpecificationItemRequest
+    public class QualitySpecificationItemRequest
     {
         public ulong Id { get; set; }
 
@@ -146,7 +146,7 @@ namespace RFactory.Application.Modules.Quality.DTOs
         public string? Remark { get; set; }
     }
 
-    public partial class QualitySpecificationProductRequest
+    public class QualitySpecificationProductRequest
     {
         public ulong Id { get; set; }
 

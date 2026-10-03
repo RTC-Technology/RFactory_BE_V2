@@ -56,4 +56,6 @@ public partial class InspectionPlan
     public DateTime? ApprovedAt { get; set; }
 
     public string Remark { get; set; }
+
+    public ulong? SamplingPlanId { get; set; }
 }

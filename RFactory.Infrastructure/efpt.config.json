@@ -283,6 +283,14 @@
          "ObjectType": 0
       },
       {
+         "Name": "sampling_plan",
+         "ObjectType": 0
+      },
+      {
+         "Name": "sampling_plan_rule",
+         "ObjectType": 0
+      },
+      {
          "Name": "shift",
          "ObjectType": 0
       },

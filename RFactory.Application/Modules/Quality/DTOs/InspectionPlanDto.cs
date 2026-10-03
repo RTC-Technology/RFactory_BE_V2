@@ -51,6 +51,7 @@ namespace RFactory.Application.Modules.Quality.DTOs
         public DateTime? ApprovedAt { get; set; }
 
         public string? Remark { get; set; }
+        public ulong? SamplingPlanId { get; set; }
     }
     public partial class InspectionItemDto
     {
@@ -207,6 +208,7 @@ namespace RFactory.Application.Modules.Quality.DTOs
         public DateTime? ApprovedAt { get; set; }
 
         public string? Remark { get; set; }
+        public ulong? SamplingPlanId { get; set; }
         public List<InspectionItemRequest>? InspectionItems { get; set; }
     }
 

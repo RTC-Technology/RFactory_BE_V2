@@ -148,12 +148,6 @@ namespace RFactory.Application.Modules.Quality.Services
             entity.InspectionPlanId = id;
             return entity;
         }
-        private Entities.InspectionResult ToResultEntity(InspectionResultRequest line, ulong id)
-        {
-            var entity = _mapper.Map<Entities.InspectionResult>(line);
-            entity.InspectionExecutionId = id;
-            return entity;
-        }
     }
 
     public class InspectionItemService : IInspectionItemService

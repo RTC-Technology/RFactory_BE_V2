@@ -146,6 +146,10 @@ public partial class RFactoryContext : DbContext
 
     public virtual DbSet<RoutingOperation> RoutingOperations { get; set; }
 
+    public virtual DbSet<SamplingPlan> SamplingPlans { get; set; }
+
+    public virtual DbSet<SamplingPlanRule> SamplingPlanRules { get; set; }
+
     public virtual DbSet<Shift> Shifts { get; set; }
 
     public virtual DbSet<ShiftBreak> ShiftBreaks { get; set; }
@@ -2136,6 +2140,67 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.Description).HasColumnType("text");
             entity.Property(e => e.RoutingOperationCode).HasMaxLength(50);
             entity.Property(e => e.RoutingOperationName).HasMaxLength(255);
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<SamplingPlan>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("sampling_plan", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.AqlValue)
+                .HasPrecision(18, 6)
+                .HasComment("Acceptable Quality Limit");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Description).HasMaxLength(500);
+            entity.Property(e => e.EffectiveFrom).HasColumnType("datetime");
+            entity.Property(e => e.EffectiveTo).HasColumnType("datetime");
+            entity.Property(e => e.FrequencyType).HasComment("1 = PerLot; 2 = PerShift;3 = PerHour; 4 = PerDay; 5 = PerQuantity; 6 = FirstPiece; 7 = LastPiece; 8 = Periodic");
+            entity.Property(e => e.FrequencyValue).HasPrecision(18, 6);
+            entity.Property(e => e.InspectionLevel)
+                .HasMaxLength(50)
+                .HasComment("Level I: mức kiểm tra thấp hơn; \nLevel II: mức kiểm tra thông thường\nLevel; III: mức kiểm tra cao hơn");
+            entity.Property(e => e.Remark).HasMaxLength(1000);
+            entity.Property(e => e.SamplingMethod).HasComment("1 :FixedQuantity; 2 : Percentage; 3 : LotSizeBased; 4 : AQL; 5 : 100Percent");
+            entity.Property(e => e.SamplingPlanCode).HasMaxLength(50);
+            entity.Property(e => e.SamplingPlanName).HasMaxLength(255);
+            entity.Property(e => e.Status)
+                .HasDefaultValueSql("'1'")
+                .HasComment("1 = Draft; 2 = PendingApproval; 3 = Approved; 4 = Active; 5 = Inactive; 6 = Expired; 7 = Cancelled");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<SamplingPlanRule>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("sampling_plan_rule", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.SortOrder).HasDefaultValueSql("'1'");
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });

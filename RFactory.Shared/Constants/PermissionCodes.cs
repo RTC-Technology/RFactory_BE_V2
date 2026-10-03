@@ -522,4 +522,19 @@ public static class PermissionCodes
         public const string Delete = "defect.delete";
     }
 
+    public static class SamplingPlan
+    {
+        public const string View = "sampling-plan.view";
+        public const string Add = "sampling-plan.add";
+        public const string Edit = "sampling-plan.edit";
+        public const string Delete = "sampling-plan.delete";
+    }
+    public static class SamplingPlanRule
+    {
+        public const string View = "sampling-plan-rule.view";
+        public const string Add = "sampling-plan-rule.add";
+        public const string Edit = "sampling-plan-rule.edit";
+        public const string Delete = "sampling-plan-rule.delete";
+    }
+
 }
