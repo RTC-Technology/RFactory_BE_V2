@@ -46,7 +46,7 @@ public class RoutingController : ControllerBase
 
     [HttpPost]
     [RequirePermission(PermissionCodes.Routing.Add)]
-    public async Task<ActionResult<ApiResponse<RoutingDto>>> Create(CreateRoutingRequest request, CancellationToken ct)
+    public async Task<ActionResult<ApiResponse<RoutingDto>>> Create(RoutingRequest request, CancellationToken ct)
     {
         var result = await _routingService.CreateAsync(request, ct);
         if (!result.Succeeded)
@@ -59,7 +59,7 @@ public class RoutingController : ControllerBase
 
     [HttpPut("{id:long}")]
     [RequirePermission(PermissionCodes.Routing.Edit)]
-    public async Task<ActionResult<ApiResponse<RoutingDto>>> Update(ulong id, UpdateRoutingRequest request, CancellationToken ct)
+    public async Task<ActionResult<ApiResponse<RoutingDto>>> Update(ulong id, RoutingRequest request, CancellationToken ct)
     {
         var result = await _routingService.UpdateAsync(id, request, ct);
         if (!result.Succeeded)

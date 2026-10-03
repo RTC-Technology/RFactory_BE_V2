@@ -46,7 +46,7 @@ public class UnitConversionController : ControllerBase
 
     [HttpPost]
     [RequirePermission(PermissionCodes.UnitConversion.Add)]
-    public async Task<ActionResult<ApiResponse<UnitConversionDto>>> Create(CreateUnitConversionRequest request, CancellationToken ct)
+    public async Task<ActionResult<ApiResponse<UnitConversionDto>>> Create(UnitConversionRequest request, CancellationToken ct)
     {
         var result = await _unitConversionService.CreateAsync(request, ct);
         if (!result.Succeeded)

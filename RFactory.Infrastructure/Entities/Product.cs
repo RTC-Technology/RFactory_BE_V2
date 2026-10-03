@@ -38,4 +38,84 @@ public partial class Product
     public string DrawingPath { get; set; }
 
     public int? Status { get; set; }
+
+    /// <summary>
+    /// Tính chất vật tư hàng hóa (1. Finished Product; 2. Raw Material; 3. Goods; 4. Tools and Equipment)
+    /// </summary>
+    public int? ProductNature { get; set; }
+
+    /// <summary>
+    /// Nhóm VTHH
+    /// </summary>
+    public long? ProductGroupId { get; set; }
+
+    /// <summary>
+    /// Đơn vị tính sản xuất
+    /// </summary>
+    public long? ProductionUnitId { get; set; }
+
+    /// <summary>
+    /// Kho ngầm định
+    /// </summary>
+    public long? DefaultWarehouseId { get; set; }
+
+    /// <summary>
+    /// Tồn tối thiểu
+    /// </summary>
+    public decimal? MinStock { get; set; }
+
+    /// <summary>
+    /// Tồn tối đa
+    /// </summary>
+    public decimal? MaxStock { get; set; }
+
+    /// <summary>
+    /// Đơn giá mua cố định
+    /// </summary>
+    public decimal? FixedPurchasePrice { get; set; }
+
+    /// <summary>
+    /// Tỷ lệ hao hụt (%)
+    /// </summary>
+    public decimal? WastageRate { get; set; }
+
+    /// <summary>
+    /// Thời gian chuẩn bị
+    /// </summary>
+    public decimal? PreparationTime { get; set; }
+
+    /// <summary>
+    /// Thời hạn bảo hành
+    /// </summary>
+    public decimal? WarrantyPeriod { get; set; }
+
+    /// <summary>
+    /// Đơn vị thời hạn bảo hành
+    /// </summary>
+    public int? WarrantyPeriodUnit { get; set; }
+
+    /// <summary>
+    /// Thuế suất GTGT (%)
+    /// </summary>
+    public decimal? VatRate { get; set; }
+
+    /// <summary>
+    /// Thời gian sản xuất tiêu chuẩn
+    /// </summary>
+    public decimal? StandardProductionTime { get; set; }
+
+    /// <summary>
+    /// Là thành phẩm thuê gia công
+    /// </summary>
+    public bool IsOutsourced { get; set; }
+
+    /// <summary>
+    /// Mô tả
+    /// </summary>
+    public string Description { get; set; }
+
+    /// <summary>
+    /// Màu KHSX
+    /// </summary>
+    public string ProductionColor { get; set; }
 }
