@@ -174,6 +174,7 @@ namespace RFactory.Application.Modules.Quality.DTOs
         public ulong? InspectorId { get; set; }
 
         public string? Remark { get; set; }
+        public long? DefectId { get; set; }
     }
 
 
@@ -295,5 +296,6 @@ namespace RFactory.Application.Modules.Quality.DTOs
         public ulong? InspectorId { get; set; }
 
         public string? Remark { get; set; }
+        public long? DefectId { get; set; }
     }
 }

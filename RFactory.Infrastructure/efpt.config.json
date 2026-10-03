@@ -35,6 +35,14 @@
          "ObjectType": 0
       },
       {
+         "Name": "defect",
+         "ObjectType": 0
+      },
+      {
+         "Name": "defect_group",
+         "ObjectType": 0
+      },
+      {
          "Name": "delivery_note",
          "ObjectType": 0
       },

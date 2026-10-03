@@ -507,5 +507,19 @@ public static class PermissionCodes
         public const string Edit = "inspection-result.edit";
         public const string Delete = "inspection-result.delete";
     }
+    public static class DefectGroup
+    {
+        public const string View = "defect-group.view";
+        public const string Add = "defect-group.add";
+        public const string Edit = "defect-group.edit";
+        public const string Delete = "defect-group.delete";
+    }
+    public static class Defect
+    {
+        public const string View = "defect.view";
+        public const string Add = "defect.add";
+        public const string Edit = "defect.edit";
+        public const string Delete = "defect.delete";
+    }
 
 }

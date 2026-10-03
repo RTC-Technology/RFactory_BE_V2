@@ -8,7 +8,7 @@ namespace RFactory.Infrastructure.Entities;
 /// <summary>
 /// Base Template Table
 /// </summary>
-public partial class InspectionResult
+public partial class Defect
 {
     /// <summary>
     /// Primary Key
@@ -25,30 +25,22 @@ public partial class InspectionResult
 
     public bool IsDeleted { get; set; }
 
-    public ulong InspectionExecutionId { get; set; }
+    public ulong DefectGroupId { get; set; }
 
-    public ulong InspectionItemId { get; set; }
+    public string DefectCode { get; set; }
 
-    public int? SampleNo { get; set; }
+    public string DefectName { get; set; }
 
-    public string ActualValue { get; set; }
+    public string ShortName { get; set; }
 
-    public decimal? NumericValue { get; set; }
-
-    public string TextValue { get; set; }
-
-    public bool? BooleanValue { get; set; }
+    public string Description { get; set; }
 
     /// <summary>
-    /// 1=Pending, 2=Pass, 3=Fail, 4=NA
+    /// 1: Minor; 2: Major ; 3: Critical
     /// </summary>
-    public int Result { get; set; }
+    public int Severity { get; set; }
 
-    public DateTime? InspectionTime { get; set; }
+    public int SortOrder { get; set; }
 
-    public ulong? InspectorId { get; set; }
-
-    public string Remark { get; set; }
-
-    public long? DefectId { get; set; }
+    public bool? IsActive { get; set; }
 }
