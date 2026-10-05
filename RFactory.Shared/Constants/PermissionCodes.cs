@@ -536,5 +536,19 @@ public static class PermissionCodes
         public const string Edit = "sampling-plan-rule.edit";
         public const string Delete = "sampling-plan-rule.delete";
     }
+    public static class Customer
+    {
+        public const string View = "customer.view";
+        public const string Add = "customer.add";
+        public const string Edit = "customer.edit";
+        public const string Delete = "customer.delete";
+    }
+    public static class CustomerContact
+    {
+        public const string View = "customer-contact.view";
+        public const string Add = "customer-contact.add";
+        public const string Edit = "customer-contact.edit";
+        public const string Delete = "customer-contact.delete";
+    }
 
 }

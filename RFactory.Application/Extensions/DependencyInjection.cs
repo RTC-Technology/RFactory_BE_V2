@@ -146,6 +146,11 @@ public static class DependencyInjection
         services.AddScoped<ISamplingPlanService, SamplingPlanService>();
         services.AddScoped<ISamplingPlanRuleService, SamplingPlanRuleService>();
 
+        //master data
+
+        services.AddScoped<ICustomerService, CustomerService>();
+        services.AddScoped<ICustomerContactService, CustomerContactService>();
+
         return services;
     }
 }

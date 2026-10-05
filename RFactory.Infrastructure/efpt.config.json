@@ -35,6 +35,14 @@
          "ObjectType": 0
       },
       {
+         "Name": "customer",
+         "ObjectType": 0
+      },
+      {
+         "Name": "customer_contact",
+         "ObjectType": 0
+      },
+      {
          "Name": "defect",
          "ObjectType": 0
       },

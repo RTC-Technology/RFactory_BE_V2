@@ -9,42 +9,43 @@ using RFactory.Shared.Constants;
 
 namespace RFactory.API.Controllers.MasterData
 {
-    [Route("api/master-data/supplier")]
+    [Route("api/master-data/customer/contacts")]
     [ApiController]
     [Authorize]
-    public class SupplierController : ControllerBase
-    {
-        private readonly ISupplierService _service;
 
-        public SupplierController(ISupplierService service)
+    public class CustomerContactController : ControllerBase
+    {
+        private readonly ICustomerContactService _service;
+
+        public CustomerContactController(ICustomerContactService service)
         {
             _service = service;
         }
 
         [HttpGet]
-        [RequirePermission(PermissionCodes.Supplier.View)]
-        public async Task<ActionResult<ApiResponse<List<SupplierDto>>>> GetAll(CancellationToken ct)
+        [RequirePermission(PermissionCodes.CustomerContact.View)]
+        public async Task<ActionResult<ApiResponse<List<CustomerContactDto>>>> GetAll(CancellationToken ct)
         {
-            var suppliers = await _service.GetAllAsync(ct);
-            return Ok(ApiResponseFactory.Success(suppliers));
+            var contacts = await _service.GetAllAsync(ct);
+            return Ok(ApiResponseFactory.Success(contacts));
         }
 
         [HttpGet("{id:long}")]
-        [RequirePermission(PermissionCodes.Supplier.View)]
-        public async Task<ActionResult<ApiResponse<SupplierDto>>> GetById(ulong id, CancellationToken ct)
+        [RequirePermission(PermissionCodes.CustomerContact.View)]
+        public async Task<ActionResult<ApiResponse<CustomerContactDto>>> GetById(ulong id, CancellationToken ct)
         {
-            var supplier = await _service.GetByIdAsync(id, ct);
-            if (supplier is null)
+            var contact = await _service.GetByIdAsync(id, ct);
+            if (contact is null)
             {
-                return NotFound(ApiResponseFactory.Fail($"Supplier {id} was not found.", System.Net.HttpStatusCode.NotFound));
+                return NotFound(ApiResponseFactory.Fail($"CustomerContact {id} was not found.", System.Net.HttpStatusCode.NotFound));
             }
 
-            return Ok(ApiResponseFactory.Success(supplier));
+            return Ok(ApiResponseFactory.Success(contact));
         }
 
         [HttpPost]
-        [RequirePermission(PermissionCodes.Supplier.Add)]
-        public async Task<ActionResult<ApiResponse<SupplierDto>>> Create(CreateSupplierRequest request, CancellationToken ct)
+        [RequirePermission(PermissionCodes.CustomerContact.Add)]
+        public async Task<ActionResult<ApiResponse<CustomerContactDto>>> Create(CustomerContactRequest request, CancellationToken ct)
         {
             var result = await _service.CreateAsync(request, ct);
             if (!result.Succeeded)
@@ -56,8 +57,8 @@ namespace RFactory.API.Controllers.MasterData
         }
 
         [HttpPut("{id:long}")]
-        [RequirePermission(PermissionCodes.Supplier.Edit)]
-        public async Task<ActionResult<ApiResponse<SupplierDto>>> Update(ulong id, UpdateSupplierRequest request, CancellationToken ct)
+        [RequirePermission(PermissionCodes.CustomerContact.Edit)]
+        public async Task<ActionResult<ApiResponse<CustomerContactDto>>> Update(ulong id, CustomerContactRequest request, CancellationToken ct)
         {
             var result = await _service.UpdateAsync(id, request, ct);
             if (!result.Succeeded)
@@ -69,7 +70,7 @@ namespace RFactory.API.Controllers.MasterData
         }
 
         [HttpDelete("{id:long}")]
-        [RequirePermission(PermissionCodes.Supplier.Delete)]
+        [RequirePermission(PermissionCodes.Customer.Delete)]
         public async Task<ActionResult<ApiResponse<object?>>> Delete(ulong id, CancellationToken ct)
         {
             var result = await _service.DeleteAsync(id, ct);
@@ -78,7 +79,7 @@ namespace RFactory.API.Controllers.MasterData
                 return NotFound(ApiResponseFactory.Fail(result.Error!, System.Net.HttpStatusCode.NotFound));
             }
 
-            return Ok(ApiResponseFactory.Success<object?>(null, "Suppler deleted."));
+            return Ok(ApiResponseFactory.Success<object?>(null, "Customer deleted."));
         }
     }
 }

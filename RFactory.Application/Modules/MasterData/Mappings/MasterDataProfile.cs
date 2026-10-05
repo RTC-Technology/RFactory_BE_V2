@@ -27,6 +27,7 @@ public class MasterDataProfile : Profile
         CreateMap<Organization, OrganizationDto>();
         CreateMap<CreateOrganizationRequest, Organization>();
         CreateMap<UpdateOrganizationRequest, Organization>();
+        CreateMap<UpdateOrganizationRequest, Organization>();
 
         // Shift.IsActive and Shift.CrossDay are nullable bit(1) columns (bool?/ulong?) but
         // travel as plain bools, the same treatment User.IsAdmin gets.
@@ -63,5 +64,12 @@ public class MasterDataProfile : Profile
         CreateMap<Supplier, SupplierDto>();
         CreateMap<CreateSupplierRequest, Supplier>();
         CreateMap<UpdateSupplierRequest, Supplier>();
+
+        CreateMap<Customer, CustomerDto>();
+        CreateMap<CustomerContact, CustomerContactDto>();
+        CreateMap<CustomerRequest, Customer>();
+        CreateMap<CustomerContactRequest, CustomerContact>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.CustomerId, opt => opt.Ignore());
     }
 }

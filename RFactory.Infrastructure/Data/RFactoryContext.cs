@@ -22,6 +22,10 @@ public partial class RFactoryContext : DbContext
 
     public virtual DbSet<Company> Companies { get; set; }
 
+    public virtual DbSet<Customer> Customers { get; set; }
+
+    public virtual DbSet<CustomerContact> CustomerContacts { get; set; }
+
     public virtual DbSet<Defect> Defects { get; set; }
 
     public virtual DbSet<DefectGroup> DefectGroups { get; set; }
@@ -318,6 +322,116 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             entity.Property(e => e.Website).HasMaxLength(255);
+        });
+
+        modelBuilder.Entity<Customer>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("customer", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.Address)
+                .HasMaxLength(500)
+                .HasComment("Địa chỉ");
+            entity.Property(e => e.ContactPerson)
+                .HasMaxLength(255)
+                .HasComment("Người liên hệ chính");
+            entity.Property(e => e.CountryId).HasComment("Quốc gia");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.CurrencyId).HasComment("ID loại tiền tệ");
+            entity.Property(e => e.CustomerCode)
+                .IsRequired()
+                .HasMaxLength(50)
+                .HasComment("Mã khách hàng");
+            entity.Property(e => e.CustomerName)
+                .IsRequired()
+                .HasMaxLength(255)
+                .HasComment("Tên khách hàng");
+            entity.Property(e => e.CustomerType).HasComment("Loại khách hàng: 1=Domestic, 2=International, 3=Internal, 99=Other");
+            entity.Property(e => e.DefaultWarehouseId).HasComment("ID kho mặc định");
+            entity.Property(e => e.DistrictId).HasComment("ID quận/huyện");
+            entity.Property(e => e.Email)
+                .HasMaxLength(255)
+                .HasComment("Email");
+            entity.Property(e => e.EnglishName)
+                .HasMaxLength(255)
+                .HasComment("Tên tiếng Anh");
+            entity.Property(e => e.IsActive)
+                .IsRequired()
+                .HasDefaultValueSql("'1'")
+                .HasComment("Trạng thái: 1=Đang hoạt động, 0=Ngừng hoạt động");
+            entity.Property(e => e.PaymentTerm)
+                .HasMaxLength(100)
+                .HasComment("Điều khoản thanh toán");
+            entity.Property(e => e.Phone)
+                .HasMaxLength(50)
+                .HasComment("Số điện thoại");
+            entity.Property(e => e.ProvinceId).HasComment("ID tỉnh/thành phố");
+            entity.Property(e => e.Remark)
+                .HasComment("Ghi chú")
+                .HasColumnType("text");
+            entity.Property(e => e.ShortName)
+                .HasMaxLength(100)
+                .HasComment("Tên viết tắt");
+            entity.Property(e => e.TaxCode)
+                .HasMaxLength(50)
+                .HasComment("Mã số thuế");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<CustomerContact>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("customer_contact", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.ContactName)
+                .IsRequired()
+                .HasMaxLength(255)
+                .HasComment("Tên người liên hệ");
+            entity.Property(e => e.ContactType).HasComment("Loại liên hệ: 1=Mua hàng, 2=Kỹ thuật, 3=Chất lượng, 4=Giao nhận, 5=Kế toán, 99=Khác");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.CustomerId).HasComment("ID khách hàng");
+            entity.Property(e => e.Email)
+                .HasMaxLength(255)
+                .HasComment("Email");
+            entity.Property(e => e.IsActive)
+                .IsRequired()
+                .HasDefaultValueSql("'1'")
+                .HasComment("Trạng thái: 1=Đang hoạt động, 0=Ngừng hoạt động");
+            entity.Property(e => e.IsPrimary).HasComment("Liên hệ chính: 1=Có, 0=Không");
+            entity.Property(e => e.Phone)
+                .HasMaxLength(50)
+                .HasComment("Số điện thoại");
+            entity.Property(e => e.Position)
+                .HasMaxLength(255)
+                .HasComment("Chức vụ");
+            entity.Property(e => e.Remark)
+                .HasComment("Ghi chú")
+                .HasColumnType("text");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<Defect>(entity =>

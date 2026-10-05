@@ -9,42 +9,43 @@ using RFactory.Shared.Constants;
 
 namespace RFactory.API.Controllers.MasterData
 {
-    [Route("api/master-data/supplier")]
+    [Route("api/master-data/customer")]
     [ApiController]
     [Authorize]
-    public class SupplierController : ControllerBase
-    {
-        private readonly ISupplierService _service;
 
-        public SupplierController(ISupplierService service)
+    public class CustomerController : ControllerBase
+    {
+        private readonly ICustomerService _service;
+
+        public CustomerController(ICustomerService service)
         {
             _service = service;
         }
 
         [HttpGet]
-        [RequirePermission(PermissionCodes.Supplier.View)]
-        public async Task<ActionResult<ApiResponse<List<SupplierDto>>>> GetAll(CancellationToken ct)
+        [RequirePermission(PermissionCodes.Customer.View)]
+        public async Task<ActionResult<ApiResponse<List<CustomerDto>>>> GetAll(CancellationToken ct)
         {
-            var suppliers = await _service.GetAllAsync(ct);
-            return Ok(ApiResponseFactory.Success(suppliers));
+            var customers = await _service.GetAllAsync(ct);
+            return Ok(ApiResponseFactory.Success(customers));
         }
 
         [HttpGet("{id:long}")]
-        [RequirePermission(PermissionCodes.Supplier.View)]
-        public async Task<ActionResult<ApiResponse<SupplierDto>>> GetById(ulong id, CancellationToken ct)
+        [RequirePermission(PermissionCodes.Customer.View)]
+        public async Task<ActionResult<ApiResponse<CustomerDto>>> GetById(ulong id, CancellationToken ct)
         {
-            var supplier = await _service.GetByIdAsync(id, ct);
-            if (supplier is null)
+            var customer = await _service.GetByIdAsync(id, ct);
+            if (customer is null)
             {
-                return NotFound(ApiResponseFactory.Fail($"Supplier {id} was not found.", System.Net.HttpStatusCode.NotFound));
+                return NotFound(ApiResponseFactory.Fail($"Customer {id} was not found.", System.Net.HttpStatusCode.NotFound));
             }
 
-            return Ok(ApiResponseFactory.Success(supplier));
+            return Ok(ApiResponseFactory.Success(customer));
         }
 
         [HttpPost]
-        [RequirePermission(PermissionCodes.Supplier.Add)]
-        public async Task<ActionResult<ApiResponse<SupplierDto>>> Create(CreateSupplierRequest request, CancellationToken ct)
+        [RequirePermission(PermissionCodes.Customer.Add)]
+        public async Task<ActionResult<ApiResponse<CustomerDto>>> Create(CustomerRequest request, CancellationToken ct)
         {
             var result = await _service.CreateAsync(request, ct);
             if (!result.Succeeded)
@@ -56,8 +57,8 @@ namespace RFactory.API.Controllers.MasterData
         }
 
         [HttpPut("{id:long}")]
-        [RequirePermission(PermissionCodes.Supplier.Edit)]
-        public async Task<ActionResult<ApiResponse<SupplierDto>>> Update(ulong id, UpdateSupplierRequest request, CancellationToken ct)
+        [RequirePermission(PermissionCodes.Customer.Edit)]
+        public async Task<ActionResult<ApiResponse<CustomerDto>>> Update(ulong id, CustomerRequest request, CancellationToken ct)
         {
             var result = await _service.UpdateAsync(id, request, ct);
             if (!result.Succeeded)
@@ -69,7 +70,7 @@ namespace RFactory.API.Controllers.MasterData
         }
 
         [HttpDelete("{id:long}")]
-        [RequirePermission(PermissionCodes.Supplier.Delete)]
+        [RequirePermission(PermissionCodes.Customer.Delete)]
         public async Task<ActionResult<ApiResponse<object?>>> Delete(ulong id, CancellationToken ct)
         {
             var result = await _service.DeleteAsync(id, ct);
@@ -78,7 +79,7 @@ namespace RFactory.API.Controllers.MasterData
                 return NotFound(ApiResponseFactory.Fail(result.Error!, System.Net.HttpStatusCode.NotFound));
             }
 
-            return Ok(ApiResponseFactory.Success<object?>(null, "Suppler deleted."));
+            return Ok(ApiResponseFactory.Success<object?>(null, "Customer deleted."));
         }
     }
 }
