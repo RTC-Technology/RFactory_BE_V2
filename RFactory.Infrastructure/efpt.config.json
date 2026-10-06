@@ -159,6 +159,14 @@
          "ObjectType": 0
       },
       {
+         "Name": "lot_rule",
+         "ObjectType": 0
+      },
+      {
+         "Name": "lot_rule_sequence",
+         "ObjectType": 0
+      },
+      {
          "Name": "machine",
          "ObjectType": 0
       },
@@ -240,6 +248,10 @@
       },
       {
          "Name": "product_group",
+         "ObjectType": 0
+      },
+      {
+         "Name": "product_lot_rule",
          "ObjectType": 0
       },
       {

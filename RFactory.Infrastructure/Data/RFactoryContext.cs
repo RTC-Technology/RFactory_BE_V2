@@ -84,6 +84,10 @@ public partial class RFactoryContext : DbContext
 
     public virtual DbSet<Lot> Lots { get; set; }
 
+    public virtual DbSet<LotRule> LotRules { get; set; }
+
+    public virtual DbSet<LotRuleSequence> LotRuleSequences { get; set; }
+
     public virtual DbSet<Machine> Machines { get; set; }
 
     public virtual DbSet<MachineType> MachineTypes { get; set; }
@@ -125,6 +129,8 @@ public partial class RFactoryContext : DbContext
     public virtual DbSet<Product> Products { get; set; }
 
     public virtual DbSet<ProductGroup> ProductGroups { get; set; }
+
+    public virtual DbSet<ProductLotRule> ProductLotRules { get; set; }
 
     public virtual DbSet<ProductType> ProductTypes { get; set; }
 
@@ -1253,8 +1259,83 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.LotNo)
                 .IsRequired()
                 .HasMaxLength(100);
+            entity.Property(e => e.LotRuleId).HasComment("Quy tắc Lot được sử dụng để tạo Lot");
             entity.Property(e => e.Status).HasComment("1: AVAILABLE;2: HOLD; 3: BLOCKED; 4: CLOSED");
             entity.Property(e => e.SupplierLotNo).HasMaxLength(100);
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<LotRule>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("lot_rule", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.DateFormat)
+                .HasMaxLength(50)
+                .HasComment("Định dạng ngày");
+            entity.Property(e => e.Description).HasColumnType("text");
+            entity.Property(e => e.Prefix)
+                .HasMaxLength(50)
+                .HasComment("Tiền tố Lot");
+            entity.Property(e => e.RuleCode)
+                .IsRequired()
+                .HasMaxLength(50)
+                .HasComment("Mã quy tắc Lot");
+            entity.Property(e => e.RuleName)
+                .IsRequired()
+                .HasMaxLength(200)
+                .HasComment("Tên quy tắc Lot");
+            entity.Property(e => e.SequenceLength).HasComment("Độ dài số thứ tự");
+            entity.Property(e => e.SequenceResetType)
+                .HasDefaultValueSql("'1'")
+                .HasComment("Cách reset sequence: 1 Daily; 2 Monthly; 3 Yearly; 4 Never");
+            entity.Property(e => e.Status)
+                .HasDefaultValueSql("'1'")
+                .HasComment("Trạng thái: 1 Draft; 2 Active; 3 Inactive");
+            entity.Property(e => e.Template)
+                .IsRequired()
+                .HasMaxLength(500)
+                .HasComment("Mẫu sinh mã Lot");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<LotRuleSequence>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("lot_rule_sequence", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.CurrentValue).HasComment("Giá trị sequence hiện tại");
+            entity.Property(e => e.LotRuleId).HasComment("Quy tắc Lot");
+            entity.Property(e => e.SequenceKey)
+                .IsRequired()
+                .HasMaxLength(50)
+                .HasComment("Khóa phạm vi sequence");
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });
@@ -1853,6 +1934,39 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.GroupNo)
                 .IsRequired()
                 .HasMaxLength(50);
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<ProductLotRule>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("product_lot_rule", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.EffectiveFrom)
+                .HasComment("Ngày bắt đầu áp dụng")
+                .HasColumnType("datetime");
+            entity.Property(e => e.EffectiveTo)
+                .HasComment("Ngày kết thúc áp dụng")
+                .HasColumnType("datetime");
+            entity.Property(e => e.IsDefault)
+                .IsRequired()
+                .HasDefaultValueSql("'1'")
+                .HasComment("Có phải quy tắc mặc định hay không");
+            entity.Property(e => e.LotRuleId).HasComment("Quy tắc Lot");
+            entity.Property(e => e.ProductId).HasComment("Sản phẩm");
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });

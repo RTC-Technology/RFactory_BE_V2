@@ -71,5 +71,18 @@ public class MasterDataProfile : Profile
         CreateMap<CustomerContactRequest, CustomerContact>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.CustomerId, opt => opt.Ignore());
+
+
+        CreateMap<Lot, LotDto>();
+        CreateMap<LotRule, LotRuleDto>();
+        CreateMap<LotRuleSequence, LotRuleSequenceDto>();
+        CreateMap<ProductLotRule, ProductLotRuleDto>();
+
+        CreateMap<LotRequest, Lot>();
+        CreateMap<LotRuleRequest, LotRule>();
+        CreateMap<LotRuleSequenceRequest, LotRuleSequence>();
+        CreateMap<ProductLotRuleRequest, ProductLotRule>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.LotRuleId, opt => opt.Ignore());
     }
 }

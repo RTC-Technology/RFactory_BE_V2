@@ -550,5 +550,34 @@ public static class PermissionCodes
         public const string Edit = "customer-contact.edit";
         public const string Delete = "customer-contact.delete";
     }
+    public static class Lot
+    {
+        public const string View = "lot.view";
+        public const string Add = "lot.add";
+        public const string Edit = "lot.edit";
+        public const string Delete = "lot.delete";
+    }
+    public static class LotRule
+    {
+        public const string View = "lot-rule.view";
+        public const string Add = "lot-rule.add";
+        public const string Edit = "lot-rule.edit";
+        public const string Delete = "lot-rule.delete";
+    }
+    public static class LotRuleSequence
+    {
+        public const string View = "lot-rule-sequence.view";
+        public const string Add = "lot-rule-sequence.add";
+        public const string Edit = "lot-rule-sequence.edit";
+        public const string Delete = "lot-rule-sequence.delete";
+    } 
+    
+    public static class ProductLotRule
+    {
+        public const string View = "product-lot-rule.view";
+        public const string Add = "product-lot-rule.add";
+        public const string Edit = "product-lot-rule.edit";
+        public const string Delete = "product-lot-rule.delete";
+    }
 
 }

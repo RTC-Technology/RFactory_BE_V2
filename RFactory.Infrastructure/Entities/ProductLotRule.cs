@@ -6,9 +6,9 @@ using System.Collections.Generic;
 namespace RFactory.Infrastructure.Entities;
 
 /// <summary>
-/// Lot
+/// Base Template Table
 /// </summary>
-public partial class Lot
+public partial class ProductLotRule
 {
     /// <summary>
     /// Primary Key
@@ -25,25 +25,28 @@ public partial class Lot
 
     public bool IsDeleted { get; set; }
 
-    public string LotNo { get; set; }
-
     /// <summary>
-    /// Quy tắc Lot được sử dụng để tạo Lot
+    /// Sản phẩm
     /// </summary>
-    public ulong? LotRuleId { get; set; }
-
     public ulong ProductId { get; set; }
 
-    public ulong? SupplierId { get; set; }
-
-    public string SupplierLotNo { get; set; }
-
-    public DateOnly? ManufactureDate { get; set; }
-
-    public DateOnly? ExpireDate { get; set; }
+    /// <summary>
+    /// Quy tắc Lot
+    /// </summary>
+    public ulong LotRuleId { get; set; }
 
     /// <summary>
-    /// 1: AVAILABLE;2: HOLD; 3: BLOCKED; 4: CLOSED
+    /// Có phải quy tắc mặc định hay không
     /// </summary>
-    public int? Status { get; set; }
+    public bool? IsDefault { get; set; }
+
+    /// <summary>
+    /// Ngày bắt đầu áp dụng
+    /// </summary>
+    public DateTime? EffectiveFrom { get; set; }
+
+    /// <summary>
+    /// Ngày kết thúc áp dụng
+    /// </summary>
+    public DateTime? EffectiveTo { get; set; }
 }
