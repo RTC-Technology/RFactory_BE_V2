@@ -93,5 +93,17 @@ public class MasterDataProfile : Profile
         CreateMap<SerialRequest, Serial>();
         CreateMap<SerialRuleRequest, SerialRule>();
         CreateMap<SerialRuleSequenceRequest, SerialRuleSequence>();
+
+
+        CreateMap<TraceabilityRule, TraceabilityRuleDto>();
+        CreateMap<TraceabilityRuleItem, TraceabilityRuleItemDto>();
+        CreateMap<TraceabilityType, TraceabilityTypeDto>();
+
+        CreateMap<TraceabilityRuleRequest, TraceabilityRule>();
+        CreateMap<TraceabilityRuleItemRequest, TraceabilityRuleItem>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.TraceabilityRuleId, opt => opt.Ignore());
+
+        CreateMap<TraceabilityTypeRequest, TraceabilityType>();
     }
 }

@@ -347,6 +347,22 @@
          "ObjectType": 0
       },
       {
+         "Name": "traceability_record",
+         "ObjectType": 0
+      },
+      {
+         "Name": "traceability_rule",
+         "ObjectType": 0
+      },
+      {
+         "Name": "traceability_rule_item",
+         "ObjectType": 0
+      },
+      {
+         "Name": "traceability_type",
+         "ObjectType": 0
+      },
+      {
          "Name": "unit",
          "ObjectType": 0
       },

@@ -178,6 +178,14 @@ public partial class RFactoryContext : DbContext
 
     public virtual DbSet<TableBase> TableBases { get; set; }
 
+    public virtual DbSet<TraceabilityRecord> TraceabilityRecords { get; set; }
+
+    public virtual DbSet<TraceabilityRule> TraceabilityRules { get; set; }
+
+    public virtual DbSet<TraceabilityRuleItem> TraceabilityRuleItems { get; set; }
+
+    public virtual DbSet<TraceabilityType> TraceabilityTypes { get; set; }
+
     public virtual DbSet<Unit> Units { get; set; }
 
     public virtual DbSet<UnitCategory> UnitCategories { get; set; }
@@ -2733,6 +2741,154 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<TraceabilityRecord>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("traceability_record", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.ObjectId).HasComment("Id đối tượng");
+            entity.Property(e => e.ObjectNo).HasMaxLength(50);
+            entity.Property(e => e.ReferenceId).HasComment("Id nghiệp vụ/chứng từ");
+            entity.Property(e => e.ReferenceType)
+                .HasMaxLength(50)
+                .HasComment("Loại nghiệp vụ/chứng từ");
+            entity.Property(e => e.Remark)
+                .HasComment("Ghi chú")
+                .HasColumnType("text");
+            entity.Property(e => e.TraceDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasComment("Thời điểm truy xuất")
+                .HasColumnType("datetime");
+            entity.Property(e => e.TraceTypeId).HasComment("Loại đối tượng truy xuất");
+            entity.Property(e => e.TraceabilityRuleId).HasComment("Quy tắc truy xuất");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<TraceabilityRule>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("traceability_rule", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Description)
+                .HasComment("Mô tả")
+                .HasColumnType("text");
+            entity.Property(e => e.IsActive)
+                .IsRequired()
+                .HasDefaultValueSql("'1'")
+                .HasComment("Trạng thái sử dụng");
+            entity.Property(e => e.ProductId).HasComment("Sản phẩm áp dụng");
+            entity.Property(e => e.RuleCode)
+                .IsRequired()
+                .HasMaxLength(50)
+                .HasComment("Mã quy tắc truy xuất");
+            entity.Property(e => e.RuleName)
+                .IsRequired()
+                .HasMaxLength(255)
+                .HasComment("Tên quy tắc truy xuất");
+            entity.Property(e => e.TraceDirection)
+                .HasDefaultValueSql("'3'")
+                .HasComment("Hướng truy xuất: 1 Forward, 2 Backward, 3 Both");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<TraceabilityRuleItem>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("traceability_rule_item", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Description)
+                .HasComment("Mô tả")
+                .HasColumnType("text");
+            entity.Property(e => e.IsRequired)
+                .IsRequired()
+                .HasDefaultValueSql("'1'")
+                .HasComment("Có bắt buộc truy xuất");
+            entity.Property(e => e.SortOrder)
+                .HasDefaultValueSql("'1'")
+                .HasComment("Thứ tự truy xuất");
+            entity.Property(e => e.TraceTypeId).HasComment("Loại đối tượng truy xuất");
+            entity.Property(e => e.TraceabilityRuleId).HasComment("Quy tắc truy xuất");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<TraceabilityType>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("traceability_type", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Description)
+                .HasComment("Mô tả")
+                .HasColumnType("text");
+            entity.Property(e => e.IsActive)
+                .IsRequired()
+                .HasDefaultValueSql("'1'")
+                .HasComment("Trạng thái sử dụng");
+            entity.Property(e => e.SortOrder)
+                .HasDefaultValueSql("'1'")
+                .HasComment("Thứ tự hiển thị");
+            entity.Property(e => e.TraceCode)
+                .IsRequired()
+                .HasMaxLength(50)
+                .HasComment("Mã loại truy xuất");
+            entity.Property(e => e.TraceName)
+                .IsRequired()
+                .HasMaxLength(255)
+                .HasComment("Tên loại truy xuất");
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });

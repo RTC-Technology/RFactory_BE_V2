@@ -600,5 +600,26 @@ public static class PermissionCodes
         public const string Edit = "serial-rule-sequence.edit";
         public const string Delete = "serial-rule-sequence.delete";
     }
+    public static class TraceabilityRule
+    {
+        public const string View = "traceability-rule.view";
+        public const string Add = "traceability-rule.add";
+        public const string Edit = "traceability-rule.edit";
+        public const string Delete = "traceability-rule.delete";
+    }
+    public static class TraceabilityRuleItem
+    {
+        public const string View = "traceability-rule-item.view";
+        public const string Add = "traceability-rule-item.add";
+        public const string Edit = "traceability-rule-item.edit";
+        public const string Delete = "traceability-rule-item.delete";
+    }
+    public static class TraceabilityType
+    {
+        public const string View = "traceability-type.view";
+        public const string Add = "traceability-type.add";
+        public const string Edit = "traceability-type.edit";
+        public const string Delete = "traceability-type.delete";
+    }
 
 }

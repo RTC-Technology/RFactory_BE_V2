@@ -159,6 +159,10 @@ public static class DependencyInjection
         services.AddScoped<ISerialRuleService, SerialRuleService>();
         services.AddScoped<ISerialRuleSequenceService, SerialRuleSequenceService>();
 
+        services.AddScoped<ITraceabilityRuleService, TraceabilityRuleService>();
+        services.AddScoped<ITraceabilityRuleItemService, TraceabilityRuleItemService>();
+        services.AddScoped<ITraceabilityTypeService, TraceabilityTypeService>();
+
         return services;
     }
 }
