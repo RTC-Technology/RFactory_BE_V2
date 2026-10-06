@@ -311,6 +311,18 @@
          "ObjectType": 0
       },
       {
+         "Name": "serial",
+         "ObjectType": 0
+      },
+      {
+         "Name": "serial_rule",
+         "ObjectType": 0
+      },
+      {
+         "Name": "serial_rule_sequence",
+         "ObjectType": 0
+      },
+      {
          "Name": "shift",
          "ObjectType": 0
       },

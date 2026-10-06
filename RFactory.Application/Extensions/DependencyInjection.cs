@@ -155,6 +155,10 @@ public static class DependencyInjection
         services.AddScoped<ILotRuleSequenceService, LotRuleSequenceService>();
         services.AddScoped<IProductLotRuleService, ProductLotRuleService>();
 
+        services.AddScoped<ISerialService, SerialService>();
+        services.AddScoped<ISerialRuleService, SerialRuleService>();
+        services.AddScoped<ISerialRuleSequenceService, SerialRuleSequenceService>();
+
         return services;
     }
 }

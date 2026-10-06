@@ -160,6 +160,12 @@ public partial class RFactoryContext : DbContext
 
     public virtual DbSet<SamplingPlanRule> SamplingPlanRules { get; set; }
 
+    public virtual DbSet<Serial> Serials { get; set; }
+
+    public virtual DbSet<SerialRule> SerialRules { get; set; }
+
+    public virtual DbSet<SerialRuleSequence> SerialRuleSequences { get; set; }
+
     public virtual DbSet<Shift> Shifts { get; set; }
 
     public virtual DbSet<ShiftBreak> ShiftBreaks { get; set; }
@@ -2429,6 +2435,135 @@ public partial class RFactoryContext : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
             entity.Property(e => e.SortOrder).HasDefaultValueSql("'1'");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<Serial>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("serial", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.ActivatedDate)
+                .HasComment("Ngày kích hoạt Serial")
+                .HasColumnType("datetime");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.LotId).HasComment("Lô hàng của Serial");
+            entity.Property(e => e.ManufactureDate)
+                .HasComment("Ngày sản xuất")
+                .HasColumnType("datetime");
+            entity.Property(e => e.ProductId).HasComment("Sản phẩm của Serial");
+            entity.Property(e => e.Remark)
+                .HasComment("Ghi chú")
+                .HasColumnType("text");
+            entity.Property(e => e.SequenceNo).HasComment("Số thứ tự được cấp");
+            entity.Property(e => e.SerialNo)
+                .IsRequired()
+                .HasMaxLength(100)
+                .HasComment("Mã Serial duy nhất");
+            entity.Property(e => e.SerialRuleId).HasComment("Quy tắc Serial đã sử dụng");
+            entity.Property(e => e.SerialRuleSequenceId).HasComment("Sequence record đã cấp số");
+            entity.Property(e => e.Status)
+                .HasDefaultValueSql("'1'")
+                .HasComment("Trạng thái Serial: 1 Available, 2 Used, 3 Hold, 4 Blocked, 5 Scrapped");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<SerialRule>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("serial_rule", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.DateFormat)
+                .HasMaxLength(50)
+                .HasComment("Định dạng ngày, ví dụ yyyyMMdd");
+            entity.Property(e => e.IsActive)
+                .IsRequired()
+                .HasDefaultValueSql("'1'")
+                .HasComment("Trạng thái: 1 Active, 2 Inactive");
+            entity.Property(e => e.IsDefault).HasComment("Quy tắc mặc định của sản phẩm");
+            entity.Property(e => e.Pattern)
+                .IsRequired()
+                .HasMaxLength(500)
+                .HasComment("Mẫu sinh Serial, ví dụ {PREFIX}{SEP}{DATE}{SEP}{SEQ}");
+            entity.Property(e => e.Prefix)
+                .HasMaxLength(50)
+                .HasComment("Tiền tố Serial");
+            entity.Property(e => e.ProductId).HasComment("Sản phẩm áp dụng quy tắc");
+            entity.Property(e => e.Remark)
+                .HasComment("Ghi chú")
+                .HasColumnType("text");
+            entity.Property(e => e.RuleCode)
+                .IsRequired()
+                .HasMaxLength(50)
+                .HasComment("Mã quy tắc Serial");
+            entity.Property(e => e.RuleName)
+                .IsRequired()
+                .HasMaxLength(200)
+                .HasComment("Tên quy tắc Serial");
+            entity.Property(e => e.Separator)
+                .HasMaxLength(10)
+                .HasComment("Ký tự phân cách các thành phần");
+            entity.Property(e => e.SequenceLength)
+                .HasDefaultValueSql("'2'")
+                .HasComment("Số chữ số của sequence");
+            entity.Property(e => e.SequenceResetType)
+                .HasDefaultValueSql("'1'")
+                .HasComment("Kiểu reset: 1 Never, 2 Daily, 3 Monthly, 4 Yearly");
+            entity.Property(e => e.Suffix)
+                .HasMaxLength(50)
+                .HasComment("Hậu tố Serial");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<SerialRuleSequence>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("serial_rule_sequence", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.CurrentSequence).HasComment("Sequence hiện tại");
+            entity.Property(e => e.SequencePeriod)
+                .IsRequired()
+                .HasMaxLength(20)
+                .HasComment("Kỳ sequence, ví dụ 20261006, 202610, 2026 hoặc GLOBAL");
+            entity.Property(e => e.SerialRuleId).HasComment("ID quy tắc Serial");
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });

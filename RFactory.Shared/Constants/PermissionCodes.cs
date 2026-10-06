@@ -579,5 +579,26 @@ public static class PermissionCodes
         public const string Edit = "product-lot-rule.edit";
         public const string Delete = "product-lot-rule.delete";
     }
+    public static class Serial
+    {
+        public const string View = "serial.view";
+        public const string Add = "serial.add";
+        public const string Edit = "serial.edit";
+        public const string Delete = "serial.delete";
+    }
+    public static class SerialRule
+    {
+        public const string View = "serial-rule.view";
+        public const string Add = "serial-rule.add";
+        public const string Edit = "serial-rule.edit";
+        public const string Delete = "serial-rule.delete";
+    }
+    public static class SerialRuleSequence
+    {
+        public const string View = "serial-rule-sequence.view";
+        public const string Add = "serial-rule-sequence.add";
+        public const string Edit = "serial-rule-sequence.edit";
+        public const string Delete = "serial-rule-sequence.delete";
+    }
 
 }

@@ -84,5 +84,14 @@ public class MasterDataProfile : Profile
         CreateMap<ProductLotRuleRequest, ProductLotRule>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.LotRuleId, opt => opt.Ignore());
+
+
+        CreateMap<Serial, SerialDto>();
+        CreateMap<SerialRule, SerialRuleDto>();
+        CreateMap<SerialRuleSequence, SerialRuleSequenceDto>();
+
+        CreateMap<SerialRequest, Serial>();
+        CreateMap<SerialRuleRequest, SerialRule>();
+        CreateMap<SerialRuleSequenceRequest, SerialRuleSequence>();
     }
 }
