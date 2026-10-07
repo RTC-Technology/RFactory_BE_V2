@@ -105,5 +105,19 @@ public class MasterDataProfile : Profile
             .ForMember(dest => dest.TraceabilityRuleId, opt => opt.Ignore());
 
         CreateMap<TraceabilityTypeRequest, TraceabilityType>();
+
+        #region Maintenance
+        CreateMap<MaintenanceType, MaintenanceTypeDto>();
+        CreateMap<MaintenanceChecklist, MaintenanceChecklistDto>();
+        CreateMap<MaintenanceChecklistItem, MaintenanceChecklistItemDto>();
+        CreateMap<MaintenancePlan, MaintenancePlanDto>();
+
+        CreateMap<MaintenanceTypeRequest, MaintenanceType>();
+        CreateMap<MaintenanceChecklistRequest, MaintenanceChecklist>();
+        CreateMap<MaintenanceChecklistItemRequest, MaintenanceChecklistItem>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.MaintenanceChecklistId, opt => opt.Ignore());
+        CreateMap<MaintenancePlanRequest, MaintenancePlan>();
+        #endregion
     }
 }

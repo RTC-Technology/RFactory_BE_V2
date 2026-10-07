@@ -621,5 +621,33 @@ public static class PermissionCodes
         public const string Edit = "traceability-type.edit";
         public const string Delete = "traceability-type.delete";
     }
+    public static class MaintenanceType
+    {
+        public const string View = "maintenance-type.view";
+        public const string Add = "maintenance-type.add";
+        public const string Edit = "maintenance-type.edit";
+        public const string Delete = "maintenance-type.delete";
+    }
+    public static class MaintenanceChecklist
+    {
+        public const string View = "maintenance-checklist.view";
+        public const string Add = "maintenance-checklist.add";
+        public const string Edit = "maintenance-checklist.edit";
+        public const string Delete = "maintenance-checklist.delete";
+    }
+    public static class MaintenanceChecklistItem
+    {
+        public const string View = "maintenance-checklist-item.view";
+        public const string Add = "maintenance-checklist-item.add";
+        public const string Edit = "maintenance-checklist-item.edit";
+        public const string Delete = "maintenance-checklist-item.delete";
+    }
+    public static class MaintenancePlan
+    {
+        public const string View = "maintenance-plan.view";
+        public const string Add = "maintenance-plan.add";
+        public const string Edit = "maintenance-plan.edit";
+        public const string Delete = "maintenance-plan.delete";
+    }
 
 }

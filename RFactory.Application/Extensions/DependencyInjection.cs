@@ -163,6 +163,12 @@ public static class DependencyInjection
         services.AddScoped<ITraceabilityRuleItemService, TraceabilityRuleItemService>();
         services.AddScoped<ITraceabilityTypeService, TraceabilityTypeService>();
 
+        //Maintenance
+        services.AddScoped<IMaintenanceTypeService, MaintenanceTypeService>();
+        services.AddScoped<IMaintenanceChecklistService, MaintenanceChecklistService>();
+        services.AddScoped<IMaintenanceChecklistItemService, MaintenanceChecklistItemService>();
+        services.AddScoped<IMaintenancePlanService, MaintenancePlanService>();
+
         return services;
     }
 }

@@ -175,6 +175,34 @@
          "ObjectType": 0
       },
       {
+         "Name": "maintenance_checklist",
+         "ObjectType": 0
+      },
+      {
+         "Name": "maintenance_checklist_item",
+         "ObjectType": 0
+      },
+      {
+         "Name": "maintenance_order",
+         "ObjectType": 0
+      },
+      {
+         "Name": "maintenance_order_checklist",
+         "ObjectType": 0
+      },
+      {
+         "Name": "maintenance_order_checklist_item",
+         "ObjectType": 0
+      },
+      {
+         "Name": "maintenance_plan",
+         "ObjectType": 0
+      },
+      {
+         "Name": "maintenance_type",
+         "ObjectType": 0
+      },
+      {
          "Name": "material_issue",
          "ObjectType": 0
       },

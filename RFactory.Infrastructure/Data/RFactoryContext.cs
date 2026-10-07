@@ -92,6 +92,20 @@ public partial class RFactoryContext : DbContext
 
     public virtual DbSet<MachineType> MachineTypes { get; set; }
 
+    public virtual DbSet<MaintenanceChecklist> MaintenanceChecklists { get; set; }
+
+    public virtual DbSet<MaintenanceChecklistItem> MaintenanceChecklistItems { get; set; }
+
+    public virtual DbSet<MaintenanceOrder> MaintenanceOrders { get; set; }
+
+    public virtual DbSet<MaintenanceOrderChecklist> MaintenanceOrderChecklists { get; set; }
+
+    public virtual DbSet<MaintenanceOrderChecklistItem> MaintenanceOrderChecklistItems { get; set; }
+
+    public virtual DbSet<MaintenancePlan> MaintenancePlans { get; set; }
+
+    public virtual DbSet<MaintenanceType> MaintenanceTypes { get; set; }
+
     public virtual DbSet<MaterialIssue> MaterialIssues { get; set; }
 
     public virtual DbSet<MaterialIssueDetail> MaterialIssueDetails { get; set; }
@@ -1396,6 +1410,364 @@ public partial class RFactoryContext : DbContext
                 .HasColumnType("datetime");
             entity.Property(e => e.MachineTypeCode).HasMaxLength(50);
             entity.Property(e => e.MachineTypeName).HasMaxLength(255);
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<MaintenanceChecklist>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("maintenance_checklist", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.ChecklistCode)
+                .IsRequired()
+                .HasMaxLength(50)
+                .HasComment("Mã checklist");
+            entity.Property(e => e.ChecklistName)
+                .IsRequired()
+                .HasMaxLength(255)
+                .HasComment("Tên checklist");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Description)
+                .HasComment("Mô tả")
+                .HasColumnType("text");
+            entity.Property(e => e.Status)
+                .HasDefaultValueSql("'1'")
+                .HasComment("Trạng thái: 1 Draft, 2 Active, 3 Inactive");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            entity.Property(e => e.Version)
+                .HasDefaultValueSql("'1'")
+                .HasComment("Phiên bản checklist");
+        });
+
+        modelBuilder.Entity<MaintenanceChecklistItem>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("maintenance_checklist_item", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CheckType)
+                .HasDefaultValueSql("'1'")
+                .HasComment("Loại kiểm tra: 1 YesNo, 2 Numeric, 3 Text, 4 Selection, 5 PassFail, 6 Inspection");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.ExpectedResult)
+                .HasMaxLength(500)
+                .HasComment("Kết quả mong đợi");
+            entity.Property(e => e.IsActive)
+                .IsRequired()
+                .HasDefaultValueSql("'1'")
+                .HasComment("Trạng thái sử dụng");
+            entity.Property(e => e.IsRequired)
+                .IsRequired()
+                .HasDefaultValueSql("'1'")
+                .HasComment("Bắt buộc thực hiện");
+            entity.Property(e => e.ItemCode)
+                .HasMaxLength(50)
+                .HasComment("Mã hạng mục");
+            entity.Property(e => e.ItemName)
+                .IsRequired()
+                .HasMaxLength(255)
+                .HasComment("Tên hạng mục kiểm tra");
+            entity.Property(e => e.MaintenanceChecklistId).HasComment("Checklist");
+            entity.Property(e => e.MaxValue)
+                .HasPrecision(18, 6)
+                .HasComment("Giá trị tối đa");
+            entity.Property(e => e.MinValue)
+                .HasPrecision(18, 6)
+                .HasComment("Giá trị tối thiểu");
+            entity.Property(e => e.SequenceNo).HasComment("Thứ tự thực hiện");
+            entity.Property(e => e.TargetValue)
+                .HasPrecision(18, 6)
+                .HasComment("Giá trị tiêu chuẩn");
+            entity.Property(e => e.UnitId).HasComment("Đơn vị đo");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<MaintenanceOrder>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("maintenance_order", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.ActualEndDate)
+                .HasComment("Thời gian thực tế kết thúc")
+                .HasColumnType("datetime");
+            entity.Property(e => e.ActualStartDate)
+                .HasComment("Thời gian thực tế bắt đầu")
+                .HasColumnType("datetime");
+            entity.Property(e => e.CompletionNote)
+                .HasComment("Ghi chú hoàn thành")
+                .HasColumnType("text");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Description)
+                .HasComment("Nội dung bảo trì")
+                .HasColumnType("text");
+            entity.Property(e => e.MachineId).HasComment("Thiết bị");
+            entity.Property(e => e.MaintenancePlanId).HasComment("Kế hoạch bảo trì");
+            entity.Property(e => e.MaintenanceTypeId).HasComment("Loại bảo trì");
+            entity.Property(e => e.OrderNo)
+                .IsRequired()
+                .HasMaxLength(50)
+                .HasComment("Mã lệnh bảo trì");
+            entity.Property(e => e.PlannedEndDate)
+                .HasComment("Thời gian dự kiến kết thúc")
+                .HasColumnType("datetime");
+            entity.Property(e => e.PlannedStartDate)
+                .HasComment("Thời gian dự kiến bắt đầu")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Priority)
+                .HasDefaultValueSql("'3'")
+                .HasComment("Mức độ ưu tiên: 1:low, 2:normal; 3:high; 4:critical");
+            entity.Property(e => e.Remark)
+                .HasComment("Ghi chú")
+                .HasColumnType("text");
+            entity.Property(e => e.ResponsibleEmployeeId).HasComment("Nhân viên phụ trách");
+            entity.Property(e => e.Status)
+                .HasDefaultValueSql("'1'")
+                .HasComment("Trạng thái: 1 Draft, 2 Released, 3 InProgress, 4 Completed, 5 Cancelled");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<MaintenanceOrderChecklist>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("maintenance_order_checklist", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.ChecklistCode)
+                .HasMaxLength(50)
+                .HasComment("Mã checklist tại thời điểm thực hiện");
+            entity.Property(e => e.ChecklistId).HasComment("Checklist template");
+            entity.Property(e => e.ChecklistName)
+                .HasMaxLength(255)
+                .HasComment("Tên checklist tại thời điểm thực hiện");
+            entity.Property(e => e.ChecklistVersion).HasComment("Phiên bản checklist");
+            entity.Property(e => e.CompletedBy).HasComment("Người hoàn thành");
+            entity.Property(e => e.CompletedDate)
+                .HasComment("Thời gian hoàn thành")
+                .HasColumnType("datetime");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.MaintenanceOrderId).HasComment("Lệnh bảo trì");
+            entity.Property(e => e.Remark)
+                .HasComment("Ghi chú")
+                .HasColumnType("text");
+            entity.Property(e => e.StartedDate)
+                .HasComment("Thời gian bắt đầu")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Status)
+                .HasDefaultValueSql("'1'")
+                .HasComment("Trạng thái: 1 Pending, 2 InProgress, 3 Completed");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<MaintenanceOrderChecklistItem>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("maintenance_order_checklist_item", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.ActualText)
+                .HasMaxLength(1000)
+                .HasComment("Kết quả dạng text");
+            entity.Property(e => e.ActualValue)
+                .HasPrecision(18, 6)
+                .HasComment("Giá trị thực tế");
+            entity.Property(e => e.CheckType)
+                .HasDefaultValueSql("'1'")
+                .HasComment("Loại kiểm tra: 1 YesNo, 2 Numeric, 3 Text, 4 Selection, 5 PassFail, 6 Inspection");
+            entity.Property(e => e.CompletedBy).HasComment("Người thực hiện");
+            entity.Property(e => e.CompletedDate)
+                .HasComment("Thời gian thực hiện")
+                .HasColumnType("datetime");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.ExpectedResult)
+                .HasMaxLength(500)
+                .HasComment("Kết quả mong đợi");
+            entity.Property(e => e.IsRequired)
+                .IsRequired()
+                .HasDefaultValueSql("'1'")
+                .HasComment("Bắt buộc thực hiện");
+            entity.Property(e => e.ItemCode)
+                .HasMaxLength(50)
+                .HasComment("Mã hạng mục");
+            entity.Property(e => e.ItemName)
+                .IsRequired()
+                .HasMaxLength(255)
+                .HasComment("Tên hạng mục");
+            entity.Property(e => e.MaintenanceOrderChecklistId).HasComment("Checklist thực hiện");
+            entity.Property(e => e.MaxValue)
+                .HasPrecision(18, 6)
+                .HasComment("Giá trị tối đa");
+            entity.Property(e => e.MinValue)
+                .HasPrecision(18, 6)
+                .HasComment("Giá trị tối thiểu");
+            entity.Property(e => e.Remark)
+                .HasComment("Ghi chú")
+                .HasColumnType("text");
+            entity.Property(e => e.Result).HasComment("Kết quả: 1 Pass, 2 Fail, 3 NA");
+            entity.Property(e => e.SequenceNo).HasComment("Thứ tự thực hiện");
+            entity.Property(e => e.SourceChecklistItemId).HasComment("Checklist item gốc");
+            entity.Property(e => e.TargetValue)
+                .HasPrecision(18, 6)
+                .HasComment("Giá trị tiêu chuẩn");
+            entity.Property(e => e.UnitId).HasComment("Đơn vị đo");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<MaintenancePlan>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("maintenance_plan", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.EndDate)
+                .HasComment("Ngày kết thúc áp dụng")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Frequency)
+                .HasPrecision(18, 6)
+                .HasComment("Chu kỳ bảo trì");
+            entity.Property(e => e.FrequencyUnit).HasComment("Đơn vị chu kỳ: 1 Day, 2 Week, 3 Month, 4 Year, 5 Hour, 6 ProductionQuantity");
+            entity.Property(e => e.LastMaintenanceDate)
+                .HasComment("Ngày bảo trì gần nhất")
+                .HasColumnType("datetime");
+            entity.Property(e => e.MachineId).HasComment("Thiết bị");
+            entity.Property(e => e.MaintenanceChecklistId).HasComment("Checklist sử dụng");
+            entity.Property(e => e.MaintenanceTypeId).HasComment("Loại bảo trì");
+            entity.Property(e => e.NextMaintenanceDate)
+                .HasComment("Ngày bảo trì tiếp theo")
+                .HasColumnType("datetime");
+            entity.Property(e => e.PlanCode)
+                .IsRequired()
+                .HasMaxLength(50)
+                .HasComment("Mã kế hoạch bảo trì");
+            entity.Property(e => e.PlanName)
+                .IsRequired()
+                .HasMaxLength(255)
+                .HasComment("Tên kế hoạch bảo trì");
+            entity.Property(e => e.Priority)
+                .HasDefaultValueSql("'3'")
+                .HasComment("Mức độ ưu tiên: 1:low, 2:normal; 3:high; 4:critical");
+            entity.Property(e => e.Remark)
+                .HasComment("Ghi chú")
+                .HasColumnType("text");
+            entity.Property(e => e.ResponsibleDepartmentId).HasComment("Bộ phận phụ trách");
+            entity.Property(e => e.ResponsibleEmployeeId).HasComment("Nhân viên phụ trách");
+            entity.Property(e => e.StartDate)
+                .HasComment("Ngày bắt đầu áp dụng")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Status)
+                .HasDefaultValueSql("'1'")
+                .HasComment("Trạng thái: 1 Draft, 2 Active, 3 Inactive, 4 Expired");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            entity.Property(e => e.WorkCenterId).HasComment("Work Center");
+        });
+
+        modelBuilder.Entity<MaintenanceType>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("maintenance_type", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Description)
+                .HasComment("Mô tả")
+                .HasColumnType("text");
+            entity.Property(e => e.IsActive)
+                .IsRequired()
+                .HasDefaultValueSql("'1'")
+                .HasComment("Trạng thái sử dụng");
+            entity.Property(e => e.Priority).HasComment("Mức độ ưu tiên mặc định: 1:low, 2:normal; 3:high; 4:critical");
+            entity.Property(e => e.ShortName)
+                .HasMaxLength(100)
+                .HasComment("Tên viết tắt");
+            entity.Property(e => e.SortOrder).HasComment("Thứ tự hiển thị");
+            entity.Property(e => e.TypeCategory).HasComment("Nhóm loại bảo trì: 1 Planned, 2 Unplanned, 3 Condition, 4 Special");
+            entity.Property(e => e.TypeCode)
+                .IsRequired()
+                .HasMaxLength(50)
+                .HasComment("Mã loại bảo trì");
+            entity.Property(e => e.TypeName)
+                .IsRequired()
+                .HasMaxLength(255)
+                .HasComment("Tên loại bảo trì");
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });
