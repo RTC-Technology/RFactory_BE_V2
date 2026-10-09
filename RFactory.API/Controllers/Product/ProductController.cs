@@ -46,7 +46,7 @@ public class ProductController : ControllerBase
 
     [HttpPost]
     [RequirePermission(PermissionCodes.Product.Add)]
-    public async Task<ActionResult<ApiResponse<ProductDto>>> Create(CreateProductRequest request, CancellationToken ct)
+    public async Task<ActionResult<ApiResponse<ProductDto>>> Create(ProductRequest request, CancellationToken ct)
     {
         var result = await _productService.CreateAsync(request, ct);
         if (!result.Succeeded)
@@ -59,7 +59,7 @@ public class ProductController : ControllerBase
 
     [HttpPut("{id:long}")]
     [RequirePermission(PermissionCodes.Product.Edit)]
-    public async Task<ActionResult<ApiResponse<ProductDto>>> Update(ulong id, UpdateProductRequest request, CancellationToken ct)
+    public async Task<ActionResult<ApiResponse<ProductDto>>> Update(ulong id, ProductRequest request, CancellationToken ct)
     {
         var result = await _productService.UpdateAsync(id, request, ct);
         if (!result.Succeeded)

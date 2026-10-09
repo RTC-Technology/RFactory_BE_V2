@@ -46,7 +46,7 @@ public class RoutingOperationController : ControllerBase
 
     [HttpPost]
     [RequirePermission(PermissionCodes.RoutingOperation.Add)]
-    public async Task<ActionResult<ApiResponse<RoutingOperationDto>>> Create(CreateRoutingOperationRequest request, CancellationToken ct)
+    public async Task<ActionResult<ApiResponse<RoutingOperationDto>>> Create(RoutingOperationRequest request, CancellationToken ct)
     {
         var result = await _routingOperationService.CreateAsync(request, ct);
         if (!result.Succeeded)
@@ -59,7 +59,7 @@ public class RoutingOperationController : ControllerBase
 
     [HttpPut("{id:long}")]
     [RequirePermission(PermissionCodes.RoutingOperation.Edit)]
-    public async Task<ActionResult<ApiResponse<RoutingOperationDto>>> Update(ulong id, UpdateRoutingOperationRequest request, CancellationToken ct)
+    public async Task<ActionResult<ApiResponse<RoutingOperationDto>>> Update(ulong id, RoutingOperationRequest request, CancellationToken ct)
     {
         var result = await _routingOperationService.UpdateAsync(id, request, ct);
         if (!result.Succeeded)

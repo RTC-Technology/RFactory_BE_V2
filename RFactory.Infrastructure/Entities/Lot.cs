@@ -27,6 +27,11 @@ public partial class Lot
 
     public string LotNo { get; set; }
 
+    /// <summary>
+    /// Quy tắc Lot được sử dụng để tạo Lot
+    /// </summary>
+    public ulong? LotRuleId { get; set; }
+
     public ulong ProductId { get; set; }
 
     public ulong? SupplierId { get; set; }

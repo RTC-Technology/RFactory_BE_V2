@@ -77,6 +77,13 @@ public static class PermissionCodes
         public const string Edit = "product-type.edit";
         public const string Delete = "product-type.delete";
     }
+    public static class ProductGroup
+    {
+        public const string View = "product-group.view";
+        public const string Add = "product-group.add";
+        public const string Edit = "product-group.edit";
+        public const string Delete = "product-group.delete";
+    }
 
     public static class Product
     {
@@ -295,6 +302,387 @@ public static class PermissionCodes
         public const string Add = "purchase-order-delivery-schedule.add";
         public const string Edit = "purchase-order-delivery-schedule.edit";
         public const string Delete = "purchase-order-delivery-schedule.delete";
+    }
+    public static class PickingPlan
+    {
+        public const string View = "picking-plan.view";
+        public const string Add = "picking-plan.add";
+        public const string Edit = "picking-plan.edit";
+        public const string Delete = "picking-plan.delete";
+    }
+    public static class PickingPlanItem
+    {
+        public const string View = "picking-plan-item.view";
+        public const string Add = "picking-plan-item.add";
+        public const string Edit = "picking-plan-item.edit";
+        public const string Delete = "picking-plan-item.delete";
+    }
+    public static class PickingPlanItemSource
+    {
+        public const string View = "picking-plan-item-source.view";
+        public const string Add = "picking-plan-item-source.add";
+        public const string Edit = "picking-plan-item-source.edit";
+        public const string Delete = "picking-plan-item-source.delete";
+    }
+    public static class PickingPlanSource
+    {
+        public const string View = "picking-plan-source.view";
+        public const string Add = "picking-plan-source.add";
+        public const string Edit = "picking-plan-source.edit";
+        public const string Delete = "picking-plan-source.delete";
+    }
+    public static class PickingTicket
+    {
+        public const string View = "picking-ticket.view";
+        public const string Add = "picking-ticket.add";
+        public const string Edit = "picking-ticket.edit";
+        public const string Delete = "picking-ticket.delete";
+    }
+    public static class PickingTicketItem
+    {
+        public const string View = "picking-ticket-item.view";
+        public const string Add = "picking-ticket-item.add";
+        public const string Edit = "picking-ticket-item.edit";
+        public const string Delete = "picking-ticket-item.delete";
+    }
+    public static class DeliveryNote
+    {
+        public const string View = "delivery-note.view";
+        public const string Add = "delivery-note.add";
+        public const string Edit = "delivery-note.edit";
+        public const string Delete = "delivery-note.delete";
+    }
+    public static class DeliveryNoteItem
+    {
+        public const string View = "delivery-note-item.view";
+        public const string Add = "delivery-note-item.add";
+        public const string Edit = "delivery-note-item.edit";
+        public const string Delete = "delivery-note-item.delete";
+    }
+    public static class DeliveryNoteSource
+    {
+        public const string View = "delivery-note-source.view";
+        public const string Add = "delivery-note-source.add";
+        public const string Edit = "delivery-note-source.edit";
+        public const string Delete = "delivery-note-source.delete";
+    }
+    public static class DeliveryNoteSender
+    {
+        public const string View = "delivery-note-sender.view";
+        public const string Add = "delivery-note-sender.add";
+        public const string Edit = "delivery-note-sender.edit";
+        public const string Delete = "delivery-note-sender.delete";
+    }
+    public static class DeliveryNoteReceiver
+    {
+        public const string View = "delivery-note-receiver.view";
+        public const string Add = "delivery-note-receiver.add";
+        public const string Edit = "delivery-note-receiver.edit";
+        public const string Delete = "delivery-note-receiver.delete";
+    }
+
+    public static class PackingCheck
+    {
+        public const string View = "packing-check.view";
+        public const string Add = "packing-check.add";
+        public const string Edit = "packing-check.edit";
+        public const string Delete = "packing-check.delete";
+    }
+    public static class PackingCheckItem
+    {
+        public const string View = "packing-check-item.view";
+        public const string Add = "packing-check-item.add";
+        public const string Edit = "packing-check-item.edit";
+        public const string Delete = "packing-check-item.delete";
+    } 
+    public static class PackingPackage
+    {
+        public const string View = "packing-package.view";
+        public const string Add = "packing-package.add";
+        public const string Edit = "packing-package.edit";
+        public const string Delete = "packing-package.delete";
+    } 
+    public static class PackingPackageItem
+    {
+        public const string View = "packing-package-item.view";
+        public const string Add = "packing-package-item.add";
+        public const string Edit = "packing-package-item.edit";
+        public const string Delete = "packing-package-item.delete";
+    }
+    public static class PackingScanLog
+    {
+        public const string View = "packing-package-item.view";
+        public const string Add = "packing-package-item.add";
+        public const string Edit = "packing-package-item.edit";
+        public const string Delete = "packing-package-item.delete";
+    }
+    public static class Company
+    {
+        public const string View = "company.view";
+        public const string Add = "company.add";
+        public const string Edit = "company.edit";
+        public const string Delete = "company.delete";
+    }
+    public static class Workshop
+    {
+        public const string View = "workshop.view";
+        public const string Add = "workshop.add";
+        public const string Edit = "workshop.edit";
+        public const string Delete = "workshop.delete";
+    }
+    public static class Department
+    {
+        public const string View = "department.view";
+        public const string Add = "department.add";
+        public const string Edit = "department.edit";
+        public const string Delete = "department.delete";
+    }
+    public static class WorkCenter
+    {
+        public const string View = "workcenter.view";
+        public const string Add = "workcenter.add";
+        public const string Edit = "workcenter.edit";
+        public const string Delete = "workcenter.delete";
+    }
+    public static class ProductionTeam
+    {
+        public const string View = "production-team.view";
+        public const string Add = "production-team.add";
+        public const string Edit = "production-team.edit";
+        public const string Delete = "production-team.delete";
+    }
+    public static class ProductionTeamEmployee
+    {
+        public const string View = "production-team-employee.view";
+        public const string Add = "production-team-employee.add";
+        public const string Edit = "production-team-employee.edit";
+        public const string Delete = "production-team-employee.delete";
+    }
+    public static class QualitySpecification
+    {
+        public const string View = "quality-specification.view";
+        public const string Add = "quality-specification.add";
+        public const string Edit = "quality-specification.edit";
+        public const string Delete = "quality-specification.delete";
+    }
+    public static class QualitySpecificationItem
+    {
+        public const string View = "quality-specification-item.view";
+        public const string Add = "quality-specification-item.add";
+        public const string Edit = "quality-specification-item.edit";
+        public const string Delete = "quality-specification-item.delete";
+    }
+    public static class QualitySpecificationProduct
+    {
+        public const string View = "quality-specification-product.view";
+        public const string Add = "quality-specification-product.add";
+        public const string Edit = "quality-specification-product.edit";
+        public const string Delete = "quality-specification-product.delete";
+    }
+    public static class InspectionPlan
+    {
+        public const string View = "inspection-plan.view";
+        public const string Add = "inspection-plan.add";
+        public const string Edit = "inspection-plan.edit";
+        public const string Delete = "inspection-plan.delete";
+    }
+    public static class InspectionItem
+    {
+        public const string View = "inspection-item.view";
+        public const string Add = "inspection-item.add";
+        public const string Edit = "inspection-item.edit";
+        public const string Delete = "inspection-item.delete";
+    }
+    public static class InspectionExecution
+    {
+        public const string View = "inspection-execution.view";
+        public const string Add = "inspection-execution.add";
+        public const string Edit = "inspection-execution.edit";
+        public const string Delete = "inspection-execution.delete";
+    }
+    public static class InspectionResult
+    {
+        public const string View = "inspection-result.view";
+        public const string Add = "inspection-result.add";
+        public const string Edit = "inspection-result.edit";
+        public const string Delete = "inspection-result.delete";
+    }
+    public static class DefectGroup
+    {
+        public const string View = "defect-group.view";
+        public const string Add = "defect-group.add";
+        public const string Edit = "defect-group.edit";
+        public const string Delete = "defect-group.delete";
+    }
+    public static class Defect
+    {
+        public const string View = "defect.view";
+        public const string Add = "defect.add";
+        public const string Edit = "defect.edit";
+        public const string Delete = "defect.delete";
+    }
+
+    public static class SamplingPlan
+    {
+        public const string View = "sampling-plan.view";
+        public const string Add = "sampling-plan.add";
+        public const string Edit = "sampling-plan.edit";
+        public const string Delete = "sampling-plan.delete";
+    }
+    public static class SamplingPlanRule
+    {
+        public const string View = "sampling-plan-rule.view";
+        public const string Add = "sampling-plan-rule.add";
+        public const string Edit = "sampling-plan-rule.edit";
+        public const string Delete = "sampling-plan-rule.delete";
+    }
+    public static class Customer
+    {
+        public const string View = "customer.view";
+        public const string Add = "customer.add";
+        public const string Edit = "customer.edit";
+        public const string Delete = "customer.delete";
+    }
+    public static class CustomerContact
+    {
+        public const string View = "customer-contact.view";
+        public const string Add = "customer-contact.add";
+        public const string Edit = "customer-contact.edit";
+        public const string Delete = "customer-contact.delete";
+    }
+    public static class Lot
+    {
+        public const string View = "lot.view";
+        public const string Add = "lot.add";
+        public const string Edit = "lot.edit";
+        public const string Delete = "lot.delete";
+    }
+    public static class LotRule
+    {
+        public const string View = "lot-rule.view";
+        public const string Add = "lot-rule.add";
+        public const string Edit = "lot-rule.edit";
+        public const string Delete = "lot-rule.delete";
+    }
+    public static class LotRuleSequence
+    {
+        public const string View = "lot-rule-sequence.view";
+        public const string Add = "lot-rule-sequence.add";
+        public const string Edit = "lot-rule-sequence.edit";
+        public const string Delete = "lot-rule-sequence.delete";
+    } 
+    
+    public static class ProductLotRule
+    {
+        public const string View = "product-lot-rule.view";
+        public const string Add = "product-lot-rule.add";
+        public const string Edit = "product-lot-rule.edit";
+        public const string Delete = "product-lot-rule.delete";
+    }
+    public static class Serial
+    {
+        public const string View = "serial.view";
+        public const string Add = "serial.add";
+        public const string Edit = "serial.edit";
+        public const string Delete = "serial.delete";
+    }
+    public static class SerialRule
+    {
+        public const string View = "serial-rule.view";
+        public const string Add = "serial-rule.add";
+        public const string Edit = "serial-rule.edit";
+        public const string Delete = "serial-rule.delete";
+    }
+    public static class SerialRuleSequence
+    {
+        public const string View = "serial-rule-sequence.view";
+        public const string Add = "serial-rule-sequence.add";
+        public const string Edit = "serial-rule-sequence.edit";
+        public const string Delete = "serial-rule-sequence.delete";
+    }
+    public static class TraceabilityRule
+    {
+        public const string View = "traceability-rule.view";
+        public const string Add = "traceability-rule.add";
+        public const string Edit = "traceability-rule.edit";
+        public const string Delete = "traceability-rule.delete";
+    }
+    public static class TraceabilityRuleItem
+    {
+        public const string View = "traceability-rule-item.view";
+        public const string Add = "traceability-rule-item.add";
+        public const string Edit = "traceability-rule-item.edit";
+        public const string Delete = "traceability-rule-item.delete";
+    }
+    public static class TraceabilityType
+    {
+        public const string View = "traceability-type.view";
+        public const string Add = "traceability-type.add";
+        public const string Edit = "traceability-type.edit";
+        public const string Delete = "traceability-type.delete";
+    }
+    public static class MaintenanceType
+    {
+        public const string View = "maintenance-type.view";
+        public const string Add = "maintenance-type.add";
+        public const string Edit = "maintenance-type.edit";
+        public const string Delete = "maintenance-type.delete";
+    }
+    public static class MaintenanceChecklist
+    {
+        public const string View = "maintenance-checklist.view";
+        public const string Add = "maintenance-checklist.add";
+        public const string Edit = "maintenance-checklist.edit";
+        public const string Delete = "maintenance-checklist.delete";
+    }
+    public static class MaintenanceChecklistItem
+    {
+        public const string View = "maintenance-checklist-item.view";
+        public const string Add = "maintenance-checklist-item.add";
+        public const string Edit = "maintenance-checklist-item.edit";
+        public const string Delete = "maintenance-checklist-item.delete";
+    }
+    public static class MaintenancePlan
+    {
+        public const string View = "maintenance-plan.view";
+        public const string Add = "maintenance-plan.add";
+        public const string Edit = "maintenance-plan.edit";
+        public const string Delete = "maintenance-plan.delete";
+    }
+    public static class MaintenanceOrder
+    {
+        public const string View = "maintenance-order.view";
+        public const string Add = "maintenance-order.add";
+        public const string Edit = "maintenance-order.edit";
+        public const string Delete = "maintenance-order.delete";
+    }
+    public static class MaintenanceOrderChecklist
+    {
+        public const string View = "maintenance-order-checklist.view";
+        public const string Add = "maintenance-order-checklist.add";
+        public const string Edit = "maintenance-order-checklist.edit";
+        public const string Delete = "maintenance-order-checklist.delete";
+    }
+    public static class MaintenanceOrderChecklistItem
+    {
+        public const string View = "maintenance-order-checklist-item.view";
+        public const string Add = "maintenance-order-checklist-item.add";
+        public const string Edit = "maintenance-order-checklist-item.edit";
+        public const string Delete = "maintenance-order-checklist-item.delete";
+    }
+    public static class FailureCode
+    {
+        public const string View = "failure-code.view";
+        public const string Add = "failure-code.add";
+        public const string Edit = "failure-code.edit";
+        public const string Delete = "failure-code.delete";
+    }
+    public static class FailureGroup
+    {
+        public const string View = "failure-group.view";
+        public const string Add = "failure-group.add";
+        public const string Edit = "failure-group.edit";
+        public const string Delete = "failure-group.delete";
     }
 
 }
