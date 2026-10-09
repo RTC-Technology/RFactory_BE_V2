@@ -79,6 +79,14 @@
          "ObjectType": 0
       },
       {
+         "Name": "failure_code",
+         "ObjectType": 0
+      },
+      {
+         "Name": "failure_group",
+         "ObjectType": 0
+      },
+      {
          "Name": "function_group",
          "ObjectType": 0
       },

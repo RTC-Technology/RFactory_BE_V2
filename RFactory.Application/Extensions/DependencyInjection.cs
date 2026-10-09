@@ -169,6 +169,13 @@ public static class DependencyInjection
         services.AddScoped<IMaintenanceChecklistItemService, MaintenanceChecklistItemService>();
         services.AddScoped<IMaintenancePlanService, MaintenancePlanService>();
 
+        services.AddScoped<IMaintenanceOrderService, MaintenanceOrderService>();
+        services.AddScoped<IMaintenanceOrderChecklistService, MaintenanceOrderChecklistService>();
+        services.AddScoped<IMaintenanceOrderChecklistItemService, MaintenanceOrderChecklistItemService>();
+
+        services.AddScoped<IFailureCodeService, FailureCodeService>();
+        services.AddScoped<IFailureGroupService, FailureGroupService>();
+
         return services;
     }
 }

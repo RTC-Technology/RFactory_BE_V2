@@ -40,4 +40,30 @@ namespace RFactory.Application.Modules.MasterData.Services
         Task<Result<MaintenancePlanDto>> UpdateAsync(ulong id, MaintenancePlanRequest request, CancellationToken ct = default);
         Task<Result> DeleteAsync(ulong id, CancellationToken ct = default);
     }
+
+
+    public interface IMaintenanceOrderService
+    {
+        Task<List<MaintenanceOrderDto>> GetAllAsync(CancellationToken ct = default);
+        Task<MaintenanceOrderDto?> GetByIdAsync(ulong id, CancellationToken ct = default);
+        Task<Result<MaintenanceOrderDto>> CreateAsync(MaintenanceOrderRequest request, CancellationToken ct = default);
+        Task<Result<MaintenanceOrderDto>> UpdateAsync(ulong id, MaintenanceOrderRequest request, CancellationToken ct = default);
+        Task<Result> DeleteAsync(ulong id, CancellationToken ct = default);
+    }
+    public interface IMaintenanceOrderChecklistService
+    {
+        Task<List<MaintenanceOrderChecklistDto>> GetAllAsync(CancellationToken ct = default);
+        Task<MaintenanceOrderChecklistDto?> GetByIdAsync(ulong id, CancellationToken ct = default);
+        Task<Result<MaintenanceOrderChecklistDto>> CreateAsync(MaintenanceOrderChecklistRequest request, CancellationToken ct = default);
+        Task<Result<MaintenanceOrderChecklistDto>> UpdateAsync(ulong id, MaintenanceOrderChecklistRequest request, CancellationToken ct = default);
+        Task<Result> DeleteAsync(ulong id, CancellationToken ct = default);
+    }
+    public interface IMaintenanceOrderChecklistItemService
+    {
+        Task<List<MaintenanceOrderChecklistItemDto>> GetAllAsync(CancellationToken ct = default);
+        Task<MaintenanceOrderChecklistItemDto?> GetByIdAsync(ulong id, CancellationToken ct = default);
+        Task<Result<MaintenanceOrderChecklistItemDto>> CreateAsync(MaintenanceOrderChecklistItemRequest request, CancellationToken ct = default);
+        Task<Result<MaintenanceOrderChecklistItemDto>> UpdateAsync(ulong id, MaintenanceOrderChecklistItemRequest request, CancellationToken ct = default);
+        Task<Result> DeleteAsync(ulong id, CancellationToken ct = default);
+    }
 }

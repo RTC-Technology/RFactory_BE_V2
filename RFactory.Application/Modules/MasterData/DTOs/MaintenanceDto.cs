@@ -285,6 +285,272 @@ namespace RFactory.Application.Modules.MasterData.DTOs
         public string? Remark { get; set; }
     }
 
+    public partial class MaintenanceOrderChecklistItemDto
+    {
+        /// <summary>
+        /// Primary Key
+        /// </summary>
+        public ulong Id { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+
+        public string CreatedBy { get; set; }
+
+        public DateTime? UpdatedDate { get; set; }
+
+        public string UpdatedBy { get; set; }
+
+        public bool IsDeleted { get; set; }
+
+        /// <summary>
+        /// Checklist thực hiện
+        /// </summary>
+        public ulong? MaintenanceOrderChecklistId { get; set; }
+
+        /// <summary>
+        /// Checklist item gốc
+        /// </summary>
+        public ulong? MaintenanceChecklistItemId { get; set; }
+
+        /// <summary>
+        /// Thứ tự thực hiện
+        /// </summary>
+        public int SequenceNo { get; set; }
+
+        /// <summary>
+        /// Mã hạng mục
+        /// </summary>
+        public string ItemCode { get; set; }
+
+        /// <summary>
+        /// Tên hạng mục
+        /// </summary>
+        public string ItemName { get; set; }
+
+        /// <summary>
+        /// Loại kiểm tra: 1 YesNo, 2 Numeric, 3 Text, 4 Selection, 5 PassFail, 6 Inspection
+        /// </summary>
+        public int CheckType { get; set; }
+
+        /// <summary>
+        /// Đơn vị đo
+        /// </summary>
+        public ulong? UnitId { get; set; }
+
+        /// <summary>
+        /// Giá trị tiêu chuẩn
+        /// </summary>
+        public decimal? TargetValue { get; set; }
+
+        /// <summary>
+        /// Giá trị tối thiểu
+        /// </summary>
+        public decimal? MinValue { get; set; }
+
+        /// <summary>
+        /// Giá trị tối đa
+        /// </summary>
+        public decimal? MaxValue { get; set; }
+
+        /// <summary>
+        /// Kết quả mong đợi
+        /// </summary>
+        public string? ExpectedResult { get; set; }
+
+        /// <summary>
+        /// Giá trị thực tế
+        /// </summary>
+        public decimal? ActualValue { get; set; }
+
+        /// <summary>
+        /// Kết quả dạng text
+        /// </summary>
+        public string? ActualText { get; set; }
+
+        /// <summary>
+        /// Kết quả: 1 Pass, 2 Fail, 3 NA
+        /// </summary>
+        public int? Result { get; set; }
+
+        /// <summary>
+        /// Bắt buộc thực hiện
+        /// </summary>
+        public bool? IsRequired { get; set; }
+
+        /// <summary>
+        /// Thời gian thực hiện
+        /// </summary>
+        public DateTime? CompletedDate { get; set; }
+
+        /// <summary>
+        /// Người thực hiện
+        /// </summary>
+        public ulong? CompletedBy { get; set; }
+
+        /// <summary>
+        /// Ghi chú
+        /// </summary>
+        public string? Remark { get; set; }
+
+        public long? FailureCodeId { get; set; }
+    }
+
+    public partial class MaintenanceOrderChecklistDto
+    {
+        /// <summary>
+        /// Primary Key
+        /// </summary>
+        public ulong Id { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+
+        public string CreatedBy { get; set; }
+
+        public DateTime? UpdatedDate { get; set; }
+
+        public string UpdatedBy { get; set; }
+
+        public bool IsDeleted { get; set; }
+
+        /// <summary>
+        /// Lệnh bảo trì
+        /// </summary>
+        public ulong MaintenanceOrderId { get; set; }
+
+        /// <summary>
+        /// Checklist template
+        /// </summary>
+        public ulong? MaintenanceChecklistId { get; set; }
+
+        /// <summary>
+        /// Mã checklist tại thời điểm thực hiện
+        /// </summary>
+        public string ChecklistCode { get; set; }
+
+        /// <summary>
+        /// Tên checklist tại thời điểm thực hiện
+        /// </summary>
+        public string ChecklistName { get; set; }
+
+        /// <summary>
+        /// Phiên bản checklist
+        /// </summary>
+        public int? ChecklistVersion { get; set; }
+
+        /// <summary>
+        /// Trạng thái: 1 Pending, 2 InProgress, 3 Completed
+        /// </summary>
+        public int Status { get; set; }
+
+        /// <summary>
+        /// Thời gian bắt đầu
+        /// </summary>
+        public DateTime? StartedDate { get; set; }
+
+        /// <summary>
+        /// Thời gian hoàn thành
+        /// </summary>
+        public DateTime? CompletedDate { get; set; }
+
+        /// <summary>
+        /// Người hoàn thành
+        /// </summary>
+        public ulong? CompletedBy { get; set; }
+
+        /// <summary>
+        /// Ghi chú
+        /// </summary>
+        public string? Remark { get; set; }
+    }
+
+    public partial class MaintenanceOrderDto
+    {
+        /// <summary>
+        /// Primary Key
+        /// </summary>
+        public ulong Id { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+
+        public string CreatedBy { get; set; }
+
+        public DateTime? UpdatedDate { get; set; }
+
+        public string UpdatedBy { get; set; }
+
+        public bool IsDeleted { get; set; }
+
+        /// <summary>
+        /// Mã lệnh bảo trì
+        /// </summary>
+        public string OrderNo { get; set; }
+
+        /// <summary>
+        /// Kế hoạch bảo trì
+        /// </summary>
+        public ulong? MaintenancePlanId { get; set; }
+
+        /// <summary>
+        /// Loại bảo trì
+        /// </summary>
+        public ulong MaintenanceTypeId { get; set; }
+
+        /// <summary>
+        /// Thiết bị
+        /// </summary>
+        public ulong MachineId { get; set; }
+
+        /// <summary>
+        /// Mức độ ưu tiên: 1:low, 2:normal; 3:high; 4:critical
+        /// </summary>
+        public int Priority { get; set; }
+
+        /// <summary>
+        /// Trạng thái: 1 Draft, 2 Released, 3 InProgress, 4 Completed, 5 Cancelled
+        /// </summary>
+        public int Status { get; set; }
+
+        /// <summary>
+        /// Thời gian dự kiến bắt đầu
+        /// </summary>
+        public DateTime? PlannedStartDate { get; set; }
+
+        /// <summary>
+        /// Thời gian dự kiến kết thúc
+        /// </summary>
+        public DateTime? PlannedEndDate { get; set; }
+
+        /// <summary>
+        /// Thời gian thực tế bắt đầu
+        /// </summary>
+        public DateTime? ActualStartDate { get; set; }
+
+        /// <summary>
+        /// Thời gian thực tế kết thúc
+        /// </summary>
+        public DateTime? ActualEndDate { get; set; }
+
+        /// <summary>
+        /// Nhân viên phụ trách
+        /// </summary>
+        public ulong? ResponsibleEmployeeId { get; set; }
+
+        /// <summary>
+        /// Nội dung bảo trì
+        /// </summary>
+        public string? Description { get; set; }
+
+        /// <summary>
+        /// Ghi chú hoàn thành
+        /// </summary>
+        public string? CompletionNote { get; set; }
+
+        /// <summary>
+        /// Ghi chú
+        /// </summary>
+        public string? Remark { get; set; }
+    }
+
     #region Request
     public class MaintenanceTypeRequest
     {
@@ -515,6 +781,241 @@ namespace RFactory.Application.Modules.MasterData.DTOs
         /// Ghi chú
         /// </summary>
         public string? Remark { get; set; }
+    }
+
+    public partial class MaintenanceOrderChecklistItemRequest
+    {
+        /// <summary>
+        /// Primary Key
+        /// </summary>
+        public ulong Id { get; set; }
+
+        /// <summary>
+        /// Checklist thực hiện
+        /// </summary>
+        public ulong? MaintenanceOrderChecklistId { get; set; }
+
+        /// <summary>
+        /// Checklist item gốc
+        /// </summary>
+        public ulong? MaintenanceChecklistItemId { get; set; }
+
+        /// <summary>
+        /// Thứ tự thực hiện
+        /// </summary>
+        public int SequenceNo { get; set; }
+
+        /// <summary>
+        /// Mã hạng mục
+        /// </summary>
+        public string ItemCode { get; set; }
+
+        /// <summary>
+        /// Tên hạng mục
+        /// </summary>
+        public string ItemName { get; set; }
+
+        /// <summary>
+        /// Loại kiểm tra: 1 YesNo, 2 Numeric, 3 Text, 4 Selection, 5 PassFail, 6 Inspection
+        /// </summary>
+        public int CheckType { get; set; }
+
+        /// <summary>
+        /// Đơn vị đo
+        /// </summary>
+        public ulong? UnitId { get; set; }
+
+        /// <summary>
+        /// Giá trị tiêu chuẩn
+        /// </summary>
+        public decimal? TargetValue { get; set; }
+
+        /// <summary>
+        /// Giá trị tối thiểu
+        /// </summary>
+        public decimal? MinValue { get; set; }
+
+        /// <summary>
+        /// Giá trị tối đa
+        /// </summary>
+        public decimal? MaxValue { get; set; }
+
+        /// <summary>
+        /// Kết quả mong đợi
+        /// </summary>
+        public string? ExpectedResult { get; set; }
+
+        /// <summary>
+        /// Giá trị thực tế
+        /// </summary>
+        public decimal? ActualValue { get; set; }
+
+        /// <summary>
+        /// Kết quả dạng text
+        /// </summary>
+        public string? ActualText { get; set; }
+
+        /// <summary>
+        /// Kết quả: 1 Pass, 2 Fail, 3 NA
+        /// </summary>
+        public int? Result { get; set; }
+
+        /// <summary>
+        /// Bắt buộc thực hiện
+        /// </summary>
+        public bool? IsRequired { get; set; }
+
+        /// <summary>
+        /// Thời gian thực hiện
+        /// </summary>
+        public DateTime? CompletedDate { get; set; }
+
+        /// <summary>
+        /// Người thực hiện
+        /// </summary>
+        public ulong? CompletedBy { get; set; }
+
+        /// <summary>
+        /// Ghi chú
+        /// </summary>
+        public string? Remark { get; set; }
+
+        public long? FailureCodeId { get; set; }
+    }
+
+    public partial class MaintenanceOrderChecklistRequest
+    {
+        /// <summary>
+        /// Primary Key
+        /// </summary>
+        public ulong Id { get; set; }
+
+        /// <summary>
+        /// Lệnh bảo trì
+        /// </summary>
+        public ulong? MaintenanceOrderId { get; set; }
+
+        /// <summary>
+        /// Checklist template
+        /// </summary>
+        public ulong? MaintenanceChecklistId { get; set; }
+
+        /// <summary>
+        /// Mã checklist tại thời điểm thực hiện
+        /// </summary>
+        public string ChecklistCode { get; set; }
+
+        /// <summary>
+        /// Tên checklist tại thời điểm thực hiện
+        /// </summary>
+        public string ChecklistName { get; set; }
+
+        /// <summary>
+        /// Phiên bản checklist
+        /// </summary>
+        public int? ChecklistVersion { get; set; }
+
+        /// <summary>
+        /// Trạng thái: 1 Pending, 2 InProgress, 3 Completed
+        /// </summary>
+        public int Status { get; set; }
+
+        /// <summary>
+        /// Thời gian bắt đầu
+        /// </summary>
+        public DateTime? StartedDate { get; set; }
+
+        /// <summary>
+        /// Thời gian hoàn thành
+        /// </summary>
+        public DateTime? CompletedDate { get; set; }
+
+        /// <summary>
+        /// Người hoàn thành
+        /// </summary>
+        public ulong? CompletedBy { get; set; }
+
+        /// <summary>
+        /// Ghi chú
+        /// </summary>
+        public string? Remark { get; set; }
+        public List<MaintenanceOrderChecklistItemRequest>? MaintenanceOrderChecklistItems { get; set; }
+    }
+
+    public partial class MaintenanceOrderRequest
+    {
+
+        /// <summary>
+        /// Mã lệnh bảo trì
+        /// </summary>
+        public string OrderNo { get; set; }
+
+        /// <summary>
+        /// Kế hoạch bảo trì
+        /// </summary>
+        public ulong? MaintenancePlanId { get; set; }
+
+        /// <summary>
+        /// Loại bảo trì
+        /// </summary>
+        public ulong MaintenanceTypeId { get; set; }
+
+        /// <summary>
+        /// Thiết bị
+        /// </summary>
+        public ulong MachineId { get; set; }
+
+        /// <summary>
+        /// Mức độ ưu tiên: 1:low, 2:normal; 3:high; 4:critical
+        /// </summary>
+        public int Priority { get; set; }
+
+        /// <summary>
+        /// Trạng thái: 1 Draft, 2 Released, 3 InProgress, 4 Completed, 5 Cancelled
+        /// </summary>
+        public int Status { get; set; }
+
+        /// <summary>
+        /// Thời gian dự kiến bắt đầu
+        /// </summary>
+        public DateTime? PlannedStartDate { get; set; }
+
+        /// <summary>
+        /// Thời gian dự kiến kết thúc
+        /// </summary>
+        public DateTime? PlannedEndDate { get; set; }
+
+        /// <summary>
+        /// Thời gian thực tế bắt đầu
+        /// </summary>
+        public DateTime? ActualStartDate { get; set; }
+
+        /// <summary>
+        /// Thời gian thực tế kết thúc
+        /// </summary>
+        public DateTime? ActualEndDate { get; set; }
+
+        /// <summary>
+        /// Nhân viên phụ trách
+        /// </summary>
+        public ulong? ResponsibleEmployeeId { get; set; }
+
+        /// <summary>
+        /// Nội dung bảo trì
+        /// </summary>
+        public string? Description { get; set; }
+
+        /// <summary>
+        /// Ghi chú hoàn thành
+        /// </summary>
+        public string? CompletionNote { get; set; }
+
+        /// <summary>
+        /// Ghi chú
+        /// </summary>
+        public string? Remark { get; set; }
+        public List<MaintenanceOrderChecklistRequest>? MaintenanceOrderChecklists { get; set; }
+
     }
     #endregion
 }

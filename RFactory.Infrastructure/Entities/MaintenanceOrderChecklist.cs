@@ -33,7 +33,7 @@ public partial class MaintenanceOrderChecklist
     /// <summary>
     /// Checklist template
     /// </summary>
-    public ulong? ChecklistId { get; set; }
+    public ulong? MaintenanceChecklistId { get; set; }
 
     /// <summary>
     /// Mã checklist tại thời điểm thực hiện

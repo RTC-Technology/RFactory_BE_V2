@@ -44,6 +44,10 @@ public partial class RFactoryContext : DbContext
 
     public virtual DbSet<Factory> Factories { get; set; }
 
+    public virtual DbSet<FailureCode> FailureCodes { get; set; }
+
+    public virtual DbSet<FailureGroup> FailureGroups { get; set; }
+
     public virtual DbSet<Function> Functions { get; set; }
 
     public virtual DbSet<FunctionGroup> FunctionGroups { get; set; }
@@ -736,6 +740,91 @@ public partial class RFactoryContext : DbContext
                 .HasColumnType("datetime");
             entity.Property(e => e.FactoryCode).HasMaxLength(50);
             entity.Property(e => e.FactoryName).HasMaxLength(255);
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<FailureCode>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("failure_code", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.Code)
+                .IsRequired()
+                .HasMaxLength(50)
+                .HasComment("Mã hỏng hóc");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Description)
+                .HasComment("Mô tả hỏng hóc")
+                .HasColumnType("text");
+            entity.Property(e => e.FailureGroupId).HasComment("Nhóm hỏng hóc");
+            entity.Property(e => e.IsActive)
+                .IsRequired()
+                .HasDefaultValueSql("'1'")
+                .HasComment("Trạng thái: 1-Active, 0-Inactive");
+            entity.Property(e => e.Name)
+                .IsRequired()
+                .HasMaxLength(255)
+                .HasComment("Tên hỏng hóc");
+            entity.Property(e => e.Severity)
+                .HasDefaultValueSql("'2'")
+                .HasComment("Mức độ nghiêm trọng: 1-Critical, 2-Major, 3-Minor");
+            entity.Property(e => e.ShortName)
+                .HasMaxLength(100)
+                .HasComment("Tên viết tắt");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<FailureGroup>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("failure_group", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Description)
+                .HasComment("Mô tả nhóm hỏng hóc")
+                .HasColumnType("text");
+            entity.Property(e => e.GroupCode)
+                .IsRequired()
+                .HasMaxLength(50)
+                .HasComment("Mã nhóm hỏng hóc");
+            entity.Property(e => e.GroupName)
+                .IsRequired()
+                .HasMaxLength(255)
+                .HasComment("Tên nhóm hỏng hóc");
+            entity.Property(e => e.IsActive)
+                .IsRequired()
+                .HasDefaultValueSql("'1'")
+                .HasComment("Trạng thái: 1-Active, 0-Inactive");
+            entity.Property(e => e.ShortName)
+                .HasMaxLength(100)
+                .HasComment("Tên viết tắt");
+            entity.Property(e => e.SortOrder)
+                .HasDefaultValueSql("'1'")
+                .HasComment("Thứ tự hiển thị");
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });
@@ -1578,7 +1667,6 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.ChecklistCode)
                 .HasMaxLength(50)
                 .HasComment("Mã checklist tại thời điểm thực hiện");
-            entity.Property(e => e.ChecklistId).HasComment("Checklist template");
             entity.Property(e => e.ChecklistName)
                 .HasMaxLength(255)
                 .HasComment("Tên checklist tại thời điểm thực hiện");
@@ -1591,6 +1679,7 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
+            entity.Property(e => e.MaintenanceChecklistId).HasComment("Checklist template");
             entity.Property(e => e.MaintenanceOrderId).HasComment("Lệnh bảo trì");
             entity.Property(e => e.Remark)
                 .HasComment("Ghi chú")
@@ -1649,6 +1738,7 @@ public partial class RFactoryContext : DbContext
                 .IsRequired()
                 .HasMaxLength(255)
                 .HasComment("Tên hạng mục");
+            entity.Property(e => e.MaintenanceChecklistItemId).HasComment("Checklist item gốc");
             entity.Property(e => e.MaintenanceOrderChecklistId).HasComment("Checklist thực hiện");
             entity.Property(e => e.MaxValue)
                 .HasPrecision(18, 6)
@@ -1661,7 +1751,6 @@ public partial class RFactoryContext : DbContext
                 .HasColumnType("text");
             entity.Property(e => e.Result).HasComment("Kết quả: 1 Pass, 2 Fail, 3 NA");
             entity.Property(e => e.SequenceNo).HasComment("Thứ tự thực hiện");
-            entity.Property(e => e.SourceChecklistItemId).HasComment("Checklist item gốc");
             entity.Property(e => e.TargetValue)
                 .HasPrecision(18, 6)
                 .HasComment("Giá trị tiêu chuẩn");

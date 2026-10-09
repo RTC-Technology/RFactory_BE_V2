@@ -112,12 +112,32 @@ public class MasterDataProfile : Profile
         CreateMap<MaintenanceChecklistItem, MaintenanceChecklistItemDto>();
         CreateMap<MaintenancePlan, MaintenancePlanDto>();
 
+        CreateMap<MaintenanceOrder, MaintenanceOrderDto>();
+        CreateMap<MaintenanceOrderChecklist, MaintenanceOrderChecklistDto>();
+        CreateMap<MaintenanceOrderChecklistItem, MaintenanceOrderChecklistItemDto>();
+
         CreateMap<MaintenanceTypeRequest, MaintenanceType>();
         CreateMap<MaintenanceChecklistRequest, MaintenanceChecklist>();
         CreateMap<MaintenanceChecklistItemRequest, MaintenanceChecklistItem>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.MaintenanceChecklistId, opt => opt.Ignore());
         CreateMap<MaintenancePlanRequest, MaintenancePlan>();
+
+
+        CreateMap<MaintenanceOrderRequest, MaintenanceOrder>();
+        CreateMap<MaintenanceOrderChecklistRequest, MaintenanceOrderChecklist>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.MaintenanceOrderId, opt => opt.Ignore());
+
+        CreateMap<MaintenanceOrderChecklistItemRequest, MaintenanceOrderChecklistItem>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.MaintenanceOrderChecklistId, opt => opt.Ignore());
         #endregion
+
+        CreateMap<FailureCode, FailureCodeDto>();
+        CreateMap<FailureGroup, FailureGroupDto>();
+
+        CreateMap<FailureCodeRequest, FailureCode>();
+        CreateMap<FailureGroupRequest, FailureGroup>();
     }
 }

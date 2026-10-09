@@ -649,5 +649,40 @@ public static class PermissionCodes
         public const string Edit = "maintenance-plan.edit";
         public const string Delete = "maintenance-plan.delete";
     }
+    public static class MaintenanceOrder
+    {
+        public const string View = "maintenance-order.view";
+        public const string Add = "maintenance-order.add";
+        public const string Edit = "maintenance-order.edit";
+        public const string Delete = "maintenance-order.delete";
+    }
+    public static class MaintenanceOrderChecklist
+    {
+        public const string View = "maintenance-order-checklist.view";
+        public const string Add = "maintenance-order-checklist.add";
+        public const string Edit = "maintenance-order-checklist.edit";
+        public const string Delete = "maintenance-order-checklist.delete";
+    }
+    public static class MaintenanceOrderChecklistItem
+    {
+        public const string View = "maintenance-order-checklist-item.view";
+        public const string Add = "maintenance-order-checklist-item.add";
+        public const string Edit = "maintenance-order-checklist-item.edit";
+        public const string Delete = "maintenance-order-checklist-item.delete";
+    }
+    public static class FailureCode
+    {
+        public const string View = "failure-code.view";
+        public const string Add = "failure-code.add";
+        public const string Edit = "failure-code.edit";
+        public const string Delete = "failure-code.delete";
+    }
+    public static class FailureGroup
+    {
+        public const string View = "failure-group.view";
+        public const string Add = "failure-group.add";
+        public const string Edit = "failure-group.edit";
+        public const string Delete = "failure-group.delete";
+    }
 
 }

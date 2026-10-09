@@ -33,7 +33,7 @@ public partial class MaintenanceOrderChecklistItem
     /// <summary>
     /// Checklist item gốc
     /// </summary>
-    public ulong? SourceChecklistItemId { get; set; }
+    public ulong? MaintenanceChecklistItemId { get; set; }
 
     /// <summary>
     /// Thứ tự thực hiện
@@ -114,4 +114,6 @@ public partial class MaintenanceOrderChecklistItem
     /// Ghi chú
     /// </summary>
     public string Remark { get; set; }
+
+    public long? FailureCodeId { get; set; }
 }
