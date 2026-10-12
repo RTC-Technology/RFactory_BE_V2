@@ -329,4 +329,18 @@ public static class PermissionCodes
         public const string Delete = "employee-skill.delete";
     }
 
+    public static class QrCode
+    {
+        public const string View     = "qrcode.view";
+        public const string Generate = "qrcode.generate";
+        public const string Scan     = "qrcode.scan";
+    }
+
+    public static class LabelTemplate
+    {
+        public const string View   = "label-template.view";
+        public const string Add    = "label-template.add";
+        public const string Edit   = "label-template.edit";
+        public const string Delete = "label-template.delete";
+    }
 }

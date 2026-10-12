@@ -9,6 +9,7 @@ using RFactory.Application.Modules.Inventory.Services;
 using RFactory.Application.Modules.MasterData.Services;
 using RFactory.Application.Modules.Product.Services;
 using RFactory.Application.Modules.PurchaseOrder.Services;
+using RFactory.Application.Modules.QrCode.Services;
 using RFactory.Application.Modules.Warehouses.Services;
 
 namespace RFactory.Application.Extensions;
@@ -48,6 +49,7 @@ public static class DependencyInjection
         services.AddScoped<IUnitCategoryService, UnitCategoryService>();
         services.AddScoped<IUnitService, UnitService>();
         services.AddScoped<IUnitConversionService, UnitConversionService>();
+        services.AddScoped<ILabelTemplateService, LabelTemplateService>();
 
         // Product
         services.AddScoped<IProductTypeService, ProductTypeService>();
@@ -99,6 +101,8 @@ public static class DependencyInjection
         services.AddScoped<IPurchaseOrderDetailService, PurchaseOrderDetailService>();
         services.AddScoped<IPurchaseOrderDeliveryScheduleService, PurchaseOrderDeliveryScheduleService>();
 
+        //QrCode
+        services.AddScoped<IQrCodeService, QrCodeService>();
 
         return services;
     }

@@ -15,6 +15,8 @@ public partial class RFactoryContext
 
     public virtual DbSet<EmployeeSkill> EmployeeSkills { get; set; }
 
+    public virtual DbSet<LabelTemplate> LabelTemplates { get; set; }
+
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>(entity =>
@@ -74,6 +76,35 @@ public partial class RFactoryContext
             entity.Property(e => e.ProficiencyLevel).HasColumnName("proficiency_level");
             entity.Property(e => e.AcquiredDate).HasColumnName("acquired_date");
             entity.Property(e => e.Notes).HasColumnName("notes").HasMaxLength(500);
+        });
+
+        // ── LabelTemplate ────────────────────────────────────────────────────
+        modelBuilder.Entity<LabelTemplate>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.ToTable("label_template");
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.CreatedDate).HasColumnName("created_date");
+            entity.Property(e => e.CreatedBy).HasColumnName("created_by").HasMaxLength(100);
+            entity.Property(e => e.UpdatedDate).HasColumnName("updated_date");
+            entity.Property(e => e.UpdatedBy).HasColumnName("updated_by").HasMaxLength(100);
+            entity.Property(e => e.IsDeleted).HasColumnName("is_deleted");
+            entity.Property(e => e.TemplateCode).HasColumnName("template_code").HasMaxLength(50);
+            entity.Property(e => e.TemplateName).HasColumnName("template_name").HasMaxLength(200);
+            entity.Property(e => e.EntityType).HasColumnName("entity_type").HasMaxLength(50);
+            entity.Property(e => e.WidthMm).HasColumnName("width_mm").HasPrecision(6, 2);
+            entity.Property(e => e.HeightMm).HasColumnName("height_mm").HasPrecision(6, 2);
+            entity.Property(e => e.Orientation).HasColumnName("orientation").HasMaxLength(20);
+            entity.Property(e => e.IsDefault).HasColumnName("is_default");
+            entity.Property(e => e.IsActive).HasColumnName("is_active");
+            entity.Property(e => e.HeaderText).HasColumnName("header_text").HasMaxLength(200);
+            entity.Property(e => e.FooterText).HasColumnName("footer_text").HasMaxLength(200);
+            entity.Property(e => e.ShowQr).HasColumnName("show_qr");
+            entity.Property(e => e.ShowBarcode).HasColumnName("show_barcode");
+            entity.Property(e => e.ShowLogo).HasColumnName("show_logo");
+            entity.Property(e => e.ShowBorder).HasColumnName("show_border");
+            entity.Property(e => e.QrSizePx).HasColumnName("qr_size_px");
+            entity.Property(e => e.FieldsConfigJson).HasColumnName("fields_config_json");
         });
 
         // ── Global soft-delete filter ────────────────────────────────────────
