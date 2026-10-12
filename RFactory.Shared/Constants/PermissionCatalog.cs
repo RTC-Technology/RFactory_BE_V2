@@ -142,6 +142,13 @@ public static class PermissionCatalog
             new(PermissionCodes.UserGroup.Edit,   "Sửa nhóm, phân quyền và gán nhân viên"),
             new(PermissionCodes.UserGroup.Delete, "Xóa nhóm người dùng"),
         }),
+        new("employee", "Nhân viên", new PermissionSpec[]
+        {
+            new(PermissionCodes.Employee.View,   "Xem danh sách nhân viên"),
+            new(PermissionCodes.Employee.Add,    "Thêm nhân viên"),
+            new(PermissionCodes.Employee.Edit,   "Sửa nhân viên"),
+            new(PermissionCodes.Employee.Delete, "Xóa nhân viên"),
+        }),
         new("function-group", "Nhóm quyền", new PermissionSpec[]
         {
             new(PermissionCodes.FunctionGroup.View,   "Xem danh sách nhóm quyền"),
