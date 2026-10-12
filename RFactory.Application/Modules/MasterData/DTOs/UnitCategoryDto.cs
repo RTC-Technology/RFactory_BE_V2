@@ -45,8 +45,9 @@ public class UnitConversionDto
     public bool IsActive { get; set; }
 }
 
-public class CreateUnitConversionRequest
+public class UnitConversionRequest
 {
+    public ulong Id { get; set; }
     public long? FromUnitId { get; set; }
     public long? ToUnitId { get; set; }
     public decimal? MultiplyValue { get; set; }
@@ -54,6 +55,8 @@ public class CreateUnitConversionRequest
     public int FormulaType { get; set; }
     public bool IsActive { get; set; } = true;
 }
+
+
 
 public class UpdateUnitConversionRequest
 {

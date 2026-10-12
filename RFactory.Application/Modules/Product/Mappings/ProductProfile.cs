@@ -17,27 +17,30 @@ public class ProductProfile : Profile
         CreateMap<CreateProductTypeRequest, Entities.ProductType>();
         CreateMap<UpdateProductTypeRequest, Entities.ProductType>();
 
+        CreateMap<Entities.ProductGroup, ProductGroupDto>();
+        CreateMap<ProductGroupRequest, Entities.ProductGroup>();
+
         CreateMap<Entities.Product, ProductDto>();
-        CreateMap<CreateProductRequest, Entities.Product>();
-        CreateMap<UpdateProductRequest, Entities.Product>();
+        CreateMap<ProductRequest, Entities.Product>();
+        //CreateMap<UpdateProductRequest, Entities.Product>();
 
         CreateMap<Entities.Bom, BomDto>()
             .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive == true));
-        CreateMap<CreateBomRequest, Entities.Bom>();
-        CreateMap<UpdateBomRequest, Entities.Bom>();
+        CreateMap<BomRequest, Entities.Bom>();
+        //CreateMap<UpdateBomRequest, Entities.Bom>();
 
         CreateMap<Entities.BomDetail, BomDetailDto>();
-        CreateMap<CreateBomDetailRequest, Entities.BomDetail>();
-        CreateMap<UpdateBomDetailRequest, Entities.BomDetail>();
+        CreateMap<BomDetailRequest, Entities.BomDetail>();
+        //CreateMap<UpdateBomDetailRequest, Entities.BomDetail>();
 
         CreateMap<Entities.Routing, RoutingDto>()
             .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive == true));
-        CreateMap<CreateRoutingRequest, Entities.Routing>();
-        CreateMap<UpdateRoutingRequest, Entities.Routing>();
+        CreateMap<RoutingRequest, Entities.Routing>();
+        //CreateMap<UpdateRoutingRequest, Entities.Routing>();
 
         CreateMap<Entities.RoutingOperation, RoutingOperationDto>();
-        CreateMap<CreateRoutingOperationRequest, Entities.RoutingOperation>();
-        CreateMap<UpdateRoutingOperationRequest, Entities.RoutingOperation>();
+        CreateMap<RoutingOperationRequest, Entities.RoutingOperation>();
+        //CreateMap<UpdateRoutingOperationRequest, Entities.RoutingOperation>();
     }
 }
 

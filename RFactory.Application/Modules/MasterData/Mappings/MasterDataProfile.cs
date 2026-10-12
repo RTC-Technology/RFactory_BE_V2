@@ -27,6 +27,7 @@ public class MasterDataProfile : Profile
         CreateMap<Organization, OrganizationDto>();
         CreateMap<CreateOrganizationRequest, Organization>();
         CreateMap<UpdateOrganizationRequest, Organization>();
+        CreateMap<UpdateOrganizationRequest, Organization>();
 
         // Shift.IsActive and Shift.CrossDay are nullable bit(1) columns (bool?/ulong?) but
         // travel as plain bools, the same treatment User.IsAdmin gets.
@@ -45,13 +46,13 @@ public class MasterDataProfile : Profile
 
         CreateMap<UnitConversion, UnitConversionDto>()
             .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive == true));
-        CreateMap<CreateUnitConversionRequest, UnitConversion>();
+        CreateMap<UnitConversionRequest, UnitConversion>();
         CreateMap<UpdateUnitConversionRequest, UnitConversion>();
 
         CreateMap<Unit, UnitDto>()
             .ForMember(dest => dest.IsBaseUnit, opt => opt.MapFrom(src => src.IsBaseUnit.HasValue && src.IsBaseUnit.Value != 0))
             .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive == true));
-        CreateMap<CreateUnitRequest, Unit>()
+        CreateMap<UnitRequest, Unit>()
             .ForMember(dest => dest.IsBaseUnit, opt => opt.MapFrom(src => src.IsBaseUnit ? 1UL : 0UL));
         CreateMap<UpdateUnitRequest, Unit>()
             .ForMember(dest => dest.IsBaseUnit, opt => opt.MapFrom(src => src.IsBaseUnit ? 1UL : 0UL));
@@ -63,5 +64,80 @@ public class MasterDataProfile : Profile
         CreateMap<Supplier, SupplierDto>();
         CreateMap<CreateSupplierRequest, Supplier>();
         CreateMap<UpdateSupplierRequest, Supplier>();
+
+        CreateMap<Customer, CustomerDto>();
+        CreateMap<CustomerContact, CustomerContactDto>();
+        CreateMap<CustomerRequest, Customer>();
+        CreateMap<CustomerContactRequest, CustomerContact>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.CustomerId, opt => opt.Ignore());
+
+
+        CreateMap<Lot, LotDto>();
+        CreateMap<LotRule, LotRuleDto>();
+        CreateMap<LotRuleSequence, LotRuleSequenceDto>();
+        CreateMap<ProductLotRule, ProductLotRuleDto>();
+
+        CreateMap<LotRequest, Lot>();
+        CreateMap<LotRuleRequest, LotRule>();
+        CreateMap<LotRuleSequenceRequest, LotRuleSequence>();
+        CreateMap<ProductLotRuleRequest, ProductLotRule>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.LotRuleId, opt => opt.Ignore());
+
+
+        CreateMap<Serial, SerialDto>();
+        CreateMap<SerialRule, SerialRuleDto>();
+        CreateMap<SerialRuleSequence, SerialRuleSequenceDto>();
+
+        CreateMap<SerialRequest, Serial>();
+        CreateMap<SerialRuleRequest, SerialRule>();
+        CreateMap<SerialRuleSequenceRequest, SerialRuleSequence>();
+
+
+        CreateMap<TraceabilityRule, TraceabilityRuleDto>();
+        CreateMap<TraceabilityRuleItem, TraceabilityRuleItemDto>();
+        CreateMap<TraceabilityType, TraceabilityTypeDto>();
+
+        CreateMap<TraceabilityRuleRequest, TraceabilityRule>();
+        CreateMap<TraceabilityRuleItemRequest, TraceabilityRuleItem>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.TraceabilityRuleId, opt => opt.Ignore());
+
+        CreateMap<TraceabilityTypeRequest, TraceabilityType>();
+
+        #region Maintenance
+        CreateMap<MaintenanceType, MaintenanceTypeDto>();
+        CreateMap<MaintenanceChecklist, MaintenanceChecklistDto>();
+        CreateMap<MaintenanceChecklistItem, MaintenanceChecklistItemDto>();
+        CreateMap<MaintenancePlan, MaintenancePlanDto>();
+
+        CreateMap<MaintenanceOrder, MaintenanceOrderDto>();
+        CreateMap<MaintenanceOrderChecklist, MaintenanceOrderChecklistDto>();
+        CreateMap<MaintenanceOrderChecklistItem, MaintenanceOrderChecklistItemDto>();
+
+        CreateMap<MaintenanceTypeRequest, MaintenanceType>();
+        CreateMap<MaintenanceChecklistRequest, MaintenanceChecklist>();
+        CreateMap<MaintenanceChecklistItemRequest, MaintenanceChecklistItem>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.MaintenanceChecklistId, opt => opt.Ignore());
+        CreateMap<MaintenancePlanRequest, MaintenancePlan>();
+
+
+        CreateMap<MaintenanceOrderRequest, MaintenanceOrder>();
+        CreateMap<MaintenanceOrderChecklistRequest, MaintenanceOrderChecklist>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.MaintenanceOrderId, opt => opt.Ignore());
+
+        CreateMap<MaintenanceOrderChecklistItemRequest, MaintenanceOrderChecklistItem>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.MaintenanceOrderChecklistId, opt => opt.Ignore());
+        #endregion
+
+        CreateMap<FailureCode, FailureCodeDto>();
+        CreateMap<FailureGroup, FailureGroupDto>();
+
+        CreateMap<FailureCodeRequest, FailureCode>();
+        CreateMap<FailureGroupRequest, FailureGroup>();
     }
 }

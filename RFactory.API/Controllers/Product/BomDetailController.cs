@@ -46,7 +46,7 @@ public class BomDetailController : ControllerBase
 
     [HttpPost]
     [RequirePermission(PermissionCodes.BomDetail.Add)]
-    public async Task<ActionResult<ApiResponse<BomDetailDto>>> Create(CreateBomDetailRequest request, CancellationToken ct)
+    public async Task<ActionResult<ApiResponse<BomDetailDto>>> Create(BomDetailRequest request, CancellationToken ct)
     {
         var result = await _bomDetailService.CreateAsync(request, ct);
         if (!result.Succeeded)
@@ -59,7 +59,7 @@ public class BomDetailController : ControllerBase
 
     [HttpPut("{id:long}")]
     [RequirePermission(PermissionCodes.BomDetail.Edit)]
-    public async Task<ActionResult<ApiResponse<BomDetailDto>>> Update(ulong id, UpdateBomDetailRequest request, CancellationToken ct)
+    public async Task<ActionResult<ApiResponse<BomDetailDto>>> Update(ulong id, BomDetailRequest request, CancellationToken ct)
     {
         var result = await _bomDetailService.UpdateAsync(id, request, ct);
         if (!result.Succeeded)

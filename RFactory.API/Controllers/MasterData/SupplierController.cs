@@ -25,21 +25,21 @@ namespace RFactory.API.Controllers.MasterData
         [RequirePermission(PermissionCodes.Supplier.View)]
         public async Task<ActionResult<ApiResponse<List<SupplierDto>>>> GetAll(CancellationToken ct)
         {
-            var areas = await _service.GetAllAsync(ct);
-            return Ok(ApiResponseFactory.Success(areas));
+            var suppliers = await _service.GetAllAsync(ct);
+            return Ok(ApiResponseFactory.Success(suppliers));
         }
 
         [HttpGet("{id:long}")]
         [RequirePermission(PermissionCodes.Supplier.View)]
         public async Task<ActionResult<ApiResponse<SupplierDto>>> GetById(ulong id, CancellationToken ct)
         {
-            var area = await _service.GetByIdAsync(id, ct);
-            if (area is null)
+            var supplier = await _service.GetByIdAsync(id, ct);
+            if (supplier is null)
             {
                 return NotFound(ApiResponseFactory.Fail($"Supplier {id} was not found.", System.Net.HttpStatusCode.NotFound));
             }
 
-            return Ok(ApiResponseFactory.Success(area));
+            return Ok(ApiResponseFactory.Success(supplier));
         }
 
         [HttpPost]
@@ -57,7 +57,7 @@ namespace RFactory.API.Controllers.MasterData
 
         [HttpPut("{id:long}")]
         [RequirePermission(PermissionCodes.Supplier.Edit)]
-        public async Task<ActionResult<ApiResponse<AreaDto>>> Update(ulong id, UpdateSupplierRequest request, CancellationToken ct)
+        public async Task<ActionResult<ApiResponse<SupplierDto>>> Update(ulong id, UpdateSupplierRequest request, CancellationToken ct)
         {
             var result = await _service.UpdateAsync(id, request, ct);
             if (!result.Succeeded)
@@ -69,7 +69,7 @@ namespace RFactory.API.Controllers.MasterData
         }
 
         [HttpDelete("{id:long}")]
-        [RequirePermission(PermissionCodes.Area.Delete)]
+        [RequirePermission(PermissionCodes.Supplier.Delete)]
         public async Task<ActionResult<ApiResponse<object?>>> Delete(ulong id, CancellationToken ct)
         {
             var result = await _service.DeleteAsync(id, ct);

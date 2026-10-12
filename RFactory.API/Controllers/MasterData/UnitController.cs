@@ -46,7 +46,7 @@ public class UnitController : ControllerBase
 
     [HttpPost]
     [RequirePermission(PermissionCodes.Unit.Add)]
-    public async Task<ActionResult<ApiResponse<UnitDto>>> Create(CreateUnitRequest request, CancellationToken ct)
+    public async Task<ActionResult<ApiResponse<UnitDto>>> Create(UnitRequest request, CancellationToken ct)
     {
         var result = await _unitService.CreateAsync(request, ct);
         if (!result.Succeeded)
@@ -59,7 +59,7 @@ public class UnitController : ControllerBase
 
     [HttpPut("{id:long}")]
     [RequirePermission(PermissionCodes.Unit.Edit)]
-    public async Task<ActionResult<ApiResponse<UnitDto>>> Update(ulong id, UpdateUnitRequest request, CancellationToken ct)
+    public async Task<ActionResult<ApiResponse<UnitDto>>> Update(ulong id, UnitRequest request, CancellationToken ct)
     {
         var result = await _unitService.UpdateAsync(id, request, ct);
         if (!result.Succeeded)
