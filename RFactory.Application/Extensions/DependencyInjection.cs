@@ -176,6 +176,13 @@ public static class DependencyInjection
         services.AddScoped<IFailureCodeService, FailureCodeService>();
         services.AddScoped<IFailureGroupService, FailureGroupService>();
 
+        services.AddScoped<ICountryService, CountryService>();
+        services.AddScoped<IProvinceService, ProvinceService>();
+        services.AddScoped<IDistrictService, DistrictService>();
+        services.AddScoped<IWardService, WardService>();
+
+        services.AddScoped<ICurrencyService, CurrencyService>();
+
         return services;
     }
 }

@@ -684,5 +684,40 @@ public static class PermissionCodes
         public const string Edit = "failure-group.edit";
         public const string Delete = "failure-group.delete";
     }
+    public static class Country
+    {
+        public const string View = "country.view";
+        public const string Add = "country.add";
+        public const string Edit = "country.edit";
+        public const string Delete = "country.delete";
+    }
+    public static class Province
+    {
+        public const string View = "province.view";
+        public const string Add = "province.add";
+        public const string Edit = "province.edit";
+        public const string Delete = "province.delete";
+    }
+    public static class District
+    {
+        public const string View = "district.view";
+        public const string Add = "district.add";
+        public const string Edit = "district.edit";
+        public const string Delete = "district.delete";
+    }
+    public static class Ward
+    {
+        public const string View = "ward.view";
+        public const string Add = "ward.add";
+        public const string Edit = "ward.edit";
+        public const string Delete = "ward.delete";
+    }
+    public static class Currency
+    {
+        public const string View = "currency.view";
+        public const string Add = "currency.add";
+        public const string Edit = "currency.edit";
+        public const string Delete = "currency.delete";
+    }
 
 }

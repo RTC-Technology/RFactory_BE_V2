@@ -22,6 +22,10 @@ public partial class RFactoryContext : DbContext
 
     public virtual DbSet<Company> Companies { get; set; }
 
+    public virtual DbSet<Country> Countries { get; set; }
+
+    public virtual DbSet<Currency> Currencies { get; set; }
+
     public virtual DbSet<Customer> Customers { get; set; }
 
     public virtual DbSet<CustomerContact> CustomerContacts { get; set; }
@@ -41,6 +45,8 @@ public partial class RFactoryContext : DbContext
     public virtual DbSet<DeliveryNoteSource> DeliveryNoteSources { get; set; }
 
     public virtual DbSet<Department> Departments { get; set; }
+
+    public virtual DbSet<District> Districts { get; set; }
 
     public virtual DbSet<Factory> Factories { get; set; }
 
@@ -158,6 +164,8 @@ public partial class RFactoryContext : DbContext
 
     public virtual DbSet<ProductionTeamEmployee> ProductionTeamEmployees { get; set; }
 
+    public virtual DbSet<Province> Provinces { get; set; }
+
     public virtual DbSet<PurchaseOrder> PurchaseOrders { get; set; }
 
     public virtual DbSet<PurchaseOrderDeliverySchedule> PurchaseOrderDeliverySchedules { get; set; }
@@ -217,6 +225,8 @@ public partial class RFactoryContext : DbContext
     public virtual DbSet<UserGroupLink> UserGroupLinks { get; set; }
 
     public virtual DbSet<UserGroupRightDistribution> UserGroupRightDistributions { get; set; }
+
+    public virtual DbSet<Ward> Wards { get; set; }
 
     public virtual DbSet<Warehouse> Warehouses { get; set; }
 
@@ -360,6 +370,88 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             entity.Property(e => e.Website).HasMaxLength(255);
+        });
+
+        modelBuilder.Entity<Country>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("country", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CountryCode)
+                .IsRequired()
+                .HasMaxLength(20)
+                .HasComment("Mã quốc gia, ví dụ VN, US");
+            entity.Property(e => e.CountryName)
+                .IsRequired()
+                .HasMaxLength(200)
+                .HasComment("Tên quốc gia");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.EnglishName)
+                .HasMaxLength(200)
+                .HasComment("Tên tiếng Anh");
+            entity.Property(e => e.IsActive)
+                .IsRequired()
+                .HasDefaultValueSql("'1'")
+                .HasComment("1: Hoạt động, 0: Ngừng sử dụng");
+            entity.Property(e => e.PhoneCode)
+                .HasMaxLength(20)
+                .HasComment("Mã điện thoại quốc tế");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<Currency>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("currency", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.CurrencyCode)
+                .IsRequired()
+                .HasMaxLength(10)
+                .HasComment("Mã tiền tệ theo ISO 4217");
+            entity.Property(e => e.CurrencyName)
+                .IsRequired()
+                .HasMaxLength(100)
+                .HasComment("Tên tiền tệ");
+            entity.Property(e => e.CurrencySymbol)
+                .HasMaxLength(10)
+                .HasComment("Ký hiệu tiền tệ");
+            entity.Property(e => e.DecimalPlaces)
+                .HasDefaultValueSql("'2'")
+                .HasComment("Số chữ số thập phân");
+            entity.Property(e => e.IsActive)
+                .IsRequired()
+                .HasDefaultValueSql("'1'")
+                .HasComment("Trạng thái sử dụng");
+            entity.Property(e => e.IsBaseCurrency).HasComment("Có phải tiền tệ cơ sở hay không");
+            entity.Property(e => e.SortOrder)
+                .HasDefaultValueSql("'1'")
+                .HasComment("Thứ tự hiển thị");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<Customer>(entity =>
@@ -717,6 +809,46 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.Phone).HasMaxLength(50);
             entity.Property(e => e.ShortName).HasMaxLength(100);
             entity.Property(e => e.SortOrder).HasDefaultValueSql("'1'");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<District>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("district", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.DistrictCode)
+                .IsRequired()
+                .HasMaxLength(50)
+                .HasComment("Mã quận/huyện");
+            entity.Property(e => e.DistrictName)
+                .IsRequired()
+                .HasMaxLength(200)
+                .HasComment("Tên quận/huyện");
+            entity.Property(e => e.DistrictType)
+                .HasDefaultValueSql("'1'")
+                .HasComment("1: Quận, 2: Huyện, 3: Thị xã, 4: Thành phố thuộc tỉnh");
+            entity.Property(e => e.EnglishName)
+                .HasMaxLength(200)
+                .HasComment("Tên tiếng Anh");
+            entity.Property(e => e.IsActive)
+                .IsRequired()
+                .HasDefaultValueSql("'1'")
+                .HasComment("1: Hoạt động, 0: Ngừng sử dụng");
+            entity.Property(e => e.ProvinceId).HasComment("Tỉnh/thành phố");
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });
@@ -2553,6 +2685,49 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
         });
 
+        modelBuilder.Entity<Province>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("province", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CountryId).HasComment("Quốc gia");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.EnglishName)
+                .HasMaxLength(200)
+                .HasComment("Tên tiếng Anh");
+            entity.Property(e => e.IsActive)
+                .IsRequired()
+                .HasDefaultValueSql("'1'")
+                .HasComment("1: Hoạt động, 0: Ngừng sử dụng");
+            entity.Property(e => e.PostalCode)
+                .HasMaxLength(20)
+                .HasComment("Mã bưu chính");
+            entity.Property(e => e.ProvinceCode)
+                .IsRequired()
+                .HasMaxLength(50)
+                .HasComment("Mã tỉnh/thành phố");
+            entity.Property(e => e.ProvinceName)
+                .IsRequired()
+                .HasMaxLength(200)
+                .HasComment("Tên tỉnh/thành phố");
+            entity.Property(e => e.ProvinceType)
+                .HasDefaultValueSql("'1'")
+                .HasComment("1: Tỉnh, 2: Thành phố trực thuộc trung ương");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
         modelBuilder.Entity<PurchaseOrder>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
@@ -3533,6 +3708,46 @@ public partial class RFactoryContext : DbContext
                 .HasColumnType("datetime");
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<Ward>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("ward", tb => tb.HasComment("Base Template Table"))
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.CreatedDate, "IX_CreatedDate");
+
+            entity.HasIndex(e => e.IsDeleted, "IX_IsDeleted");
+
+            entity.Property(e => e.Id).HasComment("Primary Key");
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.DistrictId).HasComment("Quận/huyện");
+            entity.Property(e => e.EnglishName)
+                .HasMaxLength(200)
+                .HasComment("Tên tiếng Anh");
+            entity.Property(e => e.IsActive)
+                .IsRequired()
+                .HasDefaultValueSql("'1'")
+                .HasComment("1: Hoạt động, 0: Ngừng sử dụng");
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            entity.Property(e => e.WardCode)
+                .IsRequired()
+                .HasMaxLength(50)
+                .HasComment("Mã xã/phường");
+            entity.Property(e => e.WardName)
+                .IsRequired()
+                .HasMaxLength(200)
+                .HasComment("Tên xã/phường");
+            entity.Property(e => e.WardType)
+                .HasDefaultValueSql("'1'")
+                .HasComment("1: Phường, 2: Xã, 3: Thị trấn");
         });
 
         modelBuilder.Entity<Warehouse>(entity =>
