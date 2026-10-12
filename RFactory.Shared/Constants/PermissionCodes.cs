@@ -359,4 +359,12 @@ public static class PermissionCodes
         public const string Edit   = "packing-numbering-rule.edit";
         public const string Delete = "packing-numbering-rule.delete";
     }
+
+    public static class MachineStatus
+    {
+        public const string View   = "machine-status.view";
+        public const string Add    = "machine-status.add";
+        public const string Edit   = "machine-status.edit";
+        public const string Delete = "machine-status.delete";
+    }
 }

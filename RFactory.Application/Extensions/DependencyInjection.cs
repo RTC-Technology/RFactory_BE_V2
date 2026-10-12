@@ -65,6 +65,7 @@ public static class DependencyInjection
         // Equipment
         services.AddScoped<IMachineTypeService, MachineTypeService>();
         services.AddScoped<IMachineService, MachineService>();
+        services.AddScoped<IMachineStatusService, MachineStatusService>();
 
         //Warehouse
         services.AddScoped<IWarehouseService, WarehouseService>();

@@ -21,6 +21,12 @@ public partial class RFactoryContext
 
     public virtual DbSet<PackingNumberingRule> PackingNumberingRules { get; set; }
 
+    public virtual DbSet<MachineReasonCode> MachineReasonCodes { get; set; }
+
+    public virtual DbSet<MachineStatusHistory> MachineStatusHistories { get; set; }
+
+    public virtual DbSet<MachineDefectLog> MachineDefectLogs { get; set; }
+
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>(entity =>
@@ -175,6 +181,75 @@ public partial class RFactoryContext
             entity.Property(e => e.IsDefault).HasColumnName("is_default");
             entity.Property(e => e.IsActive).HasColumnName("is_active");
             entity.Property(e => e.Description).HasColumnName("description").HasMaxLength(500);
+        });
+
+        // ── MachineReasonCode ────────────────────────────────────────────────
+        modelBuilder.Entity<MachineReasonCode>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.ToTable("machine_reason_code");
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.CreatedDate).HasColumnName("created_date");
+            entity.Property(e => e.CreatedBy).HasColumnName("created_by").HasMaxLength(100);
+            entity.Property(e => e.UpdatedDate).HasColumnName("updated_date");
+            entity.Property(e => e.UpdatedBy).HasColumnName("updated_by").HasMaxLength(100);
+            entity.Property(e => e.IsDeleted).HasColumnName("is_deleted");
+            entity.Property(e => e.ReasonCode).HasColumnName("reason_code").HasMaxLength(50);
+            entity.Property(e => e.ReasonName).HasColumnName("reason_name").HasMaxLength(200);
+            entity.Property(e => e.ReasonType).HasColumnName("reason_type").HasMaxLength(50);
+            entity.Property(e => e.Category).HasColumnName("category").HasMaxLength(100);
+            entity.Property(e => e.IsPlanned).HasColumnName("is_planned");
+            entity.Property(e => e.IsActive).HasColumnName("is_active");
+            entity.Property(e => e.Description).HasColumnName("description").HasMaxLength(500);
+        });
+
+        // ── MachineStatusHistory ─────────────────────────────────────────────
+        modelBuilder.Entity<MachineStatusHistory>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.ToTable("machine_status_history");
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.CreatedDate).HasColumnName("created_date");
+            entity.Property(e => e.CreatedBy).HasColumnName("created_by").HasMaxLength(100);
+            entity.Property(e => e.UpdatedDate).HasColumnName("updated_date");
+            entity.Property(e => e.UpdatedBy).HasColumnName("updated_by").HasMaxLength(100);
+            entity.Property(e => e.IsDeleted).HasColumnName("is_deleted");
+            entity.Property(e => e.MachineId).HasColumnName("machine_id");
+            entity.Property(e => e.Status).HasColumnName("status").HasMaxLength(50);
+            entity.Property(e => e.StartTime).HasColumnName("start_time");
+            entity.Property(e => e.EndTime).HasColumnName("end_time");
+            entity.Property(e => e.DurationSeconds).HasColumnName("duration_seconds");
+            entity.Property(e => e.ReasonId).HasColumnName("reason_id");
+            entity.Property(e => e.ReasonCode).HasColumnName("reason_code").HasMaxLength(50);
+            entity.Property(e => e.ReasonName).HasColumnName("reason_name").HasMaxLength(200);
+            entity.Property(e => e.OperatorName).HasColumnName("operator_name").HasMaxLength(100);
+            entity.Property(e => e.WorkOrderCode).HasColumnName("work_order_code").HasMaxLength(100);
+            entity.Property(e => e.Remarks).HasColumnName("remarks").HasMaxLength(500);
+        });
+
+        // ── MachineDefectLog ─────────────────────────────────────────────────
+        modelBuilder.Entity<MachineDefectLog>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.ToTable("machine_defect_log");
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.CreatedDate).HasColumnName("created_date");
+            entity.Property(e => e.CreatedBy).HasColumnName("created_by").HasMaxLength(100);
+            entity.Property(e => e.UpdatedDate).HasColumnName("updated_date");
+            entity.Property(e => e.UpdatedBy).HasColumnName("updated_by").HasMaxLength(100);
+            entity.Property(e => e.IsDeleted).HasColumnName("is_deleted");
+            entity.Property(e => e.MachineId).HasColumnName("machine_id");
+            entity.Property(e => e.DefectType).HasColumnName("defect_type").HasMaxLength(50);
+            entity.Property(e => e.ReasonId).HasColumnName("reason_id");
+            entity.Property(e => e.ReasonCode).HasColumnName("reason_code").HasMaxLength(50);
+            entity.Property(e => e.ReasonName).HasColumnName("reason_name").HasMaxLength(200);
+            entity.Property(e => e.Quantity).HasColumnName("quantity").HasPrecision(12, 4);
+            entity.Property(e => e.ProductId).HasColumnName("product_id");
+            entity.Property(e => e.ProductCode).HasColumnName("product_code").HasMaxLength(50);
+            entity.Property(e => e.WorkOrderCode).HasColumnName("work_order_code").HasMaxLength(100);
+            entity.Property(e => e.LoggedTime).HasColumnName("logged_time");
+            entity.Property(e => e.OperatorName).HasColumnName("operator_name").HasMaxLength(100);
+            entity.Property(e => e.Remarks).HasColumnName("remarks").HasMaxLength(500);
         });
 
         // ── Global soft-delete filter ────────────────────────────────────────
