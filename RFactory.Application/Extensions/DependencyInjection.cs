@@ -50,6 +50,8 @@ public static class DependencyInjection
         services.AddScoped<IUnitService, UnitService>();
         services.AddScoped<IUnitConversionService, UnitConversionService>();
         services.AddScoped<ILabelTemplateService, LabelTemplateService>();
+        services.AddScoped<IPackingSpecificationService, PackingSpecificationService>();
+        services.AddScoped<IPackingNumberingRuleService, PackingNumberingRuleService>();
 
         // Product
         services.AddScoped<IProductTypeService, ProductTypeService>();

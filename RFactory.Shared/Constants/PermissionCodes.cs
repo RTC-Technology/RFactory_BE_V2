@@ -343,4 +343,20 @@ public static class PermissionCodes
         public const string Edit   = "label-template.edit";
         public const string Delete = "label-template.delete";
     }
+
+    public static class PackingSpecification
+    {
+        public const string View   = "packing-specification.view";
+        public const string Add    = "packing-specification.add";
+        public const string Edit   = "packing-specification.edit";
+        public const string Delete = "packing-specification.delete";
+    }
+
+    public static class PackingNumberingRule
+    {
+        public const string View   = "packing-numbering-rule.view";
+        public const string Add    = "packing-numbering-rule.add";
+        public const string Edit   = "packing-numbering-rule.edit";
+        public const string Delete = "packing-numbering-rule.delete";
+    }
 }
