@@ -35,6 +35,14 @@
          "ObjectType": 0
       },
       {
+         "Name": "country",
+         "ObjectType": 0
+      },
+      {
+         "Name": "currency",
+         "ObjectType": 0
+      },
+      {
          "Name": "customer",
          "ObjectType": 0
       },
@@ -72,6 +80,10 @@
       },
       {
          "Name": "department",
+         "ObjectType": 0
+      },
+      {
+         "Name": "district",
          "ObjectType": 0
       },
       {
@@ -307,6 +319,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "province",
+         "ObjectType": 0
+      },
+      {
          "Name": "purchase_order",
          "ObjectType": 0
       },
@@ -424,6 +440,10 @@
       },
       {
          "Name": "users",
+         "ObjectType": 0
+      },
+      {
+         "Name": "ward",
          "ObjectType": 0
       },
       {

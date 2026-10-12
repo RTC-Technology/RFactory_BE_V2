@@ -139,5 +139,20 @@ public class MasterDataProfile : Profile
 
         CreateMap<FailureCodeRequest, FailureCode>();
         CreateMap<FailureGroupRequest, FailureGroup>();
+
+
+        CreateMap<Country, CountryDto>();
+        CreateMap<Province, ProvinceDto>();
+        CreateMap<District, DistrictDto>();
+        CreateMap<Ward, WardDto>();
+
+        CreateMap<CountryRequest, Country>();
+        CreateMap<ProvinceRequest, Province>();
+        CreateMap<DistrictRequest, District>();
+        CreateMap<WardRequest, Ward>();
+
+        CreateMap<Currency, CurrencyDto>();
+        CreateMap<CurrencyRequest, Currency>();
+
     }
 }
