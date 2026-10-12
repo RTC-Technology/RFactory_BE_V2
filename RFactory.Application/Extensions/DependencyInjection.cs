@@ -1,10 +1,11 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using RFactory.Application.Modules.Administration.Services;
 using RFactory.Application.Modules.Auth.Services;
 using RFactory.Application.Modules.DeliveryNote.Services;
 using RFactory.Application.Modules.Equipment.Services;
 using RFactory.Application.Modules.GoodsIssue.Services;
 using RFactory.Application.Modules.GoodsReceipt.Services;
+using RFactory.Application.Modules.HumanResources.Services;
 using RFactory.Application.Modules.Inventory.Services;
 using RFactory.Application.Modules.MasterData.Services;
 using RFactory.Application.Modules.Organizations.Services;
@@ -12,6 +13,7 @@ using RFactory.Application.Modules.Packing.Services;
 using RFactory.Application.Modules.PickingPlan.Services;
 using RFactory.Application.Modules.Product.Services;
 using RFactory.Application.Modules.PurchaseOrder.Services;
+using RFactory.Application.Modules.QrCode.Services;
 using RFactory.Application.Modules.Quality.Services;
 using RFactory.Application.Modules.Warehouses.Services;
 
@@ -52,6 +54,9 @@ public static class DependencyInjection
         services.AddScoped<IUnitCategoryService, UnitCategoryService>();
         services.AddScoped<IUnitService, UnitService>();
         services.AddScoped<IUnitConversionService, UnitConversionService>();
+        services.AddScoped<ILabelTemplateService, LabelTemplateService>();
+        services.AddScoped<IPackingSpecificationService, PackingSpecificationService>();
+        services.AddScoped<IPackingNumberingRuleService, PackingNumberingRuleService>();
 
         // Product
         services.AddScoped<IProductTypeService, ProductTypeService>();
@@ -66,6 +71,7 @@ public static class DependencyInjection
         // Equipment
         services.AddScoped<IMachineTypeService, MachineTypeService>();
         services.AddScoped<IMachineService, MachineService>();
+        services.AddScoped<IMachineStatusService, MachineStatusService>();
 
         //Warehouse
         services.AddScoped<IWarehouseService, WarehouseService>();
@@ -85,6 +91,12 @@ public static class DependencyInjection
         //Supplier
         services.AddScoped<ISupplierService, SupplierService>();
 
+        //HumanResources
+        services.AddScoped<IEmployeeService, EmployeeService>();
+        services.AddScoped<IPositionService, PositionService>();
+        services.AddScoped<ISkillService, SkillService>();
+        services.AddScoped<IEmployeeSkillService, EmployeeSkillService>();
+
         //GoodsIssue
         services.AddScoped<IGoodsIssueService, GoodsIssueService>();   
         services.AddScoped<IGoodsIssueDetailService, GoodsIssueDetailService>();
@@ -97,6 +109,9 @@ public static class DependencyInjection
         services.AddScoped<IPurchaseOrderService, PurchaseOrderService>();   
         services.AddScoped<IPurchaseOrderDetailService, PurchaseOrderDetailService>();
         services.AddScoped<IPurchaseOrderDeliveryScheduleService, PurchaseOrderDeliveryScheduleService>();
+
+        //QrCode
+        services.AddScoped<IQrCodeService, QrCodeService>();
 
         //Picking Plan
         services.AddScoped<IPickingPlanService, PickingPlanService>();
