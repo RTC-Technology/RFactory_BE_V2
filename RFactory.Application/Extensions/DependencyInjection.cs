@@ -12,6 +12,7 @@ using RFactory.Application.Modules.Organizations.Services;
 using RFactory.Application.Modules.Packing.Services;
 using RFactory.Application.Modules.PickingPlan.Services;
 using RFactory.Application.Modules.Product.Services;
+using RFactory.Application.Modules.Production.Services;
 using RFactory.Application.Modules.PurchaseOrder.Services;
 using RFactory.Application.Modules.QrCode.Services;
 using RFactory.Application.Modules.Quality.Services;
@@ -67,6 +68,8 @@ public static class DependencyInjection
         services.AddScoped<IRoutingService, RoutingService>();
         services.AddScoped<IRoutingOperationService, RoutingOperationService>();
 
+        // Production
+        services.AddScoped<IProductionOrderService, ProductionOrderService>();
 
         // Equipment
         services.AddScoped<IMachineTypeService, MachineTypeService>();

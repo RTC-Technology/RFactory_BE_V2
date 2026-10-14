@@ -790,4 +790,13 @@ public static class PermissionCodes
         public const string Edit   = "machine-status.edit";
         public const string Delete = "machine-status.delete";
     }
+
+    public static class ProductionOrder
+    {
+        public const string View    = "production-order.view";
+        public const string Add     = "production-order.add";
+        public const string Edit    = "production-order.edit";
+        public const string Delete  = "production-order.delete";
+        public const string Approve = "production-order.approve";
+    }
 }
