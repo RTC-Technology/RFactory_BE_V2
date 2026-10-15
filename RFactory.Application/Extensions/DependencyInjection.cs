@@ -68,6 +68,8 @@ public static class DependencyInjection
         services.AddScoped<IRoutingService, RoutingService>();
         services.AddScoped<IRoutingOperationService, RoutingOperationService>();
 
+        // Production
+        services.AddScoped<IProductionOrderService, ProductionOrderService>();
 
         // Equipment
         services.AddScoped<IMachineTypeService, MachineTypeService>();

@@ -30,9 +30,11 @@ VALUES
     (104, '2026-01-01 00:00:00', 'SYSTEM', 0, 'Cấu hình Menu',       '/menu-manager',  'settings',   4, 2, NULL),
 
     -- ── Sản phẩm (ParentId = 3) ──────────────────────────────
-    (301, '2026-01-01 00:00:00', 'SYSTEM', 0, 'Danh sách sản phẩm',  '/products',      'products',   1, 3, NULL),
-    (302, '2026-01-01 00:00:00', 'SYSTEM', 0, 'Loại sản phẩm',       '/product-types', 'products',   2, 3, NULL),
-    (303, '2026-01-01 00:00:00', 'SYSTEM', 0, 'Đơn vị tính',         '/units',         'data',       3, 3, NULL),
+    (301, '2026-01-01 00:00:00', 'SYSTEM', 0, 'Danh sách sản phẩm',  '/products',          'products',   1, 3, NULL),
+    (302, '2026-01-01 00:00:00', 'SYSTEM', 0, 'Loại sản phẩm',       '/product-types',     'products',   2, 3, NULL),
+    (303, '2026-01-01 00:00:00', 'SYSTEM', 0, 'Đơn vị tính',         '/units',             'data',       3, 3, NULL),
+    (304, '2026-01-01 00:00:00', 'SYSTEM', 0, 'BOM',                 '/products/bom',      'box',        4, 3, NULL),
+    (305, '2026-01-01 00:00:00', 'SYSTEM', 0, 'Lệnh sản xuất',       '/production-orders', 'workspace',  5, 3, NULL),
 
     -- ── Thiết bị & OEE (ParentId = 4) ────────────────────────
     (401, '2026-01-01 00:00:00', 'SYSTEM', 0, 'Danh sách máy',       '/machines',       'data',      1, 4, NULL),
