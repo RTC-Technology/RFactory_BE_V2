@@ -727,6 +727,27 @@ public static class PermissionCodes
         public const string Edit = "currency.edit";
         public const string Delete = "currency.delete";
     }
+    public static class SalesOrder
+    {
+        public const string View = "sales-order.view";
+        public const string Add = "sales-order.add";
+        public const string Edit = "sales-order.edit";
+        public const string Delete = "sales-order.delete";
+    }
+    public static class SalesOrderItem
+    {
+        public const string View = "sales-order-item.view";
+        public const string Add = "sales-order-item.add";
+        public const string Edit = "sales-order-item.edit";
+        public const string Delete = "sales-order-item.delete";
+    }
+    public static class SalesOrderPaymentSchedule
+    {
+        public const string View = "sales-order-payment-schedule.view";
+        public const string Add = "sales-order-payment-schedule.add";
+        public const string Edit = "sales-order-payment-schedule.edit";
+        public const string Delete = "sales-order-payment-schedule.delete";
+    }
 
     public static class Position
     {

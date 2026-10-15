@@ -41,13 +41,15 @@ public partial class Employee
 
     public string Gender { get; set; }
 
-    public DateTime? BirthDate { get; set; }
+    public DateOnly? BirthDate { get; set; }
 
-    public DateTime? HireDate { get; set; }
+    public DateOnly? HireDate { get; set; }
 
-    public DateTime? TerminationDate { get; set; }
+    public DateOnly? TerminationDate { get; set; }
 
-    public int Status { get; set; }
+    public int? Status { get; set; }
 
     public string Remark { get; set; }
+
+    public virtual ICollection<EmployeeSkill> EmployeeSkills { get; set; } = new List<EmployeeSkill>();
 }
