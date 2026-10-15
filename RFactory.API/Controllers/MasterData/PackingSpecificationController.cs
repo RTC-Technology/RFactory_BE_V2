@@ -39,7 +39,7 @@ public class PackingSpecificationController : ControllerBase
         var item = await _service.GetByIdAsync(id, ct);
         if (item == null)
         {
-            return NotFound(ApiResponseFactory.Failure<PackingSpecificationDto>($"Packing specification #{id} not found", HttpStatusCode.NotFound));
+            return NotFound(ApiResponseFactory.Fail($"Packing specification #{id} not found", HttpStatusCode.NotFound));
         }
         return Ok(ApiResponseFactory.Success(item));
     }
@@ -59,7 +59,7 @@ public class PackingSpecificationController : ControllerBase
         var item = await _service.GetDefaultByProductIdAsync(productId, ct);
         if (item == null)
         {
-            return NotFound(ApiResponseFactory.Failure<PackingSpecificationDto>($"No packing specification found for product #{productId}", HttpStatusCode.NotFound));
+            return NotFound(ApiResponseFactory.Fail($"No packing specification found for product #{productId}", HttpStatusCode.NotFound));
         }
         return Ok(ApiResponseFactory.Success(item));
     }
@@ -69,11 +69,11 @@ public class PackingSpecificationController : ControllerBase
     public async Task<ActionResult<ApiResponse<PackingSpecificationDto>>> Create([FromBody] PackingSpecificationRequest request, CancellationToken ct)
     {
         var result = await _service.CreateAsync(request, ct);
-        if (!result.IsSuccess)
+        if (!result.Succeeded)
         {
-            return BadRequest(ApiResponseFactory.Failure<PackingSpecificationDto>(result.Error, HttpStatusCode.BadRequest));
+            return BadRequest(ApiResponseFactory.Fail(result.Error!));
         }
-        return CreatedAtAction(nameof(GetById), new { id = result.Data.Id }, ApiResponseFactory.Success(result.Data));
+        return CreatedAtAction(nameof(GetById), new { id = result.Data!.Id }, ApiResponseFactory.Success(result.Data));
     }
 
     [HttpPut("{id:long}")]
@@ -81,9 +81,9 @@ public class PackingSpecificationController : ControllerBase
     public async Task<ActionResult<ApiResponse<PackingSpecificationDto>>> Update(ulong id, [FromBody] PackingSpecificationRequest request, CancellationToken ct)
     {
         var result = await _service.UpdateAsync(id, request, ct);
-        if (!result.IsSuccess)
+        if (!result.Succeeded)
         {
-            return BadRequest(ApiResponseFactory.Failure<PackingSpecificationDto>(result.Error, HttpStatusCode.BadRequest));
+            return BadRequest(ApiResponseFactory.Fail(result.Error!));
         }
         return Ok(ApiResponseFactory.Success(result.Data));
     }
@@ -93,9 +93,9 @@ public class PackingSpecificationController : ControllerBase
     public async Task<ActionResult<ApiResponse<bool>>> Delete(ulong id, CancellationToken ct)
     {
         var result = await _service.DeleteAsync(id, ct);
-        if (!result.IsSuccess)
+        if (!result.Succeeded)
         {
-            return BadRequest(ApiResponseFactory.Failure<bool>(result.Error, HttpStatusCode.BadRequest));
+            return BadRequest(ApiResponseFactory.Fail(result.Error!));
         }
         return Ok(ApiResponseFactory.Success(true));
     }
@@ -105,9 +105,9 @@ public class PackingSpecificationController : ControllerBase
     public async Task<ActionResult<ApiResponse<bool>>> SetDefault(ulong id, CancellationToken ct)
     {
         var result = await _service.SetDefaultAsync(id, ct);
-        if (!result.IsSuccess)
+        if (!result.Succeeded)
         {
-            return BadRequest(ApiResponseFactory.Failure<bool>(result.Error, HttpStatusCode.BadRequest));
+            return BadRequest(ApiResponseFactory.Fail(result.Error!));
         }
         return Ok(ApiResponseFactory.Success(true));
     }

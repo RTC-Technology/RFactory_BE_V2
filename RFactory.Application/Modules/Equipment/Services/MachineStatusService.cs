@@ -68,8 +68,8 @@ public class MachineStatusService : IMachineStatusService
             ReasonName = request.ReasonName.Trim(),
             ReasonType = (request.ReasonType ?? "DOWNTIME").ToUpperInvariant(),
             Category = string.IsNullOrWhiteSpace(request.Category) ? "General" : request.Category.Trim(),
-            IsPlanned = request.IsPlanned ? 1UL : 0UL,
-            IsActive = request.IsActive ? 1UL : 0UL,
+            IsPlanned = request.IsPlanned,
+            IsActive = request.IsActive,
             Description = request.Description?.Trim(),
             CreatedDate = DateTime.UtcNow
         };
@@ -104,8 +104,8 @@ public class MachineStatusService : IMachineStatusService
         entity.ReasonName = request.ReasonName.Trim();
         entity.ReasonType = (request.ReasonType ?? entity.ReasonType).ToUpperInvariant();
         entity.Category = string.IsNullOrWhiteSpace(request.Category) ? entity.Category : request.Category.Trim();
-        entity.IsPlanned = request.IsPlanned ? 1UL : 0UL;
-        entity.IsActive = request.IsActive ? 1UL : 0UL;
+        entity.IsPlanned = request.IsPlanned;
+        entity.IsActive = request.IsActive;
         entity.Description = request.Description?.Trim();
         entity.UpdatedDate = DateTime.UtcNow;
 
@@ -533,8 +533,8 @@ public class MachineStatusService : IMachineStatusService
         ReasonName = r.ReasonName,
         ReasonType = r.ReasonType,
         Category = r.Category,
-        IsPlanned = r.IsPlanned == 1,
-        IsActive = r.IsActive == 1,
+        IsPlanned = r.IsPlanned,
+        IsActive = r.IsActive ?? false,
         Description = r.Description
     };
 }

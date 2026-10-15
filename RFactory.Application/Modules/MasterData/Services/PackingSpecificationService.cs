@@ -139,7 +139,7 @@ public class PackingSpecificationService : IPackingSpecificationService
             Barcode = request.Barcode?.Trim(),
             PackagingMaterial = request.PackagingMaterial?.Trim(),
             Instructions = request.Instructions?.Trim(),
-            IsDefault = request.IsDefault ? 1UL : 0UL,
+            IsDefault = (byte)(request.IsDefault ? 1 : 0),
             Status = (request.Status ?? "ACTIVE").ToUpperInvariant(),
             CreatedDate = DateTime.UtcNow
         };
@@ -203,7 +203,7 @@ public class PackingSpecificationService : IPackingSpecificationService
         entity.Barcode = request.Barcode?.Trim();
         entity.PackagingMaterial = request.PackagingMaterial?.Trim();
         entity.Instructions = request.Instructions?.Trim();
-        entity.IsDefault = request.IsDefault ? 1UL : 0UL;
+        entity.IsDefault = (byte)(request.IsDefault ? 1 : 0);
         entity.Status = (request.Status ?? "ACTIVE").ToUpperInvariant();
         entity.UpdatedDate = DateTime.UtcNow;
 
@@ -219,7 +219,7 @@ public class PackingSpecificationService : IPackingSpecificationService
             return Result<bool>.Failure($"Packing specification #{id} not found.");
         }
 
-        entity.IsDeleted = 1;
+        entity.IsDeleted = true;
         entity.UpdatedDate = DateTime.UtcNow;
         await _db.SaveChangesAsync(ct);
 
@@ -291,7 +291,7 @@ public class PackingSpecificationService : IPackingSpecificationService
 
     private static PackingSpecificationDto MapToDto(
         PackingSpecification ps,
-        Product? prod,
+        RFactory.Infrastructure.Entities.Product? prod,
         Unit? unit,
         LabelTemplate? tmpl) => new()
     {

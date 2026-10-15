@@ -32,9 +32,9 @@ public class QrCodeController : ControllerBase
     public async Task<ActionResult<ApiResponse<QrCodeDto>>> Generate([FromBody] QrCodeGenerateRequest request, CancellationToken ct)
     {
         var result = await _service.GenerateAsync(request, ct);
-        if (!result.IsSuccess)
+        if (!result.Succeeded)
         {
-            return BadRequest(ApiResponseFactory.Failure<QrCodeDto>(result.Error, HttpStatusCode.BadRequest));
+            return BadRequest(ApiResponseFactory.Fail(result.Error ?? "Error"));
         }
         return Ok(ApiResponseFactory.Success(result.Data));
     }
@@ -47,9 +47,9 @@ public class QrCodeController : ControllerBase
     public async Task<ActionResult<ApiResponse<QrScanResultDto>>> Lookup([FromBody] QrScanRequest request, CancellationToken ct)
     {
         var result = await _service.ScanAndLookupAsync(request.Payload, ct);
-        if (!result.IsSuccess)
+        if (!result.Succeeded)
         {
-            return BadRequest(ApiResponseFactory.Failure<QrScanResultDto>(result.Error, HttpStatusCode.BadRequest));
+            return BadRequest(ApiResponseFactory.Fail(result.Error ?? "Error"));
         }
         return Ok(ApiResponseFactory.Success(result.Data));
     }
@@ -62,9 +62,9 @@ public class QrCodeController : ControllerBase
     public async Task<ActionResult<ApiResponse<List<QrItemLookupDto>>>> GetAvailableItems(string entityType, CancellationToken ct)
     {
         var result = await _service.GetAvailableItemsAsync(entityType, ct);
-        if (!result.IsSuccess)
+        if (!result.Succeeded)
         {
-            return BadRequest(ApiResponseFactory.Failure<List<QrItemLookupDto>>(result.Error, HttpStatusCode.BadRequest));
+            return BadRequest(ApiResponseFactory.Fail(result.Error ?? "Error"));
         }
         return Ok(ApiResponseFactory.Success(result.Data));
     }
@@ -77,9 +77,9 @@ public class QrCodeController : ControllerBase
     public async Task<ActionResult<ApiResponse<List<QrCodeDto>>>> BatchGenerate([FromBody] QrBatchPrintRequest request, CancellationToken ct)
     {
         var result = await _service.BatchGenerateAsync(request, ct);
-        if (!result.IsSuccess)
+        if (!result.Succeeded)
         {
-            return BadRequest(ApiResponseFactory.Failure<List<QrCodeDto>>(result.Error, HttpStatusCode.BadRequest));
+            return BadRequest(ApiResponseFactory.Fail(result.Error ?? "Error"));
         }
         return Ok(ApiResponseFactory.Success(result.Data));
     }

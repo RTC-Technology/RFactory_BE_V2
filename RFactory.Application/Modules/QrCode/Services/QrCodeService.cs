@@ -96,14 +96,14 @@ public class QrCodeService : IQrCodeService
         {
             case "PRODUCT":
                 list = await _db.Products
-                    .Where(p => p.IsDeleted != 1)
+                    .Where(p => !p.IsDeleted)
                     .Select(p => new QrItemLookupDto
                     {
                         Id = p.Id,
                         EntityType = "PRODUCT",
                         Code = p.ProductCode,
                         Name = p.ProductName,
-                        Description = p.Specification ?? string.Empty,
+                        Description = p.Description ?? string.Empty,
                         Payload = $"RF:PRODUCT:{p.Id}:{p.ProductCode}"
                     })
                     .Take(100)
@@ -113,15 +113,15 @@ public class QrCodeService : IQrCodeService
             case "LOCATION":
             case "WAREHOUSE_LOCATION":
                 list = await _db.WarehouseLocations
-                    .Where(l => l.IsDeleted != 1)
+                    .Where(l => !l.IsDeleted)
                     .Select(l => new QrItemLookupDto
                     {
                         Id = l.Id,
                         EntityType = "LOCATION",
-                        Code = l.LocationCode,
-                        Name = l.LocationName,
-                        Description = $"Zone ID: {l.ZoneId}",
-                        Payload = $"RF:LOCATION:{l.Id}:{l.LocationCode}"
+                        Code = l.WarehouseLocationCode,
+                        Name = l.WarehouseLocationName,
+                        Description = $"Zone ID: {l.WarehouseZoneId}",
+                        Payload = $"RF:LOCATION:{l.Id}:{l.WarehouseLocationCode}"
                     })
                     .Take(100)
                     .ToListAsync(ct);
@@ -129,14 +129,14 @@ public class QrCodeService : IQrCodeService
 
             case "MACHINE":
                 list = await _db.Machines
-                    .Where(m => m.IsDeleted != 1)
+                    .Where(m => !m.IsDeleted)
                     .Select(m => new QrItemLookupDto
                     {
                         Id = m.Id,
                         EntityType = "MACHINE",
                         Code = m.MachineCode,
                         Name = m.MachineName,
-                        Description = m.Model ?? string.Empty,
+                        Description = $"Status: {m.Status}",
                         Payload = $"RF:MACHINE:{m.Id}:{m.MachineCode}"
                     })
                     .Take(100)
@@ -145,7 +145,7 @@ public class QrCodeService : IQrCodeService
 
             case "EMPLOYEE":
                 list = await _db.Employees
-                    .Where(e => e.IsDeleted != 1)
+                    .Where(e => !e.IsDeleted)
                     .Select(e => new QrItemLookupDto
                     {
                         Id = e.Id,
@@ -161,7 +161,7 @@ public class QrCodeService : IQrCodeService
 
             case "GOODS_RECEIPT":
                 list = await _db.GoodsReceipts
-                    .Where(g => g.IsDeleted != 1)
+                    .Where(g => !g.IsDeleted)
                     .Select(g => new QrItemLookupDto
                     {
                         Id = g.Id,
@@ -177,14 +177,14 @@ public class QrCodeService : IQrCodeService
 
             case "INVENTORY":
                 list = await _db.Inventories
-                    .Where(i => i.IsDeleted != 1)
+                    .Where(i => !i.IsDeleted)
                     .Select(i => new QrItemLookupDto
                     {
                         Id = i.Id,
                         EntityType = "INVENTORY",
                         Code = $"INV-{i.Id}",
                         Name = $"Stock Item #{i.Id}",
-                        Description = $"Qty: {i.QuantityOnHand}",
+                        Description = $"Qty: {i.Quantity}",
                         Payload = $"RF:INVENTORY:{i.Id}:INV-{i.Id}"
                     })
                     .Take(100)
@@ -198,12 +198,12 @@ public class QrCodeService : IQrCodeService
     public async Task<Result<List<QrCodeDto>>> BatchGenerateAsync(QrBatchPrintRequest request, CancellationToken ct = default)
     {
         var itemsResult = await GetAvailableItemsAsync(request.EntityType, ct);
-        if (!itemsResult.IsSuccess) return Result<List<QrCodeDto>>.Failure(itemsResult.Error);
+        if (!itemsResult.Succeeded) return Result<List<QrCodeDto>>.Failure(itemsResult.Error ?? "Failed to get available items");
 
         var targetIds = new HashSet<ulong>(request.EntityIds ?? new List<ulong>());
         var selected = targetIds.Any()
-            ? itemsResult.Data.Where(x => targetIds.Contains(x.Id)).ToList()
-            : itemsResult.Data;
+            ? itemsResult.Data!.Where(x => targetIds.Contains(x.Id)).ToList()
+            : itemsResult.Data!;
 
         var result = selected.Select(item => new QrCodeDto
         {
@@ -254,12 +254,12 @@ public class QrCodeService : IQrCodeService
             res.EntityId = prod.Id;
             res.Code = prod.ProductCode;
             res.Title = prod.ProductName;
-            res.Subtitle = $"Spec: {prod.Specification ?? "N/A"}";
-            res.Status = prod.IsActive == 1 ? "ACTIVE" : "INACTIVE";
+            res.Subtitle = $"Description: {prod.Description ?? "N/A"}";
+            res.Status = prod.Status == 1 ? "ACTIVE" : "INACTIVE";
             res.Location = "Catalog Master";
             res.Attributes["ProductCode"] = prod.ProductCode;
-            res.Attributes["MinStockLevel"] = prod.MinStockLevel?.ToString() ?? "N/A";
-            res.Attributes["MaxStockLevel"] = prod.MaxStockLevel?.ToString() ?? "N/A";
+            res.Attributes["MinStockLevel"] = prod.MinStock?.ToString() ?? "N/A";
+            res.Attributes["MaxStockLevel"] = prod.MaxStock?.ToString() ?? "N/A";
             res.ActionRoute = "/products";
         }
     }
@@ -267,19 +267,18 @@ public class QrCodeService : IQrCodeService
     private async Task LookupLocationAsync((string EntityType, ulong? EntityId, string Code) p, QrScanResultDto res, CancellationToken ct)
     {
         var loc = await _db.WarehouseLocations
-            .FirstOrDefaultAsync(x => (p.EntityId.HasValue && x.Id == p.EntityId.Value) || x.LocationCode == p.Code, ct);
+            .FirstOrDefaultAsync(x => (p.EntityId.HasValue && x.Id == p.EntityId.Value) || x.WarehouseLocationCode == p.Code, ct);
 
         if (loc != null)
         {
             res.Found = true;
             res.EntityId = loc.Id;
-            res.Code = loc.LocationCode;
-            res.Title = loc.LocationName;
-            res.Subtitle = $"Barcode: {loc.Barcode ?? loc.LocationCode}";
-            res.Status = loc.IsActive == 1 ? "ACTIVE" : "INACTIVE";
-            res.Location = $"Zone #{loc.ZoneId}";
-            res.Attributes["LocationCode"] = loc.LocationCode;
-            res.Attributes["Barcode"] = loc.Barcode ?? "N/A";
+            res.Code = loc.WarehouseLocationCode;
+            res.Title = loc.WarehouseLocationName;
+            res.Subtitle = $"Zone #{loc.WarehouseZoneId}";
+            res.Status = loc.IsActive == true ? "ACTIVE" : "INACTIVE";
+            res.Location = $"Zone #{loc.WarehouseZoneId}";
+            res.Attributes["LocationCode"] = loc.WarehouseLocationCode;
             res.Attributes["MaxCapacity"] = loc.MaxCapacity?.ToString() ?? "N/A";
             res.ActionRoute = "/warehouses";
         }
@@ -296,11 +295,10 @@ public class QrCodeService : IQrCodeService
             res.EntityId = mac.Id;
             res.Code = mac.MachineCode;
             res.Title = mac.MachineName;
-            res.Subtitle = $"Model: {mac.Model ?? "N/A"} | Serial: {mac.SerialNumber ?? "N/A"}";
-            res.Status = mac.Status ?? "NORMAL";
+            res.Subtitle = $"Line #{mac.LineId?.ToString() ?? "N/A"}";
+            res.Status = mac.Status?.ToString() ?? "NORMAL";
             res.Location = $"Line #{mac.LineId?.ToString() ?? "N/A"}";
             res.Attributes["MachineCode"] = mac.MachineCode;
-            res.Attributes["IPAddress"] = mac.IpAddress ?? "N/A";
             res.ActionRoute = "/machines";
         }
     }
@@ -337,10 +335,10 @@ public class QrCodeService : IQrCodeService
             res.Code = gr.ReceiptNo;
             res.Title = $"Goods Receipt #{gr.ReceiptNo}";
             res.Subtitle = $"Date: {gr.ReceiptDate:yyyy-MM-dd HH:mm}";
-            res.Status = gr.Status ?? "DRAFT";
+            res.Status = gr.PostedDate.HasValue ? "POSTED" : (gr.ApprovedDate.HasValue ? "APPROVED" : "DRAFT");
             res.Location = $"Warehouse #{gr.WarehouseId}";
             res.Attributes["ReceiptNo"] = gr.ReceiptNo;
-            res.Attributes["SupplierId"] = gr.SupplierId.ToString();
+            res.Attributes["SupplierId"] = gr.SupplierId?.ToString() ?? "N/A";
             res.ActionRoute = "/goods-receipt";
         }
     }
@@ -359,8 +357,8 @@ public class QrCodeService : IQrCodeService
             res.Subtitle = $"Product ID: {inv.ProductId}";
             res.Status = "IN_STOCK";
             res.Location = $"Warehouse #{inv.WarehouseId} / Location #{inv.LocationId}";
-            res.Attributes["QuantityOnHand"] = inv.QuantityOnHand.ToString();
-            res.Attributes["AllocatedQuantity"] = inv.AllocatedQuantity.ToString();
+            res.Attributes["Quantity"] = inv.Quantity?.ToString() ?? "0";
+            res.Attributes["ReservedQuantity"] = inv.ReservedQuantity?.ToString() ?? "0";
             res.ActionRoute = "/inventory";
         }
     }

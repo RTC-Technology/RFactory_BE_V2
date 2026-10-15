@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using RFactory.Application.Common.Exceptions;
+using RFactory.Shared.Exceptions;
 using RFactory.Application.Modules.Production.DTOs;
 using RFactory.Infrastructure.Data;
 using RFactory.Infrastructure.Entities;
@@ -293,7 +293,7 @@ public class ProductionOrderService : IProductionOrderService
     public async Task<ProductionOrderDto> CreateAsync(ProductionOrderCreateRequest request, string currentUser)
     {
         if (request.PlannedQuantity <= 0)
-            throw new ValidationException("Planned quantity must be greater than 0");
+            throw new BusinessException("Planned quantity must be greater than 0");
 
         var productExists = await _context.Products.AnyAsync(p => p.Id == request.ProductId && !p.IsDeleted);
         if (!productExists)
@@ -305,7 +305,7 @@ public class ProductionOrderService : IProductionOrderService
 
         var codeExists = await _context.ProductionOrders.AnyAsync(x => x.OrderNo == orderNo && !x.IsDeleted);
         if (codeExists)
-            throw new ConflictException($"Production order with code '{orderNo}' already exists");
+            throw new BusinessException($"Production order with code '{orderNo}' already exists", 409);
 
         // Infer UnitId from Product if not provided
         ulong? unitId = request.UnitId;
@@ -429,10 +429,10 @@ public class ProductionOrderService : IProductionOrderService
             throw new NotFoundException($"Production order with ID {id} not found");
 
         if (order.Status == 4 || order.Status == 5 || order.Status == 6)
-            throw new BadRequestException("Cannot edit a completed, cancelled, or closed production order");
+            throw new BusinessException("Cannot edit a completed, cancelled, or closed production order");
 
         if (request.PlannedQuantity <= 0)
-            throw new ValidationException("Planned quantity must be greater than 0");
+            throw new BusinessException("Planned quantity must be greater than 0");
 
         var productExists = await _context.Products.AnyAsync(p => p.Id == request.ProductId && !p.IsDeleted);
         if (!productExists)
@@ -593,7 +593,7 @@ public class ProductionOrderService : IProductionOrderService
             throw new NotFoundException($"Production order with ID {orderId} not found");
 
         if (!order.BomId.HasValue)
-            throw new BadRequestException("Lệnh sản xuất chưa được gán định mức BOM");
+            throw new BusinessException("Lệnh sản xuất chưa được gán định mức BOM");
 
         // Soft delete all existing materials
         foreach (var m in order.Materials)
@@ -751,7 +751,7 @@ public class ProductionOrderService : IProductionOrderService
             throw new NotFoundException($"Production order with ID {id} not found");
 
         if (order.Status == 3) // InProgress
-            throw new BadRequestException("Không thể xóa lệnh sản xuất đang thực hiện. Hãy tạm dừng hoặc hủy lệnh trước.");
+            throw new BusinessException("Không thể xóa lệnh sản xuất đang thực hiện. Hãy tạm dừng hoặc hủy lệnh trước.");
 
         order.IsDeleted = true;
         order.UpdatedBy = currentUser;
@@ -783,7 +783,7 @@ public class ProductionOrderService : IProductionOrderService
 
         // Status: 1=Draft, 2=Released, 3=InProgress, 4=Completed, 5=Cancelled, 6=Closed, 7=Paused
         if (newStatus < 1 || newStatus > 7)
-            throw new ValidationException("Invalid production order status");
+            throw new BusinessException("Invalid production order status");
 
         order.Status = newStatus;
 
@@ -818,10 +818,10 @@ public class ProductionOrderService : IProductionOrderService
             throw new NotFoundException($"Production order with ID {id} not found");
 
         if (order.Status == 5 || order.Status == 6)
-            throw new BadRequestException("Cannot record progress on a cancelled or closed production order");
+            throw new BusinessException("Cannot record progress on a cancelled or closed production order");
 
         if (request.CompletedQuantityDelta < 0 || request.ScrapQuantityDelta < 0)
-            throw new ValidationException("Progress delta quantities cannot be negative");
+            throw new BusinessException("Progress delta quantities cannot be negative");
 
         order.CompletedQuantity += request.CompletedQuantityDelta;
         order.ScrapQuantity += request.ScrapQuantityDelta;
