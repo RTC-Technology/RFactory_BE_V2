@@ -31,9 +31,9 @@ public partial class LabelTemplate
 
     public string Orientation { get; set; }
 
-    public bool IsDefault { get; set; }
+    public byte IsDefault { get; set; }
 
-    public bool? IsActive { get; set; }
+    public byte IsActive { get; set; }
 
     public string HeaderText { get; set; }
 
