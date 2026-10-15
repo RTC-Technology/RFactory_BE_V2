@@ -11,6 +11,7 @@ using RFactory.Application.Modules.Organizations.Services;
 using RFactory.Application.Modules.Packing.Services;
 using RFactory.Application.Modules.PickingPlan.Services;
 using RFactory.Application.Modules.Product.Services;
+using RFactory.Application.Modules.Production.Services;
 using RFactory.Application.Modules.PurchaseOrder.Services;
 using RFactory.Application.Modules.Quality.Services;
 using RFactory.Application.Modules.Warehouses.Services;
@@ -182,6 +183,12 @@ public static class DependencyInjection
         services.AddScoped<IWardService, WardService>();
 
         services.AddScoped<ICurrencyService, CurrencyService>();
+
+        //Production
+        services.AddScoped<ISalesOrderService, SalesOrderService>();
+        services.AddScoped<ISalesOrderItemService, SalesOrderItemService>();
+        services.AddScoped<ISalesOrderPaymentScheduleService, SalesOrderPaymentScheduleService>();
+
 
         return services;
     }
