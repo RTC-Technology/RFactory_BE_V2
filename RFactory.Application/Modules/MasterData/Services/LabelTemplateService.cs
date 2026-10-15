@@ -86,14 +86,14 @@ public class LabelTemplateService : ILabelTemplateService
             WidthMm = request.WidthMm > 0 ? request.WidthMm : 70.00m,
             HeightMm = request.HeightMm > 0 ? request.HeightMm : 50.00m,
             Orientation = (request.Orientation ?? "LANDSCAPE").ToUpperInvariant(),
-            IsDefault = request.IsDefault ? 1UL : 0UL,
-            IsActive = request.IsActive ? 1UL : 0UL,
+            IsDefault = (byte)(request.IsDefault ? 1 : 0),
+            IsActive = (byte)(request.IsActive ? 1 : 0),
             HeaderText = request.HeaderText?.Trim(),
             FooterText = request.FooterText?.Trim(),
-            ShowQr = request.ShowQr ? 1UL : 0UL,
-            ShowBarcode = request.ShowBarcode ? 1UL : 0UL,
-            ShowLogo = request.ShowLogo ? 1UL : 0UL,
-            ShowBorder = request.ShowBorder ? 1UL : 0UL,
+            ShowQr = request.ShowQr,
+            ShowBarcode = request.ShowBarcode,
+            ShowLogo = request.ShowLogo,
+            ShowBorder = request.ShowBorder,
             QrSizePx = request.QrSizePx > 0 ? request.QrSizePx : 150,
             FieldsConfigJson = request.FieldsConfigJson,
             CreatedDate = DateTime.UtcNow
@@ -138,14 +138,14 @@ public class LabelTemplateService : ILabelTemplateService
         entity.WidthMm = request.WidthMm > 0 ? request.WidthMm : entity.WidthMm;
         entity.HeightMm = request.HeightMm > 0 ? request.HeightMm : entity.HeightMm;
         entity.Orientation = (request.Orientation ?? "LANDSCAPE").ToUpperInvariant();
-        entity.IsDefault = request.IsDefault ? 1UL : 0UL;
-        entity.IsActive = request.IsActive ? 1UL : 0UL;
+        entity.IsDefault = (byte)(request.IsDefault ? 1 : 0);
+        entity.IsActive = (byte)(request.IsActive ? 1 : 0);
         entity.HeaderText = request.HeaderText?.Trim();
         entity.FooterText = request.FooterText?.Trim();
-        entity.ShowQr = request.ShowQr ? 1UL : 0UL;
-        entity.ShowBarcode = request.ShowBarcode ? 1UL : 0UL;
-        entity.ShowLogo = request.ShowLogo ? 1UL : 0UL;
-        entity.ShowBorder = request.ShowBorder ? 1UL : 0UL;
+        entity.ShowQr = request.ShowQr;
+        entity.ShowBarcode = request.ShowBarcode;
+        entity.ShowLogo = request.ShowLogo;
+        entity.ShowBorder = request.ShowBorder;
         entity.QrSizePx = request.QrSizePx > 0 ? request.QrSizePx : 150;
         entity.FieldsConfigJson = request.FieldsConfigJson;
         entity.UpdatedDate = DateTime.UtcNow;
@@ -162,7 +162,7 @@ public class LabelTemplateService : ILabelTemplateService
             return Result<bool>.Failure($"Label template #{id} not found.");
         }
 
-        entity.IsDeleted = 1;
+        entity.IsDeleted = true;
         entity.UpdatedDate = DateTime.UtcNow;
         await _db.SaveChangesAsync(ct);
 
@@ -211,10 +211,10 @@ public class LabelTemplateService : ILabelTemplateService
         IsActive = t.IsActive == 1,
         HeaderText = t.HeaderText,
         FooterText = t.FooterText,
-        ShowQr = t.ShowQr == 1,
-        ShowBarcode = t.ShowBarcode == 1,
-        ShowLogo = t.ShowLogo == 1,
-        ShowBorder = t.ShowBorder == 1,
+        ShowQr = t.ShowQr ?? false,
+        ShowBarcode = t.ShowBarcode,
+        ShowLogo = t.ShowLogo ?? false,
+        ShowBorder = t.ShowBorder ?? false,
         QrSizePx = t.QrSizePx,
         FieldsConfigJson = t.FieldsConfigJson,
         CreatedDate = t.CreatedDate

@@ -49,7 +49,7 @@ public class PackingNumberingRuleService : IPackingNumberingRuleService
     {
         var sc = scope.ToUpperInvariant();
         var entity = await _db.PackingNumberingRules
-            .FirstOrDefaultAsync(r => r.TargetScope == sc && r.IsDefault == 1, ct);
+            .FirstOrDefaultAsync(r => r.TargetScope == sc && r.IsDefault, ct);
 
         entity ??= await _db.PackingNumberingRules
             .FirstOrDefaultAsync(r => r.TargetScope == sc, ct);
@@ -88,9 +88,9 @@ public class PackingNumberingRuleService : IPackingNumberingRuleService
             SequenceLength = request.SequenceLength > 0 ? request.SequenceLength : 4,
             CurrentSequence = request.CurrentSequence >= 0 ? request.CurrentSequence : 0,
             ResetPeriod = (request.ResetPeriod ?? "DAILY").ToUpperInvariant(),
-            IncludeCheckDigit = request.IncludeCheckDigit ? 1UL : 0UL,
-            IsDefault = request.IsDefault ? 1UL : 0UL,
-            IsActive = request.IsActive ? 1UL : 0UL,
+            IncludeCheckDigit = request.IncludeCheckDigit,
+            IsDefault = request.IsDefault,
+            IsActive = request.IsActive,
             Description = request.Description?.Trim(),
             LastResetDate = DateTime.UtcNow,
             CreatedDate = DateTime.UtcNow
@@ -123,7 +123,7 @@ public class PackingNumberingRuleService : IPackingNumberingRuleService
         }
 
         var scope = (request.TargetScope ?? entity.TargetScope).ToUpperInvariant();
-        if (request.IsDefault && entity.IsDefault == 0)
+        if (request.IsDefault && !entity.IsDefault)
         {
             await UnsetOtherDefaultsAsync(scope, id, ct);
         }
@@ -137,9 +137,9 @@ public class PackingNumberingRuleService : IPackingNumberingRuleService
         entity.SequenceLength = request.SequenceLength > 0 ? request.SequenceLength : 4;
         entity.CurrentSequence = request.CurrentSequence >= 0 ? request.CurrentSequence : entity.CurrentSequence;
         entity.ResetPeriod = (request.ResetPeriod ?? "DAILY").ToUpperInvariant();
-        entity.IncludeCheckDigit = request.IncludeCheckDigit ? 1UL : 0UL;
-        entity.IsDefault = request.IsDefault ? 1UL : 0UL;
-        entity.IsActive = request.IsActive ? 1UL : 0UL;
+        entity.IncludeCheckDigit = request.IncludeCheckDigit;
+        entity.IsDefault = request.IsDefault;
+        entity.IsActive = request.IsActive;
         entity.Description = request.Description?.Trim();
         entity.UpdatedDate = DateTime.UtcNow;
 
@@ -155,7 +155,7 @@ public class PackingNumberingRuleService : IPackingNumberingRuleService
             return Result<bool>.Failure($"Numbering rule #{id} not found.");
         }
 
-        entity.IsDeleted = 1;
+        entity.IsDeleted = true;
         entity.UpdatedDate = DateTime.UtcNow;
         await _db.SaveChangesAsync(ct);
 
@@ -171,7 +171,7 @@ public class PackingNumberingRuleService : IPackingNumberingRuleService
         }
 
         await UnsetOtherDefaultsAsync(entity.TargetScope, id, ct);
-        entity.IsDefault = 1;
+        entity.IsDefault = true;
         entity.UpdatedDate = DateTime.UtcNow;
         await _db.SaveChangesAsync(ct);
 
@@ -189,7 +189,7 @@ public class PackingNumberingRuleService : IPackingNumberingRuleService
         else if (!string.IsNullOrWhiteSpace(request.TargetScope))
         {
             var sc = request.TargetScope.ToUpperInvariant();
-            rule = await _db.PackingNumberingRules.FirstOrDefaultAsync(r => r.TargetScope == sc && r.IsDefault == 1, ct)
+            rule = await _db.PackingNumberingRules.FirstOrDefaultAsync(r => r.TargetScope == sc && r.IsDefault, ct)
                 ?? await _db.PackingNumberingRules.FirstOrDefaultAsync(r => r.TargetScope == sc, ct);
         }
 
@@ -275,7 +275,7 @@ public class PackingNumberingRuleService : IPackingNumberingRuleService
         var seqPart = seq.ToString().PadLeft(rule.SequenceLength, '0');
         var baseCode = $"{prefix}{datePart}{seqPart}{suffix}";
 
-        if (rule.IncludeCheckDigit == 1)
+        if (rule.IncludeCheckDigit)
         {
             var checkDigit = ComputeGs1CheckDigit(baseCode);
             baseCode += checkDigit;
@@ -307,12 +307,12 @@ public class PackingNumberingRuleService : IPackingNumberingRuleService
     private async Task UnsetOtherDefaultsAsync(string scope, ulong currentId, CancellationToken ct)
     {
         var others = await _db.PackingNumberingRules
-            .Where(r => r.TargetScope == scope && r.Id != currentId && r.IsDefault == 1)
+            .Where(r => r.TargetScope == scope && r.Id != currentId && r.IsDefault)
             .ToListAsync(ct);
 
         foreach (var other in others)
         {
-            other.IsDefault = 0;
+            other.IsDefault = false;
             other.UpdatedDate = DateTime.UtcNow;
         }
     }
@@ -335,9 +335,9 @@ public class PackingNumberingRuleService : IPackingNumberingRuleService
             CurrentSequence = r.CurrentSequence,
             ResetPeriod = r.ResetPeriod,
             LastResetDate = r.LastResetDate,
-            IncludeCheckDigit = r.IncludeCheckDigit == 1,
-            IsDefault = r.IsDefault == 1,
-            IsActive = r.IsActive == 1,
+            IncludeCheckDigit = r.IncludeCheckDigit,
+            IsDefault = r.IsDefault,
+            IsActive = r.IsActive ?? false,
             Description = r.Description,
             SamplePreview = preview,
             CreatedDate = r.CreatedDate
