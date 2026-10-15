@@ -253,6 +253,14 @@ public static class PermissionCodes
         public const string Delete = "supplier.delete";
     }
 
+    public static class Employee
+    {
+        public const string View = "employee.view";
+        public const string Add = "employee.add";
+        public const string Edit = "employee.edit";
+        public const string Delete = "employee.delete";
+    }
+
     public static class GoodsIssue
     {
         public const string View = "goods-issue.view";
@@ -741,4 +749,66 @@ public static class PermissionCodes
         public const string Delete = "sales-order-payment-schedule.delete";
     }
 
+    public static class Position
+    {
+        public const string View   = "position.view";
+        public const string Add    = "position.add";
+        public const string Edit   = "position.edit";
+        public const string Delete = "position.delete";
+    }
+
+    public static class Skill
+    {
+        public const string View   = "skill.view";
+        public const string Add    = "skill.add";
+        public const string Edit   = "skill.edit";
+        public const string Delete = "skill.delete";
+    }
+
+    public static class EmployeeSkill
+    {
+        public const string View   = "employee-skill.view";
+        public const string Add    = "employee-skill.add";
+        public const string Edit   = "employee-skill.edit";
+        public const string Delete = "employee-skill.delete";
+    }
+
+    public static class QrCode
+    {
+        public const string View     = "qrcode.view";
+        public const string Generate = "qrcode.generate";
+        public const string Scan     = "qrcode.scan";
+    }
+
+    public static class LabelTemplate
+    {
+        public const string View   = "label-template.view";
+        public const string Add    = "label-template.add";
+        public const string Edit   = "label-template.edit";
+        public const string Delete = "label-template.delete";
+    }
+
+    public static class PackingSpecification
+    {
+        public const string View   = "packing-specification.view";
+        public const string Add    = "packing-specification.add";
+        public const string Edit   = "packing-specification.edit";
+        public const string Delete = "packing-specification.delete";
+    }
+
+    public static class PackingNumberingRule
+    {
+        public const string View   = "packing-numbering-rule.view";
+        public const string Add    = "packing-numbering-rule.add";
+        public const string Edit   = "packing-numbering-rule.edit";
+        public const string Delete = "packing-numbering-rule.delete";
+    }
+
+    public static class MachineStatus
+    {
+        public const string View   = "machine-status.view";
+        public const string Add    = "machine-status.add";
+        public const string Edit   = "machine-status.edit";
+        public const string Delete = "machine-status.delete";
+    }
 }
