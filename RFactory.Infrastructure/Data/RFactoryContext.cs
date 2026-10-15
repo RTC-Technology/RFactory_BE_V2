@@ -1876,6 +1876,71 @@ public partial class RFactoryContext : DbContext
                 .HasColumnName("work_order_code");
         });
 
+        modelBuilder.Entity<MachineDefectLog>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("machine_defect_log")
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => new { e.MachineId, e.LoggedTime, e.IsDeleted }, "ix_mdl_machine_time");
+
+            entity.HasIndex(e => new { e.DefectType, e.LoggedTime, e.IsDeleted }, "ix_mdl_type_time");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(100)
+                .HasColumnName("created_by");
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime")
+                .HasColumnName("created_date");
+            entity.Property(e => e.DefectType)
+                .IsRequired()
+                .HasMaxLength(50)
+                .HasDefaultValueSql("'SCRAP'")
+                .HasColumnName("defect_type");
+            entity.Property(e => e.IsDeleted).HasColumnName("is_deleted");
+            entity.Property(e => e.LoggedTime)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime")
+                .HasColumnName("logged_time");
+            entity.Property(e => e.MachineId).HasColumnName("machine_id");
+            entity.Property(e => e.OperatorName)
+                .HasMaxLength(100)
+                .HasColumnName("operator_name");
+            entity.Property(e => e.ProductCode)
+                .HasMaxLength(50)
+                .HasColumnName("product_code");
+            entity.Property(e => e.ProductId).HasColumnName("product_id");
+            entity.Property(e => e.Quantity)
+                .HasPrecision(12, 4)
+                .HasDefaultValueSql("'1.0000'")
+                .HasColumnName("quantity");
+            entity.Property(e => e.ReasonCode)
+                .HasMaxLength(50)
+                .HasColumnName("reason_code");
+            entity.Property(e => e.ReasonId).HasColumnName("reason_id");
+            entity.Property(e => e.ReasonName)
+                .HasMaxLength(200)
+                .HasColumnName("reason_name");
+            entity.Property(e => e.Remarks)
+                .HasMaxLength(500)
+                .HasColumnName("remarks");
+            entity.Property(e => e.UpdatedBy)
+                .HasMaxLength(100)
+                .HasColumnName("updated_by");
+            entity.Property(e => e.UpdatedDate)
+                .ValueGeneratedOnAddOrUpdate()
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime")
+                .HasColumnName("updated_date");
+            entity.Property(e => e.WorkOrderCode)
+                .HasMaxLength(100)
+                .HasColumnName("work_order_code");
+        });
+
         modelBuilder.Entity<MachineReasonCode>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
