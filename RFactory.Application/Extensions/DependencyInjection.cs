@@ -206,6 +206,9 @@ public static class DependencyInjection
         services.AddScoped<ISalesOrderItemService, SalesOrderItemService>();
         services.AddScoped<ISalesOrderPaymentScheduleService, SalesOrderPaymentScheduleService>();
 
+        services.AddScoped<IProductionRequestService, ProductionRequestService>();
+        services.AddScoped<IProductionRequestItemService, ProductionRequestItemService>();
+
 
         return services;
     }
