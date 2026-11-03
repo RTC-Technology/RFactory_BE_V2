@@ -64,7 +64,7 @@ public class PackingSpecificationService : IPackingSpecificationService
     public async Task<PackingSpecificationDto?> GetDefaultByProductIdAsync(ulong productId, CancellationToken ct = default)
     {
         var query = from ps in _db.PackingSpecifications
-                    where ps.ProductId == productId && ps.IsDefault == 1
+                    where ps.ProductId == productId && ps.IsDefault
                     join p in _db.Products on ps.ProductId equals p.Id into pGroup
                     from prod in pGroup.DefaultIfEmpty()
                     join u in _db.Units on ps.PackUnitId equals u.Id into uGroup
@@ -139,7 +139,7 @@ public class PackingSpecificationService : IPackingSpecificationService
             Barcode = request.Barcode?.Trim(),
             PackagingMaterial = request.PackagingMaterial?.Trim(),
             Instructions = request.Instructions?.Trim(),
-            IsDefault = (byte)(request.IsDefault ? 1 : 0),
+            IsDefault = request.IsDefault,
             Status = (request.Status ?? "ACTIVE").ToUpperInvariant(),
             CreatedDate = DateTime.UtcNow
         };
@@ -170,7 +170,7 @@ public class PackingSpecificationService : IPackingSpecificationService
             return Result<PackingSpecificationDto>.Failure($"Specification with code '{code}' already exists.");
         }
 
-        if (request.ProductId.HasValue && request.IsDefault && entity.IsDefault == 0)
+        if (request.ProductId.HasValue && request.IsDefault && !entity.IsDefault)
         {
             await UnsetOtherDefaultsAsync(request.ProductId.Value, id, ct);
         }
@@ -203,7 +203,7 @@ public class PackingSpecificationService : IPackingSpecificationService
         entity.Barcode = request.Barcode?.Trim();
         entity.PackagingMaterial = request.PackagingMaterial?.Trim();
         entity.Instructions = request.Instructions?.Trim();
-        entity.IsDefault = (byte)(request.IsDefault ? 1 : 0);
+        entity.IsDefault = request.IsDefault;
         entity.Status = (request.Status ?? "ACTIVE").ToUpperInvariant();
         entity.UpdatedDate = DateTime.UtcNow;
 
@@ -239,7 +239,7 @@ public class PackingSpecificationService : IPackingSpecificationService
             await UnsetOtherDefaultsAsync(entity.ProductId.Value, id, ct);
         }
 
-        entity.IsDefault = 1;
+        entity.IsDefault = true;
         entity.UpdatedDate = DateTime.UtcNow;
         await _db.SaveChangesAsync(ct);
 
@@ -249,12 +249,12 @@ public class PackingSpecificationService : IPackingSpecificationService
     private async Task UnsetOtherDefaultsAsync(ulong productId, ulong currentId, CancellationToken ct)
     {
         var others = await _db.PackingSpecifications
-            .Where(s => s.ProductId == productId && s.Id != currentId && s.IsDefault == 1)
+            .Where(s => s.ProductId == productId && s.Id != currentId && s.IsDefault)
             .ToListAsync(ct);
 
         foreach (var other in others)
         {
-            other.IsDefault = 0;
+            other.IsDefault = false;
             other.UpdatedDate = DateTime.UtcNow;
         }
     }
@@ -324,7 +324,7 @@ public class PackingSpecificationService : IPackingSpecificationService
         Barcode = ps.Barcode,
         PackagingMaterial = ps.PackagingMaterial,
         Instructions = ps.Instructions,
-        IsDefault = ps.IsDefault == 1,
+        IsDefault = ps.IsDefault,
         Status = ps.Status,
         CreatedDate = ps.CreatedDate
     };

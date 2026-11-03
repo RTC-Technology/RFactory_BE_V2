@@ -67,7 +67,7 @@ public partial class PackingSpecification
 
     public string Instructions { get; set; }
 
-    public byte IsDefault { get; set; }
+    public bool IsDefault { get; set; }
 
     public string Status { get; set; }
 }

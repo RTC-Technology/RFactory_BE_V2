@@ -48,7 +48,7 @@ public class LabelTemplateService : ILabelTemplateService
     {
         var type = entityType.ToUpperInvariant();
         var entity = await _db.LabelTemplates
-            .FirstOrDefaultAsync(t => t.EntityType == type && t.IsDefault == 1, ct);
+            .FirstOrDefaultAsync(t => t.EntityType == type && t.IsDefault, ct);
 
         entity ??= await _db.LabelTemplates
             .FirstOrDefaultAsync(t => t.EntityType == type, ct);
@@ -86,8 +86,8 @@ public class LabelTemplateService : ILabelTemplateService
             WidthMm = request.WidthMm > 0 ? request.WidthMm : 70.00m,
             HeightMm = request.HeightMm > 0 ? request.HeightMm : 50.00m,
             Orientation = (request.Orientation ?? "LANDSCAPE").ToUpperInvariant(),
-            IsDefault = (byte)(request.IsDefault ? 1 : 0),
-            IsActive = (byte)(request.IsActive ? 1 : 0),
+            IsDefault = request.IsDefault,
+            IsActive = request.IsActive,
             HeaderText = request.HeaderText?.Trim(),
             FooterText = request.FooterText?.Trim(),
             ShowQr = request.ShowQr,
@@ -127,7 +127,7 @@ public class LabelTemplateService : ILabelTemplateService
 
         var entityType = (request.EntityType ?? entity.EntityType).ToUpperInvariant();
 
-        if (request.IsDefault && entity.IsDefault == 0)
+        if (!request.IsDefault)
         {
             await UnsetOtherDefaultsAsync(entityType, id, ct);
         }
@@ -138,8 +138,8 @@ public class LabelTemplateService : ILabelTemplateService
         entity.WidthMm = request.WidthMm > 0 ? request.WidthMm : entity.WidthMm;
         entity.HeightMm = request.HeightMm > 0 ? request.HeightMm : entity.HeightMm;
         entity.Orientation = (request.Orientation ?? "LANDSCAPE").ToUpperInvariant();
-        entity.IsDefault = (byte)(request.IsDefault ? 1 : 0);
-        entity.IsActive = (byte)(request.IsActive ? 1 : 0);
+        entity.IsDefault = request.IsDefault;
+        entity.IsActive = request.IsActive;
         entity.HeaderText = request.HeaderText?.Trim();
         entity.FooterText = request.FooterText?.Trim();
         entity.ShowQr = request.ShowQr;
@@ -178,7 +178,7 @@ public class LabelTemplateService : ILabelTemplateService
         }
 
         await UnsetOtherDefaultsAsync(entity.EntityType, id, ct);
-        entity.IsDefault = 1;
+        entity.IsDefault = true;
         entity.UpdatedDate = DateTime.UtcNow;
         await _db.SaveChangesAsync(ct);
 
@@ -188,12 +188,12 @@ public class LabelTemplateService : ILabelTemplateService
     private async Task UnsetOtherDefaultsAsync(string entityType, ulong currentId, CancellationToken ct)
     {
         var others = await _db.LabelTemplates
-            .Where(t => t.EntityType == entityType && t.Id != currentId && t.IsDefault == 1)
+            .Where(t => t.EntityType == entityType && t.Id != currentId && t.IsDefault)
             .ToListAsync(ct);
 
         foreach (var other in others)
         {
-            other.IsDefault = 0;
+            other.IsDefault = false;
             other.UpdatedDate = DateTime.UtcNow;
         }
     }
@@ -207,8 +207,8 @@ public class LabelTemplateService : ILabelTemplateService
         WidthMm = t.WidthMm,
         HeightMm = t.HeightMm,
         Orientation = t.Orientation,
-        IsDefault = t.IsDefault == 1,
-        IsActive = t.IsActive == 1,
+        IsDefault = t.IsDefault,
+        IsActive = t.IsActive ?? true,
         HeaderText = t.HeaderText,
         FooterText = t.FooterText,
         ShowQr = t.ShowQr ?? false,
