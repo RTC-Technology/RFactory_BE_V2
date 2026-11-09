@@ -820,4 +820,13 @@ public static class PermissionCodes
         public const string Delete  = "production-order.delete";
         public const string Approve = "production-order.approve";
     }
+
+    public static class DetailedProductionPlan
+    {
+        public const string View    = "detailed-production-plan.view";
+        public const string Add     = "detailed-production-plan.add";
+        public const string Edit    = "detailed-production-plan.edit";
+        public const string Delete  = "detailed-production-plan.delete";
+        public const string Approve = "detailed-production-plan.approve";
+    }
 }

@@ -17,6 +17,16 @@ public partial class RFactoryContext
 
     public virtual DbSet<ProductionOrderOperation> ProductionOrderOperations { get; set; }
 
+    public virtual DbSet<MasterProductionPlan> MasterProductionPlans { get; set; }
+
+    public virtual DbSet<MasterProductionPlanItem> MasterProductionPlanItems { get; set; }
+
+    public virtual DbSet<DetailedProductionPlan> DetailedProductionPlans { get; set; }
+
+    public virtual DbSet<DetailedProductionPlanItem> DetailedProductionPlanItems { get; set; }
+
+    public virtual DbSet<DetailedProductionPlanSchedule> DetailedProductionPlanSchedules { get; set; }
+
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>(entity =>
@@ -95,6 +105,131 @@ public partial class RFactoryContext
             entity.Property(e => e.WorkCenterName).HasMaxLength(100);
             entity.Property(e => e.MachineName).HasMaxLength(100);
             entity.Property(e => e.AssignedEmployeeName).HasMaxLength(100);
+            entity.Property(e => e.Remark).HasMaxLength(255);
+            entity.Property(e => e.CreatedBy).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+        });
+
+        // ── MasterProductionPlan ─────────────────────────────────────────────
+        modelBuilder.Entity<MasterProductionPlan>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.ToTable("master_production_plan", tb => tb.HasComment("Kế hoạch sản xuất tổng thể"));
+            entity.HasIndex(e => e.PlanCode, "UX_master_prod_plan_code").IsUnique();
+            entity.HasIndex(e => e.Status, "IX_master_prod_plan_status");
+            entity.HasIndex(e => e.IsDeleted, "IX_master_prod_plan_is_deleted");
+
+            entity.Property(e => e.PlanCode).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.PlanName).IsRequired().HasMaxLength(255);
+            entity.Property(e => e.PeriodType).IsRequired().HasMaxLength(20);
+            entity.Property(e => e.PeriodName).HasMaxLength(50);
+            entity.Property(e => e.WorkshopName).HasMaxLength(100);
+            entity.Property(e => e.TotalQuantity).HasPrecision(18, 4);
+            entity.Property(e => e.Remark).HasColumnType("text");
+            entity.Property(e => e.CreatedBy).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+
+            entity.HasMany(e => e.Items)
+                .WithOne()
+                .HasForeignKey(i => i.MasterPlanId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // ── MasterProductionPlanItem ─────────────────────────────────────────
+        modelBuilder.Entity<MasterProductionPlanItem>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.ToTable("master_production_plan_item", tb => tb.HasComment("Chi tiết sản phẩm kế hoạch tổng thể"));
+            entity.HasIndex(e => e.MasterPlanId, "IX_master_item_plan_id");
+            entity.HasIndex(e => e.ProductId, "IX_master_item_product_id");
+            entity.HasIndex(e => e.IsDeleted, "IX_master_item_is_deleted");
+
+            entity.Property(e => e.ProductCode).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.ProductName).IsRequired().HasMaxLength(255);
+            entity.Property(e => e.UnitName).HasMaxLength(50);
+            entity.Property(e => e.PlannedQuantity).HasPrecision(18, 4);
+            entity.Property(e => e.AllocatedQuantity).HasPrecision(18, 4);
+            entity.Property(e => e.RemainingQuantity).HasPrecision(18, 4);
+            entity.Property(e => e.DailyCapacity).HasPrecision(18, 4);
+            entity.Property(e => e.Remark).HasMaxLength(255);
+            entity.Property(e => e.CreatedBy).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+        });
+
+        // ── DetailedProductionPlan ───────────────────────────────────────────
+        modelBuilder.Entity<DetailedProductionPlan>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.ToTable("detailed_production_plan", tb => tb.HasComment("Kế hoạch sản xuất chi tiết"));
+            entity.HasIndex(e => e.PlanCode, "UX_detailed_prod_plan_code").IsUnique();
+            entity.HasIndex(e => e.MasterPlanId, "IX_detailed_prod_plan_master_id");
+            entity.HasIndex(e => e.Status, "IX_detailed_prod_plan_status");
+            entity.HasIndex(e => e.FromDate, "IX_detailed_prod_plan_from_date");
+            entity.HasIndex(e => e.ToDate, "IX_detailed_prod_plan_to_date");
+            entity.HasIndex(e => e.IsDeleted, "IX_detailed_prod_plan_is_deleted");
+
+            entity.Property(e => e.PlanCode).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.PlanName).IsRequired().HasMaxLength(255);
+            entity.Property(e => e.MasterPlanCode).HasMaxLength(50);
+            entity.Property(e => e.WorkshopName).HasMaxLength(100);
+            entity.Property(e => e.LineName).HasMaxLength(100);
+            entity.Property(e => e.DepartmentName).HasMaxLength(100);
+            entity.Property(e => e.PeriodType).IsRequired().HasMaxLength(20);
+            entity.Property(e => e.AllocationMethod).IsRequired().HasMaxLength(20);
+            entity.Property(e => e.TotalRequiredQuantity).HasPrecision(18, 4);
+            entity.Property(e => e.TotalPlannedQuantity).HasPrecision(18, 4);
+            entity.Property(e => e.Remark).HasColumnType("text");
+            entity.Property(e => e.CreatedBy).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+
+            entity.HasMany(e => e.Items)
+                .WithOne()
+                .HasForeignKey(i => i.PlanId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasMany(e => e.Schedules)
+                .WithOne()
+                .HasForeignKey(s => s.PlanId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // ── DetailedProductionPlanItem ───────────────────────────────────────
+        modelBuilder.Entity<DetailedProductionPlanItem>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.ToTable("detailed_production_plan_item", tb => tb.HasComment("Nhu cầu sản phẩm kế hoạch chi tiết"));
+            entity.HasIndex(e => e.PlanId, "IX_det_plan_item_plan_id");
+            entity.HasIndex(e => e.ProductId, "IX_det_plan_item_product_id");
+            entity.HasIndex(e => e.IsDeleted, "IX_det_plan_item_is_deleted");
+
+            entity.Property(e => e.ProductCode).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.ProductName).IsRequired().HasMaxLength(255);
+            entity.Property(e => e.UnitName).HasMaxLength(50);
+            entity.Property(e => e.RequiredQuantity).HasPrecision(18, 4);
+            entity.Property(e => e.CurrentStock).HasPrecision(18, 4);
+            entity.Property(e => e.PlannedQuantity).HasPrecision(18, 4);
+            entity.Property(e => e.DailyCapacity).HasPrecision(18, 4);
+            entity.Property(e => e.SalesOrderNo).HasMaxLength(100);
+            entity.Property(e => e.Remark).HasMaxLength(255);
+            entity.Property(e => e.CreatedBy).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+        });
+
+        // ── DetailedProductionPlanSchedule ───────────────────────────────────
+        modelBuilder.Entity<DetailedProductionPlanSchedule>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.ToTable("detailed_production_plan_schedule", tb => tb.HasComment("Lịch phân bổ sản xuất theo ngày/ca"));
+            entity.HasIndex(e => e.PlanId, "IX_det_plan_sch_plan_id");
+            entity.HasIndex(e => e.PlanItemId, "IX_det_plan_sch_item_id");
+            entity.HasIndex(e => e.ScheduleDate, "IX_det_plan_sch_date");
+            entity.HasIndex(e => e.ProductionOrderId, "IX_det_plan_sch_prod_order");
+            entity.HasIndex(e => e.IsDeleted, "IX_det_plan_sch_is_deleted");
+
+            entity.Property(e => e.ShiftName).HasMaxLength(50);
+            entity.Property(e => e.Capacity).HasPrecision(18, 4);
+            entity.Property(e => e.PlannedQuantity).HasPrecision(18, 4);
+            entity.Property(e => e.ProductionOrderNo).HasMaxLength(50);
             entity.Property(e => e.Remark).HasMaxLength(255);
             entity.Property(e => e.CreatedBy).IsRequired().HasMaxLength(50);
             entity.Property(e => e.UpdatedBy).HasMaxLength(50);

@@ -70,6 +70,7 @@ public static class DependencyInjection
 
         // Production
         services.AddScoped<IProductionOrderService, ProductionOrderService>();
+        services.AddScoped<IDetailedProductionPlanService, DetailedProductionPlanService>();
 
         // Equipment
         services.AddScoped<IMachineTypeService, MachineTypeService>();
