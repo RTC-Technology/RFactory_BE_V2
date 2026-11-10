@@ -35,6 +35,7 @@ VALUES
     (303, '2026-01-01 00:00:00', 'SYSTEM', 0, 'Đơn vị tính',         '/units',             'data',       3, 3, NULL),
     (304, '2026-01-01 00:00:00', 'SYSTEM', 0, 'BOM',                 '/products/bom',      'box',        4, 3, NULL),
     (305, '2026-01-01 00:00:00', 'SYSTEM', 0, 'Lệnh sản xuất',       '/production-orders', 'workspace',  5, 3, NULL),
+    (306, '2026-01-01 00:00:00', 'SYSTEM', 0, 'Kế hoạch chi tiết',   '/detailed-production-plans', 'calendar', 6, 3, NULL),
 
     -- ── Thiết bị & OEE (ParentId = 4) ────────────────────────
     (401, '2026-01-01 00:00:00', 'SYSTEM', 0, 'Danh sách máy',       '/machines',       'data',      1, 4, NULL),
