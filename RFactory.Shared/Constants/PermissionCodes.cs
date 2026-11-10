@@ -402,14 +402,14 @@ public static class PermissionCodes
         public const string Add = "packing-check-item.add";
         public const string Edit = "packing-check-item.edit";
         public const string Delete = "packing-check-item.delete";
-    } 
+    }
     public static class PackingPackage
     {
         public const string View = "packing-package.view";
         public const string Add = "packing-package.add";
         public const string Edit = "packing-package.edit";
         public const string Delete = "packing-package.delete";
-    } 
+    }
     public static class PackingPackageItem
     {
         public const string View = "packing-package-item.view";
@@ -578,8 +578,8 @@ public static class PermissionCodes
         public const string Add = "lot-rule-sequence.add";
         public const string Edit = "lot-rule-sequence.edit";
         public const string Delete = "lot-rule-sequence.delete";
-    } 
-    
+    }
+
     public static class ProductLotRule
     {
         public const string View = "product-lot-rule.view";
@@ -751,73 +751,73 @@ public static class PermissionCodes
 
     public static class Position
     {
-        public const string View   = "position.view";
-        public const string Add    = "position.add";
-        public const string Edit   = "position.edit";
+        public const string View = "position.view";
+        public const string Add = "position.add";
+        public const string Edit = "position.edit";
         public const string Delete = "position.delete";
     }
 
     public static class Skill
     {
-        public const string View   = "skill.view";
-        public const string Add    = "skill.add";
-        public const string Edit   = "skill.edit";
+        public const string View = "skill.view";
+        public const string Add = "skill.add";
+        public const string Edit = "skill.edit";
         public const string Delete = "skill.delete";
     }
 
     public static class EmployeeSkill
     {
-        public const string View   = "employee-skill.view";
-        public const string Add    = "employee-skill.add";
-        public const string Edit   = "employee-skill.edit";
+        public const string View = "employee-skill.view";
+        public const string Add = "employee-skill.add";
+        public const string Edit = "employee-skill.edit";
         public const string Delete = "employee-skill.delete";
     }
 
     public static class QrCode
     {
-        public const string View     = "qrcode.view";
+        public const string View = "qrcode.view";
         public const string Generate = "qrcode.generate";
-        public const string Scan     = "qrcode.scan";
+        public const string Scan = "qrcode.scan";
     }
 
     public static class LabelTemplate
     {
-        public const string View   = "label-template.view";
-        public const string Add    = "label-template.add";
-        public const string Edit   = "label-template.edit";
+        public const string View = "label-template.view";
+        public const string Add = "label-template.add";
+        public const string Edit = "label-template.edit";
         public const string Delete = "label-template.delete";
     }
 
     public static class PackingSpecification
     {
-        public const string View   = "packing-specification.view";
-        public const string Add    = "packing-specification.add";
-        public const string Edit   = "packing-specification.edit";
+        public const string View = "packing-specification.view";
+        public const string Add = "packing-specification.add";
+        public const string Edit = "packing-specification.edit";
         public const string Delete = "packing-specification.delete";
     }
 
     public static class PackingNumberingRule
     {
-        public const string View   = "packing-numbering-rule.view";
-        public const string Add    = "packing-numbering-rule.add";
-        public const string Edit   = "packing-numbering-rule.edit";
+        public const string View = "packing-numbering-rule.view";
+        public const string Add = "packing-numbering-rule.add";
+        public const string Edit = "packing-numbering-rule.edit";
         public const string Delete = "packing-numbering-rule.delete";
     }
 
     public static class MachineStatus
     {
-        public const string View   = "machine-status.view";
-        public const string Add    = "machine-status.add";
-        public const string Edit   = "machine-status.edit";
+        public const string View = "machine-status.view";
+        public const string Add = "machine-status.add";
+        public const string Edit = "machine-status.edit";
         public const string Delete = "machine-status.delete";
     }
 
     public static class ProductionOrder
     {
-        public const string View    = "production-order.view";
-        public const string Add     = "production-order.add";
-        public const string Edit    = "production-order.edit";
-        public const string Delete  = "production-order.delete";
+        public const string View = "production-order.view";
+        public const string Add = "production-order.add";
+        public const string Edit = "production-order.edit";
+        public const string Delete = "production-order.delete";
         public const string Approve = "production-order.approve";
     }
 
@@ -828,5 +828,20 @@ public static class PermissionCodes
         public const string Edit    = "detailed-production-plan.edit";
         public const string Delete  = "detailed-production-plan.delete";
         public const string Approve = "detailed-production-plan.approve";
+    public static class ProductionRequest
+    {
+        public const string View = "production-request.view";
+        public const string Add = "production-request.add";
+        public const string Edit = "production-request.edit";
+        public const string Delete = "production-request.delete";
+        public const string Approve = "production-request.approve";
+    }
+    public static class ProductionRequestItem
+    {
+        public const string View = "production-request-item.view";
+        public const string Add = "production-request-item.add";
+        public const string Edit = "production-request-item.edit";
+        public const string Delete = "production-request-item.delete";
+        public const string Approve = "production-request-item.approve";
     }
 }
