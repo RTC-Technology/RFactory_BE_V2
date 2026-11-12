@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using RFactory.Application.Modules.Production.DTOs;
 using RFactory.Infrastructure.Persistence;
 using RFactory.Shared.Results;
@@ -151,13 +151,16 @@ namespace RFactory.Application.Modules.Production.Services
     public class ProductionRequestItemService : IProductionRequestItemService
     {
         private readonly IRepository<Entities.ProductionRequestItem> _repository;
+        private readonly IRepository<Entities.ProductionOrder> _orderRepo;
         private readonly IMapper _mapper;
 
         public ProductionRequestItemService(
             IRepository<Entities.ProductionRequestItem> repository,
+            IRepository<Entities.ProductionOrder> orderRepo,
             IMapper mapper)
         {
             _repository = repository;
+            _orderRepo = orderRepo;
             _mapper = mapper;
         }
 
@@ -175,11 +178,38 @@ namespace RFactory.Application.Modules.Production.Services
         }
 
         public async Task<List<ProductionRequestItemDto>> GetAllAsync(CancellationToken ct = default)
-         => _mapper.Map<List<ProductionRequestItemDto>>(await _repository.GetAll(ct));
+        {
+            var entities = await _repository.GetAll(ct);
+            var dtos = _mapper.Map<List<ProductionRequestItemDto>>(entities);
+            if (dtos.Count > 0)
+            {
+                var itemIds = dtos.Select(d => (ulong?)d.Id).ToList();
+                var orders = await _orderRepo.Where(o => o.ProductionRequestItemId.HasValue && itemIds.Contains(o.ProductionRequestItemId.Value), ct);
+                var orderMap = orders.GroupBy(o => o.ProductionRequestItemId!.Value)
+                    .ToDictionary(g => g.Key, g => g.OrderByDescending(o => o.CreatedDate).First().OrderNo);
+
+                foreach (var dto in dtos)
+                {
+                    if (orderMap.TryGetValue(dto.Id, out var orderNo))
+                    {
+                        dto.ProductionOrderNo = orderNo;
+                    }
+                }
+            }
+            return dtos;
+        }
+
         public async Task<ProductionRequestItemDto?> GetByIdAsync(ulong id, CancellationToken ct = default)
         {
             var entity = await _repository.GetById(id, ct);
-            return entity is null ? null : _mapper.Map<ProductionRequestItemDto>(entity);
+            if (entity is null) return null;
+            var dto = _mapper.Map<ProductionRequestItemDto>(entity);
+            var order = await _orderRepo.FirstOrDefault(o => o.ProductionRequestItemId == id, ct);
+            if (order != null)
+            {
+                dto.ProductionOrderNo = order.OrderNo;
+            }
+            return dto;
         }
 
         public async Task<Result<ProductionRequestItemDto>> UpdateAsync(ulong id, ProductionRequestItemRequest request, CancellationToken ct = default)

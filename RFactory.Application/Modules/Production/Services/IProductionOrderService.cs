@@ -33,4 +33,9 @@ public interface IProductionOrderService
     /// Nhân bản lệnh sản xuất (Duplicate)
     /// </summary>
     Task<ProductionOrderDto> DuplicateAsync(ulong id, string currentUser);
+
+    /// <summary>
+    /// Tự động sinh các Lệnh sản xuất từ các dòng chi tiết của Yêu cầu sản xuất (chỉ sinh cho dòng chưa có lệnh)
+    /// </summary>
+    Task<List<ProductionOrderDto>> GenerateFromRequestAsync(ulong requestId, string currentUser, CancellationToken ct = default);
 }

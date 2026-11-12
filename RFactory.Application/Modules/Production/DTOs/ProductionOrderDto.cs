@@ -97,6 +97,8 @@ public class ProductionOrderDto
 
     public string? BatchNo { get; set; }
     public string? SalesOrderNo { get; set; }
+    public ulong? ProductionRequestItemId { get; set; }
+    public string? ProductionRequestNo { get; set; }
     public string? Remark { get; set; }
 
     /// <summary>
@@ -218,6 +220,8 @@ public class ProductionOrderCreateRequest
     public int Priority { get; set; } = 2; // Normal
     public string? BatchNo { get; set; }
     public string? SalesOrderNo { get; set; }
+    public ulong? ProductionRequestItemId { get; set; }
+    public string? ProductionRequestNo { get; set; }
     public string? Remark { get; set; }
 
     public List<ProductionOrderMaterialInputDto>? Materials { get; set; }
@@ -246,6 +250,8 @@ public class ProductionOrderUpdateRequest
     public int Priority { get; set; } = 2;
     public string? BatchNo { get; set; }
     public string? SalesOrderNo { get; set; }
+    public ulong? ProductionRequestItemId { get; set; }
+    public string? ProductionRequestNo { get; set; }
     public string? Remark { get; set; }
 
     public List<ProductionOrderMaterialInputDto>? Materials { get; set; }
