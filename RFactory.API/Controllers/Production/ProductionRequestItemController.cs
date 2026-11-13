@@ -22,7 +22,7 @@ namespace RFactory.API.Controllers.Production
         }
 
         [HttpGet]
-        [RequirePermission(PermissionCodes.ProductionRequestItem.View)]
+        [RequirePermission(PermissionCodes.DetailedProductionPlan.ProductionRequest.View)]
         public async Task<ActionResult<ApiResponse<List<ProductionRequestItemDto>>>> GetAll(CancellationToken ct)
         {
             var items = await _service.GetAllAsync(ct);
@@ -30,7 +30,7 @@ namespace RFactory.API.Controllers.Production
         }
 
         [HttpGet("{id:long}")]
-        [RequirePermission(PermissionCodes.ProductionRequestItem.View)]
+        [RequirePermission(PermissionCodes.DetailedProductionPlan.ProductionRequest.View)]
         public async Task<ActionResult<ApiResponse<ProductionRequestItemDto>>> GetById(ulong id, CancellationToken ct)
         {
             var item = await _service.GetByIdAsync(id, ct);
@@ -43,7 +43,7 @@ namespace RFactory.API.Controllers.Production
         }
 
         [HttpPost]
-        [RequirePermission(PermissionCodes.ProductionRequestItem.Add)]
+        [RequirePermission(PermissionCodes.DetailedProductionPlan.ProductionRequestItem.Add)]
         public async Task<ActionResult<ApiResponse<ProductionRequestItemDto>>> Create(ProductionRequestItemRequest request, CancellationToken ct)
         {
             var result = await _service.CreateAsync(request, ct);
@@ -56,7 +56,7 @@ namespace RFactory.API.Controllers.Production
         }
 
         [HttpPut("{id:long}")]
-        [RequirePermission(PermissionCodes.ProductionRequestItem.Edit)]
+        [RequirePermission(PermissionCodes.DetailedProductionPlan.ProductionRequestItem.Edit)]
         public async Task<ActionResult<ApiResponse<ProductionRequestItemDto>>> Update(ulong id, ProductionRequestItemRequest request, CancellationToken ct)
         {
             var result = await _service.UpdateAsync(id, request, ct);
@@ -69,7 +69,7 @@ namespace RFactory.API.Controllers.Production
         }
 
         [HttpDelete("{id:long}")]
-        [RequirePermission(PermissionCodes.ProductionRequestItem.Delete)]
+        [RequirePermission(PermissionCodes.DetailedProductionPlan.ProductionRequestItem.Delete)]
         public async Task<ActionResult<ApiResponse<object?>>> Delete(ulong id, CancellationToken ct)
         {
             var result = await _service.DeleteAsync(id, ct);
