@@ -67,6 +67,14 @@ public class ProductionOrderController : ControllerBase
         return Ok(ApiResponseFactory.Success(items));
     }
 
+    [HttpPost("generate-from-request/{requestId:long}")]
+    [RequirePermission(PermissionCodes.ProductionOrder.Add)]
+    public async Task<ActionResult<ApiResponse<List<ProductionOrderDto>>>> GenerateFromRequest(ulong requestId, CancellationToken ct)
+    {
+        var items = await _service.GenerateFromRequestAsync(requestId, CurrentUser, ct);
+        return Ok(ApiResponseFactory.Success(items, $"Đã tạo thành công {items.Count} lệnh sản xuất."));
+    }
+
     [HttpPost]
     [RequirePermission(PermissionCodes.ProductionOrder.Add)]
     public async Task<ActionResult<ApiResponse<ProductionOrderDto>>> Create([FromBody] ProductionOrderCreateRequest request)
