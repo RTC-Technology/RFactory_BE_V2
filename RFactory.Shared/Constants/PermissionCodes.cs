@@ -823,11 +823,12 @@ public static class PermissionCodes
 
     public static class DetailedProductionPlan
     {
-        public const string View    = "detailed-production-plan.view";
-        public const string Add     = "detailed-production-plan.add";
-        public const string Edit    = "detailed-production-plan.edit";
-        public const string Delete  = "detailed-production-plan.delete";
+        public const string View = "detailed-production-plan.view";
+        public const string Add = "detailed-production-plan.add";
+        public const string Edit = "detailed-production-plan.edit";
+        public const string Delete = "detailed-production-plan.delete";
         public const string Approve = "detailed-production-plan.approve";
+    }
     public static class ProductionRequest
     {
         public const string View = "production-request.view";

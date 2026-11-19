@@ -48,4 +48,8 @@ public partial class GoodsReceiptDetail
     public DateTime? ExpireDate { get; set; }
 
     public int? PurchaseOrderDetailId { get; set; }
+
+    public int? DefaultUnitId { get; set; }
+
+    public decimal? DefaultQuantity { get; set; }
 }

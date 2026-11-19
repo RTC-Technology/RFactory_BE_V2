@@ -73,7 +73,7 @@ public class GoodsReceiptService : IGoodsReceiptService
                 WarehouseId = (long)entity.WarehouseId,
                 WarehouseLocationId = (long)(x.LocationId ?? 0),
                 Quantity = x.Quantity,
-                UnitId = (long)x.UnitId
+                UnitId = (long)(x.DefaultUnitId ?? 0)
             }).ToList();
             var transactionChanges = _transactionService.BuildTransactionChanges([], newTransactionLines, (line, action) => ToTransactionEntity(line, action, entity));
             if (transactionChanges.Count > 0) await _transaction.AddRange(transactionChanges, token);
@@ -109,7 +109,7 @@ public class GoodsReceiptService : IGoodsReceiptService
                 WarehouseId = entity.WarehouseId,
                 WarehouseLocationId = x.LocationId,
                 Quantity = x.Quantity,
-                UnitId = x.UnitId
+                UnitId = (long)(x.DefaultUnitId ?? 0)
             }).ToList();
             
 
@@ -198,7 +198,7 @@ public class GoodsReceiptService : IGoodsReceiptService
                     WarehouseId = (long)(entity.WarehouseId),
                     WarehouseLocationId = (long)(x.LocationId ?? 0),
                     Quantity = x.Quantity,
-                    UnitId = (long)(x.UnitId)
+                    UnitId = (long)(x.DefaultUnitId ?? 0)
                 }).ToList();
 
                 var transactionChanges = _transactionService.BuildTransactionChanges(oldLines, newTransactionLines, (line, action) => ToTransactionEntity(line, action, entity));
@@ -248,7 +248,7 @@ public class GoodsReceiptService : IGoodsReceiptService
             //Quantity = line.Quantity,
             //ReservedQuantity = 0,
             //AvailableQuantity = 0,
-            UnitId = (long)line.UnitId,
+            UnitId = (long)(line.DefaultUnitId ?? 0),
             LastTransactionDate = DateTime.Now
         };
 

@@ -26,6 +26,8 @@ namespace RFactory.Application.Modules.GoodsIssue.DTOs
         public DateTime? ApprovedDate { get; set; }
         public ulong? PostedBy { get; set; }
         public DateTime? PostedDate { get; set; }
+        public long? CustomerId { get; set; }
+        public bool? IsExportByCustomer { get; set; }
     }
 
     public class GoodsIssueDetailDto
@@ -45,6 +47,8 @@ namespace RFactory.Application.Modules.GoodsIssue.DTOs
         public decimal? Quantity { get; set; }
         public decimal? UnitPrice { get; set; }
         public string? Remark { get; set; }
+        public int? DefaultUnitId { get; set; }
+        public decimal? DefaultQuantity { get; set; }
     }
 
     public class CreateGoodsIssueRequest
@@ -61,6 +65,8 @@ namespace RFactory.Application.Modules.GoodsIssue.DTOs
         public DateTime? ApprovedDate { get; set; }
         public ulong? PostedBy { get; set; }
         public DateTime? PostedDate { get; set; }
+        public long? CustomerId { get; set; }
+        public bool? IsExportByCustomer { get; set; }
         public List<GoodsIssueDetailRequest>? GoodsIssueDetails { get; set; }
     }
 
@@ -78,6 +84,8 @@ namespace RFactory.Application.Modules.GoodsIssue.DTOs
         public DateTime? ApprovedDate { get; set; }
         public ulong? PostedBy { get; set; }
         public DateTime? PostedDate { get; set; }
+        public long? CustomerId { get; set; }
+        public bool? IsExportByCustomer { get; set; }
         public List<GoodsIssueDetailRequest>? GoodsIssueDetails { get; set; }
     }
 
@@ -93,5 +101,7 @@ namespace RFactory.Application.Modules.GoodsIssue.DTOs
         public decimal? Quantity { get; set; }
         public decimal? UnitPrice { get; set; }
         public string? Remark { get; set; }
+        public int? DefaultUnitId { get; set; }
+        public decimal? DefaultQuantity { get; set; }
     }
 }

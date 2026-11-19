@@ -34,6 +34,9 @@ public class GoodsReceiptDetailDto
     public int? DefaultUnitId { get; set; }
     public string? UnitCode { get; set; }
     public string? UnitName { get; set; }
+
+    //public int? DefaultUnitId { get; set; }
+    public decimal? DefaultQuantity { get; set; }
 }
 
 public class CreateGoodsReceiptDetailRequest
