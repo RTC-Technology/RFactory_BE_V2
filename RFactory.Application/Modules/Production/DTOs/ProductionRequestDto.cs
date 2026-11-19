@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -154,6 +154,11 @@ namespace RFactory.Application.Modules.Production.DTOs
         public uint SortOrder { get; set; }
 
         /// <summary>
+        /// Mã lệnh sản xuất (nếu đã tạo lệnh)
+        /// </summary>
+        public string? ProductionOrderNo { get; set; }
+
+        /// <summary>
         /// Note
         /// </summary>
         public string? Remark { get; set; }
@@ -286,6 +291,11 @@ namespace RFactory.Application.Modules.Production.DTOs
         /// Display order
         /// </summary>
         public uint SortOrder { get; set; }
+
+        /// <summary>
+        /// Mã lệnh sản xuất (nếu đã tạo lệnh)
+        /// </summary>
+        public string? ProductionOrderNo { get; set; }
 
         /// <summary>
         /// Note

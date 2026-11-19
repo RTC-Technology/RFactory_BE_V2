@@ -828,20 +828,21 @@ public static class PermissionCodes
         public const string Edit    = "detailed-production-plan.edit";
         public const string Delete  = "detailed-production-plan.delete";
         public const string Approve = "detailed-production-plan.approve";
-    public static class ProductionRequest
-    {
-        public const string View = "production-request.view";
-        public const string Add = "production-request.add";
-        public const string Edit = "production-request.edit";
-        public const string Delete = "production-request.delete";
-        public const string Approve = "production-request.approve";
-    }
-    public static class ProductionRequestItem
-    {
-        public const string View = "production-request-item.view";
-        public const string Add = "production-request-item.add";
-        public const string Edit = "production-request-item.edit";
-        public const string Delete = "production-request-item.delete";
-        public const string Approve = "production-request-item.approve";
+        public static class ProductionRequest
+        {
+            public const string View = "production-request.view";
+            public const string Add = "production-request.add";
+            public const string Edit = "production-request.edit";
+            public const string Delete = "production-request.delete";
+            public const string Approve = "production-request.approve";
+        }
+        public static class ProductionRequestItem
+        {
+            public const string View = "production-request-item.view";
+            public const string Add = "production-request-item.add";
+            public const string Edit = "production-request-item.edit";
+            public const string Delete = "production-request-item.delete";
+            public const string Approve = "production-request-item.approve";
+        }
     }
 }

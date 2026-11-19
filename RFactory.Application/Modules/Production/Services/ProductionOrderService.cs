@@ -103,6 +103,29 @@ public class ProductionOrderService : IProductionOrderService
             .Where(f => factoryIds.Contains(f.Id))
             .ToDictionaryAsync(f => f.Id, f => f.FactoryName);
 
+        var requestItemIds = orders.Where(x => x.ProductionRequestItemId.HasValue).Select(x => x.ProductionRequestItemId!.Value).Distinct().ToList();
+        var requestNoMap = new Dictionary<ulong, string>();
+        if (requestItemIds.Count > 0)
+        {
+            var reqItems = await _context.ProductionRequestItems.AsNoTracking()
+                .Where(i => requestItemIds.Contains(i.Id))
+                .Select(i => new { i.Id, i.ProductionRequestId })
+                .ToListAsync();
+
+            var reqIds = reqItems.Where(i => i.ProductionRequestId > 0).Select(i => i.ProductionRequestId).Distinct().ToList();
+            var requests = await _context.ProductionRequests.AsNoTracking()
+                .Where(r => reqIds.Contains(r.Id))
+                .ToDictionaryAsync(r => r.Id, r => r.RequestNo);
+
+            foreach (var rItem in reqItems)
+            {
+                if (requests.TryGetValue(rItem.ProductionRequestId, out var rNo))
+                {
+                    requestNoMap[rItem.Id] = rNo;
+                }
+            }
+        }
+
         var result = new List<ProductionOrderDto>(orders.Count);
         foreach (var order in orders)
         {
@@ -150,6 +173,11 @@ public class ProductionOrderService : IProductionOrderService
             if (order.FactoryId.HasValue && factories.TryGetValue(order.FactoryId.Value, out var fName))
             {
                 dto.FactoryName = fName;
+            }
+
+            if (order.ProductionRequestItemId.HasValue && requestNoMap.TryGetValue(order.ProductionRequestItemId.Value, out var reqNo))
+            {
+                dto.ProductionRequestNo = reqNo;
             }
 
             result.Add(dto);
@@ -299,6 +327,26 @@ public class ProductionOrderService : IProductionOrderService
         if (!productExists)
             throw new NotFoundException($"Product with ID {request.ProductId} does not exist");
 
+        if (request.BomId.HasValue)
+        {
+            var isBomBelongToProduct = await _context.Boms
+                .AnyAsync(b => b.Id == request.BomId.Value && b.ProductId == (long)request.ProductId && !b.IsDeleted);
+            if (!isBomBelongToProduct)
+            {
+                throw new BusinessException("Định mức BOM đã chọn không thuộc về sản phẩm này");
+            }
+        }
+
+        if (request.RoutingId.HasValue)
+        {
+            var isRoutingBelongToProduct = await _context.Routings
+                .AnyAsync(r => r.Id == request.RoutingId.Value && r.ProductId == (long)request.ProductId && !r.IsDeleted);
+            if (!isRoutingBelongToProduct)
+            {
+                throw new BusinessException("Quy trình công nghệ (Routing) đã chọn không thuộc về sản phẩm này");
+            }
+        }
+
         var orderNo = string.IsNullOrWhiteSpace(request.OrderNo)
             ? await GenerateOrderNoAsync()
             : request.OrderNo.Trim();
@@ -437,6 +485,26 @@ public class ProductionOrderService : IProductionOrderService
         var productExists = await _context.Products.AnyAsync(p => p.Id == request.ProductId && !p.IsDeleted);
         if (!productExists)
             throw new NotFoundException($"Product with ID {request.ProductId} does not exist");
+
+        if (request.BomId.HasValue)
+        {
+            var isBomBelongToProduct = await _context.Boms
+                .AnyAsync(b => b.Id == request.BomId.Value && b.ProductId == (long)request.ProductId && !b.IsDeleted);
+            if (!isBomBelongToProduct)
+            {
+                throw new BusinessException("Định mức BOM đã chọn không thuộc về sản phẩm này");
+            }
+        }
+
+        if (request.RoutingId.HasValue)
+        {
+            var isRoutingBelongToProduct = await _context.Routings
+                .AnyAsync(r => r.Id == request.RoutingId.Value && r.ProductId == (long)request.ProductId && !r.IsDeleted);
+            if (!isRoutingBelongToProduct)
+            {
+                throw new BusinessException("Quy trình công nghệ (Routing) đã chọn không thuộc về sản phẩm này");
+            }
+        }
 
         if (request.OrderType.HasValue)
             order.OrderType = request.OrderType.Value;
@@ -951,5 +1019,177 @@ public class ProductionOrderService : IProductionOrderService
             if (factory != null)
                 dto.FactoryName = factory.FactoryName;
         }
+
+        if (order.ProductionRequestItemId.HasValue)
+        {
+            var item = await _context.ProductionRequestItems.AsNoTracking().FirstOrDefaultAsync(i => i.Id == order.ProductionRequestItemId.Value);
+            if (item != null && item.ProductionRequestId > 0)
+            {
+                var req = await _context.ProductionRequests.AsNoTracking().FirstOrDefaultAsync(r => r.Id == item.ProductionRequestId);
+                if (req != null)
+                {
+                    dto.ProductionRequestNo = req.RequestNo;
+                }
+            }
+        }
+    }
+
+    public async Task<List<ProductionOrderDto>> GenerateFromRequestAsync(ulong requestId, string currentUser, CancellationToken ct = default)
+    {
+        var request = await _context.ProductionRequests
+            .AsNoTracking()
+            .FirstOrDefaultAsync(r => r.Id == requestId && !r.IsDeleted, ct);
+
+        if (request == null)
+            throw new NotFoundException($"Yêu cầu sản xuất #{requestId} không tồn tại.");
+
+        var items = await _context.ProductionRequestItems
+            .Where(i => i.ProductionRequestId == requestId && !i.IsDeleted)
+            .ToListAsync(ct);
+
+        if (items.Count == 0)
+            throw new BusinessException("Yêu cầu sản xuất không có sản phẩm nào trong danh sách chi tiết.");
+
+        var itemIds = items.Select(i => (ulong?)i.Id).ToList();
+        var existingItemIds = await _context.ProductionOrders
+            .Where(o => o.ProductionRequestItemId.HasValue && itemIds.Contains(o.ProductionRequestItemId.Value) && !o.IsDeleted)
+            .Select(o => o.ProductionRequestItemId!.Value)
+            .ToListAsync(ct);
+
+        var pendingItems = items.Where(i => !existingItemIds.Contains(i.Id)).ToList();
+        if (pendingItems.Count == 0)
+        {
+            throw new BusinessException("Tất cả sản phẩm trong Yêu cầu sản xuất này đều đã được tạo Lệnh sản xuất từ trước.");
+        }
+
+        var createdOrders = new List<ProductionOrder>();
+
+        foreach (var item in pendingItems)
+        {
+            var orderNo = await GenerateOrderNoAsync();
+
+            var bom = await _context.Boms
+                .AsNoTracking()
+                .Where(b => b.ProductId == (long)item.ProductId && !b.IsDeleted)
+                .OrderByDescending(b => b.IsActive == true)
+                .ThenByDescending(b => b.CreatedDate)
+                .FirstOrDefaultAsync(ct);
+
+            var routing = await _context.Routings
+                .AsNoTracking()
+                .Where(r => r.ProductId == (long)item.ProductId && !r.IsDeleted)
+                .OrderByDescending(r => r.IsActive == true)
+                .ThenByDescending(r => r.CreatedDate)
+                .FirstOrDefaultAsync(ct);
+
+            var plannedQty = item.RequestedQuantity > 0 ? item.RequestedQuantity : 1;
+
+            var order = new ProductionOrder
+            {
+                OrderNo = orderNo,
+                ProductionRequestItemId = item.Id,
+                OrderType = 2, // MTO - Theo đơn hàng / Yêu cầu sản xuất
+                Description = $"Lệnh sản xuất cho {item.ProductName ?? item.ProductCode} (YCSX: {request.RequestNo})",
+                ProductId = item.ProductId,
+                UnitId = item.UnitId,
+                BomId = bom?.Id,
+                RoutingId = routing?.Id,    
+                CustomerId = request.CustomerId,
+                PlannedQuantity = plannedQty,
+                CompletedQuantity = 0,
+                ScrapQuantity = 0,
+                PlannedStartDate = DateTime.UtcNow,
+                PlannedEndDate = item.RequiredDate ?? request.RequiredDate ?? DateTime.UtcNow.AddDays(7),
+                Priority = request.Priority switch
+                {
+                    1 => 4, // Urgent -> Urgent
+                    2 => 3, // High -> High
+                    3 => 2, // Normal -> Normal
+                    4 => 1, // Low -> Low
+                    _ => 2  // Normal
+                },
+                Status = 1, // Draft
+                BatchNo = $"LOT-{DateTime.UtcNow:yyyyMMdd}",
+                SalesOrderNo = request.SalesOrderNo,
+                Remark = item.Remark ?? request.Remark,
+                CreatedBy = currentUser,
+                CreatedDate = DateTime.UtcNow,
+                IsDeleted = false
+            };
+
+            _context.ProductionOrders.Add(order);
+            await _context.SaveChangesAsync(ct);
+
+            if (bom != null)
+            {
+                var bomMaterials = await PreviewBomMaterialsAsync(bom.Id, plannedQty);
+                foreach (var bm in bomMaterials)
+                {
+                    _context.ProductionOrderMaterials.Add(new ProductionOrderMaterial
+                    {
+                        ProductionOrderId = order.Id,
+                        ProductId = bm.ProductId,
+                        ProductCode = bm.ProductCode,
+                        ProductName = bm.ProductName,
+                        UnitId = bm.UnitId,
+                        UnitName = bm.UnitName,
+                        NormQuantity = bm.NormQuantity,
+                        RequiredQuantity = bm.RequiredQuantity,
+                        IssuedQuantity = 0,
+                        CurrentStock = bm.CurrentStock,
+                        WarehouseId = bm.WarehouseId,
+                        WarehouseName = bm.WarehouseName,
+                        IsSubstituted = bm.IsSubstituted,
+                        Remark = bm.Remark,
+                        CreatedBy = currentUser,
+                        CreatedDate = DateTime.UtcNow,
+                        IsDeleted = false
+                    });
+                }
+            }
+
+            if (routing != null)
+            {
+                var routingOps = await PreviewRoutingOperationsAsync(routing.Id);
+                foreach (var ro in routingOps)
+                {
+                    _context.ProductionOrderOperations.Add(new ProductionOrderOperation
+                    {
+                        ProductionOrderId = order.Id,
+                        RoutingOperationId = ro.RoutingOperationId,
+                        Sequence = ro.Sequence,
+                        OperationCode = ro.OperationCode,
+                        OperationName = ro.OperationName,
+                        WorkCenterId = ro.WorkCenterId,
+                        WorkCenterName = ro.WorkCenterName,
+                        MachineId = ro.MachineId,
+                        MachineName = ro.MachineName,
+                        Status = 1,
+                        Remark = ro.Remark,
+                        CreatedBy = currentUser,
+                        CreatedDate = DateTime.UtcNow,
+                        IsDeleted = false
+                    });
+                }
+            }
+
+            item.PlannedQuantity = plannedQty;
+            item.Status = 3; // Planned
+            item.UpdatedBy = currentUser;
+            item.UpdatedDate = DateTime.UtcNow;
+
+            createdOrders.Add(order);
+        }
+
+        await _context.SaveChangesAsync(ct);
+
+        var result = new List<ProductionOrderDto>();
+        foreach (var o in createdOrders)
+        {
+            var dto = await GetByIdAsync(o.Id);
+            if (dto != null) result.Add(dto);
+        }
+
+        return result;
     }
 }
