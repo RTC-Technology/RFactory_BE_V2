@@ -51,4 +51,8 @@ public partial class GoodsIssue
     public long? PostedBy { get; set; }
 
     public DateTime? PostedDate { get; set; }
+
+    public long? CustomerId { get; set; }
+
+    public bool? IsExportByCustomer { get; set; }
 }

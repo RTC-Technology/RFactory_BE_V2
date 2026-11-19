@@ -42,4 +42,8 @@ public partial class GoodsIssueDetail
     public decimal? UnitPrice { get; set; }
 
     public string Remark { get; set; }
+
+    public int? DefaultUnitId { get; set; }
+
+    public decimal? DefaultQuantity { get; set; }
 }

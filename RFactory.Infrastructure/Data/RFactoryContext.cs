@@ -1179,6 +1179,7 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
+            entity.Property(e => e.DefaultQuantity).HasPrecision(18, 6);
             entity.Property(e => e.LotNo).HasMaxLength(100);
             entity.Property(e => e.Quantity).HasPrecision(18, 6);
             entity.Property(e => e.Remark).HasColumnType("text");
@@ -1237,6 +1238,7 @@ public partial class RFactoryContext : DbContext
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
+            entity.Property(e => e.DefaultQuantity).HasPrecision(18, 6);
             entity.Property(e => e.ExpireDate).HasColumnType("datetime");
             entity.Property(e => e.LotNo).HasMaxLength(100);
             entity.Property(e => e.Quantity).HasPrecision(18, 6);

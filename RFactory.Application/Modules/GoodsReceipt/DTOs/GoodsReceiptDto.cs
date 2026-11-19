@@ -93,4 +93,7 @@ public class GoodsReceiptLineRequest
     public decimal? UnitPrice { get; set; }
     public string? Remark { get; set; }
     public DateTime? ExpireDate { get; set; }
+
+    public int? DefaultUnitId { get; set; }
+    public decimal? DefaultQuantity { get; set; }
 }
