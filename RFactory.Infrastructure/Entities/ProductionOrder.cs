@@ -137,6 +137,7 @@ public partial class ProductionOrder
     /// Ghi chú
     /// </summary>
     public string Remark { get; set; }
+    public ulong? ProductionRequestItemId { get; set; }
 
     /// <summary>
     /// Danh sách chi tiết nguyên vật liệu (BOM Materials)
